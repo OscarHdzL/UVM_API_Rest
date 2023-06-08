@@ -12,14 +12,14 @@ using Datos.ModelosDBSGAPI.Entities;
 
 namespace Negocio.AcreditadoraNegocio
 {
-    public class AcreditadoraNegocio
+    public class AcreditadoraProcesoNegocio
     {
         public AppSGAPIDbContext ctx = new AppSGAPIDbContext();
 
         public TipoAccion Respuesta { get; set; }
 
 
-        public async Task<TipoAccion> Get(int? id, int pageSize, int pageNumber)
+        public async Task<TipoAccion> Get(string? idAcreditadora, int pageSize, int pageNumber)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace Negocio.AcreditadoraNegocio
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
-                var resultados = await ctx.Acreditadoras.Where(x=>x.Activo == true).ToListAsync();
+                var resultados = await ctx.AcreditadoraProcesos.Where(x=>x.AcreditadoraId == idAcreditadora).ToListAsync();
                 this.Respuesta = TipoAccion.Positiva(resultados);
                 
             }

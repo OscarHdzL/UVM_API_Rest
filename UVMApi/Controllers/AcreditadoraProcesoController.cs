@@ -11,14 +11,14 @@ namespace UVMApi.Controllers
     [ApiController]
     [Route("[controller]")]
     //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
-    public class AcreditadoraController : ControllerBase
+    public class AcreditadoraProcesoController : ControllerBase
     {
         
 
-        private readonly ILogger<AcreditadoraController> _logger;
-        public AcreditadoraNegocio negocio = new AcreditadoraNegocio();
+        private readonly ILogger<AcreditadoraProcesoController> _logger;
+        public AcreditadoraProcesoNegocio negocio = new AcreditadoraProcesoNegocio();
 
-        public AcreditadoraController(ILogger<AcreditadoraController> logger)
+        public AcreditadoraProcesoController(ILogger<AcreditadoraProcesoController> logger)
         {
             _logger = logger;
         }
@@ -26,9 +26,9 @@ namespace UVMApi.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public Task<TipoAccion> GetAll(int pageNumber = 0, int pageSize = 5)
+        public Task<TipoAccion> GetAll(string idAcreditadora, int pageNumber = 0, int pageSize = 5)
         {
-            return negocio.Get(null, pageSize, pageNumber);
+            return negocio.Get(idAcreditadora, pageSize, pageNumber);
         }
 
        
