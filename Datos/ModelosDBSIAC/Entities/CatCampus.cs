@@ -48,5 +48,7 @@ public partial class CatCampus
     /// </summary>
     public string? UsuarioModificacion { get; set; }
 
+    public string Clave { get; set; } = null!;
+
     public virtual CatRegion? Region { get; set; }
 }

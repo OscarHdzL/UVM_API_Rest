@@ -58,7 +58,7 @@ namespace Negocio
 
 
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Campus_Actualiza
-                                    @TipoActualiza = {"I"}, @Id = {0}, @Nombre = {entidad.Nombre}, @RegionId = {entidad.RegionId}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
+                                    @TipoActualiza = {"I"}, @Id = {0},  @Clave = {entidad.Clave}, @Nombre = {entidad.Nombre}, @RegionId = {entidad.RegionId}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
                                     @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
                                     @UsuarioModificacion = {entidad.UsuarioModificacion}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
@@ -95,7 +95,7 @@ namespace Negocio
                 parametroMensaje.Direction = ParameterDirection.Output;
 
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Campus_Actualiza
-                                    @TipoActualiza = {"U"}, @Id = {entidad.Id}, @Nombre = {entidad.Nombre}, @RegionId = {entidad.RegionId}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
+                                    @TipoActualiza = {"U"}, @Id = {entidad.Id},  @Clave = {entidad.Clave}, @Nombre = {entidad.Nombre}, @RegionId = {entidad.RegionId}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
                                     @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
                                     @UsuarioModificacion = {entidad.UsuarioModificacion}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
@@ -131,7 +131,7 @@ namespace Negocio
 
 
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Campus_Actualiza
-                                    @TipoActualiza = {"D"}, @Id = {id}, @Nombre = {null}, @RegionId = {null}, @Activo = {null}, @FechaCreacion = {null}, 
+                                    @TipoActualiza = {"D"}, @Id = {id},  @Clave = {null}, @Nombre = {null}, @RegionId = {null}, @Activo = {null}, @FechaCreacion = {null}, 
                                     @UsuarioCreacion = {null}, @FechaModificacion = {null}, 
                                     @UsuarioModificacion = {null}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");

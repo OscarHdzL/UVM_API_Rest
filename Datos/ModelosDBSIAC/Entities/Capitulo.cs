@@ -6,7 +6,7 @@ namespace Datos.ModelosDBSIAC.Entities;
 /// <summary>
 /// Listado de cápitulos.
 /// </summary>
-public partial class CatCapitulo
+public partial class Capitulo
 {
     /// <summary>
     /// Identificador del proceso al que pertenece este cápitulo.
@@ -16,7 +16,7 @@ public partial class CatCapitulo
     /// <summary>
     /// Número del cápitulo dentro del proceso.
     /// </summary>
-    public string Id { get; set; } = null!;
+    public string CapituloId { get; set; } = null!;
 
     /// <summary>
     /// Nombre del cápitulo.
@@ -27,8 +27,6 @@ public partial class CatCapitulo
     /// Descripción larga del cápitulo.
     /// </summary>
     public string Descripcion { get; set; } = null!;
-
-    public bool? Activo { get; set; }
 
     /// <summary>
     /// Fecha en la que fue creado el registro.

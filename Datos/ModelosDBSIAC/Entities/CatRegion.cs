@@ -43,5 +43,7 @@ public partial class CatRegion
     /// </summary>
     public string? UsuarioModificacion { get; set; }
 
+    public string Clave { get; set; } = null!;
+
     public virtual ICollection<CatCampus> CatCampuses { get; set; } = new List<CatCampus>();
 }

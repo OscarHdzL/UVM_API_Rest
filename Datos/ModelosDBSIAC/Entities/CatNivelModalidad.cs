@@ -48,5 +48,7 @@ public partial class CatNivelModalidad
     /// </summary>
     public string? UsuarioModificacion { get; set; }
 
+    public string Clave { get; set; } = null!;
+
     public virtual ICollection<CatPonderacion> CatPonderacions { get; set; } = new List<CatPonderacion>();
 }

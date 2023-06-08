@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Datos.ModelosDBSIAC.Entities;
 
@@ -17,6 +16,8 @@ public partial class AppSIACDbContext : DbContext
     }
 
     public virtual DbSet<AcreditadoraProceso> AcreditadoraProcesos { get; set; }
+
+    public virtual DbSet<Capitulo> Capitulos { get; set; }
 
     public virtual DbSet<CatAcreditadora> CatAcreditadoras { get; set; }
 
@@ -99,19 +100,54 @@ public partial class AppSIACDbContext : DbContext
     public virtual DbSet<VwVistum> VwVista { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            IConfigurationRoot Configuration = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                                               .AddJsonFile("appsettings.json", optional: false).Build();
-            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("LibroFimpes"));
-        }
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=tcp:dbsql-sgapi-qa-uvm.database.windows.net,1433;Initial Catalog=DBSIAC-Desa-UVM;Persist Security Info=False;User ID=appUser;Password=AdminM4n$pp5;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AcreditadoraProceso>(entity =>
         {
             entity.ToTable("AcreditadoraProceso");
+
+            entity.Property(e => e.Nombre).HasMaxLength(500);
+        });
+
+        modelBuilder.Entity<Capitulo>(entity =>
+        {
+            entity.HasKey(e => new { e.AcreditadoraProcesoId, e.CapituloId });
+
+            entity.ToTable("Capitulo", tb => tb.HasComment("Listado de cápitulos."));
+
+            entity.Property(e => e.AcreditadoraProcesoId)
+                .HasComment("Identificador del proceso al que pertenece este cápitulo.")
+                .HasColumnName("AcreditadoraProcesoID");
+            entity.Property(e => e.CapituloId)
+                .HasMaxLength(50)
+                .HasComment("Número del cápitulo dentro del proceso.")
+                .HasColumnName("CapituloID");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(1500)
+                .HasComment("Descripción larga del cápitulo.");
+            entity.Property(e => e.FechaCreacion)
+                .HasComment("Fecha en la que fue creado el registro.")
+                .HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion)
+                .HasComment("Fecha de última modificación del registro.")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Nombre)
+                .HasMaxLength(500)
+                .HasComment("Nombre del cápitulo.");
+            entity.Property(e => e.UsuarioCreacion)
+                .HasMaxLength(50)
+                .HasComment("Usuario que generó el registro.");
+            entity.Property(e => e.UsuarioModificacion)
+                .HasMaxLength(50)
+                .HasComment("Usuario de última modificación del registro.");
+
+            entity.HasOne(d => d.AcreditadoraProceso).WithMany(p => p.Capitulos)
+                .HasForeignKey(d => d.AcreditadoraProcesoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Capitulo_AcreditadoraProceso");
         });
 
         modelBuilder.Entity<CatAcreditadora>(entity =>
@@ -184,6 +220,9 @@ public partial class AppSIACDbContext : DbContext
 
             entity.Property(e => e.Id).HasComment("Clave única del campus. ");
             entity.Property(e => e.Activo).HasComment("Indica si el registro se encuentra activo en el sistema.");
+            entity.Property(e => e.Clave)
+                .HasMaxLength(5)
+                .HasDefaultValueSql("('')");
             entity.Property(e => e.FechaCreacion)
                 .HasComment("Fecha en la que fue creado el registro.")
                 .HasColumnType("datetime");
@@ -208,7 +247,7 @@ public partial class AppSIACDbContext : DbContext
 
         modelBuilder.Entity<CatCapitulo>(entity =>
         {
-            entity.HasKey(e => new { e.AcreditadoraProcesoId, e.Id }).HasName("PK_Capitulo");
+            entity.HasKey(e => new { e.AcreditadoraProcesoId, e.Id });
 
             entity.ToTable("cat_Capitulo", tb => tb.HasComment("Listado de cápitulos."));
 
@@ -240,7 +279,7 @@ public partial class AppSIACDbContext : DbContext
             entity.HasOne(d => d.AcreditadoraProceso).WithMany(p => p.CatCapitulos)
                 .HasForeignKey(d => d.AcreditadoraProcesoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Capitulo_AcreditadoraProceso");
+                .HasConstraintName("FK_cat_Capitulo_AcreditadoraProceso");
         });
 
         modelBuilder.Entity<CatComponente>(entity =>
@@ -295,6 +334,9 @@ public partial class AppSIACDbContext : DbContext
 
             entity.Property(e => e.Id).HasComment("Siglas de identificación única para la Nivel/Modalidad.");
             entity.Property(e => e.Activo).HasComment("Indicador de activo/inactivo para el registro.");
+            entity.Property(e => e.Clave)
+                .HasMaxLength(5)
+                .HasDefaultValueSql("('')");
             entity.Property(e => e.FechaCreacion)
                 .HasComment("Fecha de creación del registro.")
                 .HasColumnType("datetime");
@@ -455,6 +497,9 @@ public partial class AppSIACDbContext : DbContext
 
             entity.Property(e => e.Id).HasComment("Clave única del región. ");
             entity.Property(e => e.Activo).HasComment("Indica si el registro se encuentra activo en el sistema.");
+            entity.Property(e => e.Clave)
+                .HasMaxLength(5)
+                .HasDefaultValueSql("('')");
             entity.Property(e => e.FechaCreacion)
                 .HasComment("Fecha en la que fue creado el registro.")
                 .HasColumnType("datetime");

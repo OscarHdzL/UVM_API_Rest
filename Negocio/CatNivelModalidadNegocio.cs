@@ -58,7 +58,7 @@ namespace Negocio
 
 
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_NivelModalidad_Actualiza
-                                    @TipoActualiza = {"I"}, @Id = {0}, @Nivel = {entidad.Nivel}, @Modalidad = {entidad.Modalidad}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
+                                    @TipoActualiza = {"I"}, @Id = {0},  @Clave = {entidad.Clave}, @Nivel = {entidad.Nivel}, @Modalidad = {entidad.Modalidad}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
                                     @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
                                     @UsuarioModificacion = {entidad.UsuarioModificacion}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
@@ -96,7 +96,7 @@ namespace Negocio
 
 
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_NivelModalidad_Actualiza
-                                    @TipoActualiza = {"U"}, @Id = {entidad.Id}, @Nivel = {entidad.Nivel}, @Modalidad = {entidad.Modalidad}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
+                                    @TipoActualiza = {"U"}, @Id = {entidad.Id}, @Clave = {entidad.Clave}, @Nivel = {entidad.Nivel}, @Modalidad = {entidad.Modalidad}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
                                     @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
                                     @UsuarioModificacion = {entidad.UsuarioModificacion}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
@@ -133,7 +133,7 @@ namespace Negocio
 
 
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_NivelModalidad_Actualiza
-                                    @TipoActualiza = {"D"}, @Id = {id}, @Nivel = {null}, @Modalidad = {null}, @Activo = {null}, @FechaCreacion = {null}, 
+                                    @TipoActualiza = {"D"}, @Id = {id},  @Clave = {null}, @Nivel = {null}, @Modalidad = {null}, @Activo = {null}, @FechaCreacion = {null}, 
                                     @UsuarioCreacion = {null}, @FechaModificacion = {null}, 
                                     @UsuarioModificacion = {null}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
