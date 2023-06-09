@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 using Negocio.AcreditadoraNegocio;
+using Negocio.Criterio;
 using Negocio.Respuesta;
 
 namespace UVMApi.Controllers
@@ -11,23 +12,24 @@ namespace UVMApi.Controllers
     [ApiController]
     [Route("[controller]")]
     //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
-    public class AcreditadoraController : ControllerBase
+    public class CriterioController : ControllerBase
     {
         
 
-        private readonly ILogger<AcreditadoraController> _logger;
-        public AcreditadoraNegocio negocio = new AcreditadoraNegocio();
+        private readonly ILogger<CriterioController> _logger;
+        public CriterioNegocio negocio = new CriterioNegocio();
 
-        public AcreditadoraController(ILogger<AcreditadoraController> logger)
+        public CriterioController(ILogger<CriterioController> logger)
         {
             _logger = logger;
         }
 
+
         [HttpGet]
         [Route("[action]")]
-        public Task<TipoAccion> GetAll(int pageNumber = 0, int pageSize = 5)
+        public Task<TipoAccion> GetAll(string idAcreditadora, int pageNumber = 0, int pageSize = 5)
         {
-            return negocio.Get(null, pageSize, pageNumber);
+            return negocio.Get(idAcreditadora, pageSize, pageNumber);
         }
 
        

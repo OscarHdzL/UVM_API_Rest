@@ -31,6 +31,10 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<CatComponente> CatComponentes { get; set; }
 
+    public virtual DbSet<CatElementoEvaluacion> CatElementoEvaluacions { get; set; }
+
+    public virtual DbSet<CatIndicadorSiac> CatIndicadorSiacs { get; set; }
+
     public virtual DbSet<CatMatrizUvm> CatMatrizUvms { get; set; }
 
     public virtual DbSet<CatNivelModalidad> CatNivelModalidads { get; set; }
@@ -290,6 +294,35 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
             entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
             entity.Property(e => e.Nombre).HasMaxLength(50);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<CatElementoEvaluacion>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__cat_Elem__3214EC0738FFEDBE");
+
+            entity.ToTable("cat_ElementoEvaluacion");
+
+            entity.Property(e => e.Clave).HasMaxLength(50);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Nombre).HasMaxLength(500);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<CatIndicadorSiac>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__cat_Indi__3214EC0770D48EEB");
+
+            entity.ToTable("cat_IndicadorSIAC");
+
+            entity.Property(e => e.Clave).HasMaxLength(50);
+            entity.Property(e => e.Descripcion).HasMaxLength(500);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Nombre).HasMaxLength(500);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });
