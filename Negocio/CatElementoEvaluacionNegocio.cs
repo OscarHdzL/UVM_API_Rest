@@ -29,7 +29,29 @@ namespace Negocio
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
-                var resultados = await ctx.CatElementoEvaluacions.FromSqlInterpolated($@"EXEC sp_ElementoEvaluacion_Select @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                var resultados = await ctx.CatElementoEvaluacions.FromSqlInterpolated($@"EXEC sp_ElementoEvaluacion_Select @Id = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                Respuesta = TipoAccion.Positiva(resultados);
+
+            }
+            catch (Exception ex)
+            {
+                Respuesta = TipoAccion.Negativa(ex.Message);
+            }
+
+            return Respuesta;
+        }
+
+        public async Task<TipoAccion> GetById(int id, int pageSize, int pageNumber)
+        {
+            try
+            {
+                List<CatElementoEvaluacion> lista = new List<CatElementoEvaluacion>();
+
+
+                if (pageSize == 0)
+                    throw new Exception("El parámetro pageSize debe ser mayor a cero");
+
+                var resultados = await ctx.CatElementoEvaluacions.FromSqlInterpolated($@"EXEC sp_ElementoEvaluacion_Select @Id = {id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
                 Respuesta = TipoAccion.Positiva(resultados);
 
             }

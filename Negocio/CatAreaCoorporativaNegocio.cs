@@ -29,7 +29,29 @@ namespace Negocio
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
-                var resultados = await ctx.CatAreaCorporativas.FromSqlInterpolated($@"EXEC sp_AreaCorporativa_Select @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                var resultados = await ctx.CatAreaCorporativas.FromSqlInterpolated($@"EXEC sp_AreaCorporativa_Select @Id = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                Respuesta = TipoAccion.Positiva(resultados);
+
+            }
+            catch (Exception ex)
+            {
+                Respuesta = TipoAccion.Negativa(ex.Message);
+            }
+
+            return Respuesta;
+        }
+
+        public async Task<TipoAccion> GetById(int id, int pageSize, int pageNumber)
+        {
+            try
+            {
+                List<CatRegion> lista = new List<CatRegion>();
+
+
+                if (pageSize == 0)
+                    throw new Exception("El parámetro pageSize debe ser mayor a cero");
+
+                var resultados = await ctx.CatAreaCorporativas.FromSqlInterpolated($@"EXEC sp_AreaCorporativa_Select @Id = {id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
                 Respuesta = TipoAccion.Positiva(resultados);
 
             }

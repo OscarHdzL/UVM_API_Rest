@@ -58,6 +58,42 @@ namespace Negocio
             return Respuesta;
         }
 
+        public async Task<TipoAccion> GetById(int id, int pageSize, int pageNumber)
+        {
+            try
+            {
+
+                if (pageSize == 0)
+                    throw new Exception("El parámetro pageSize debe ser mayor a cero");
+
+                var Perfiles = await ctx.TblPerfils.FromSqlInterpolated($@"EXEC sp_Perfil_Select @TipoConsulta = {"Perfil"}, @Id = {id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+
+
+                foreach (var perfil in Perfiles)
+                {
+
+                    perfil.RelPerfilvista = await ctx.RelPerfilvista.FromSqlInterpolated($@"EXEC sp_Perfil_Select @TipoConsulta = {"PerfilVista"}, @Id = {perfil.Id}, @PageSize = {null}, @PageNumber = {null}").ToListAsync();
+                    foreach (var vista in perfil.RelPerfilvista)
+                    {
+                        //vista.PerfilVistaTipoAccesos = await ctx.PerfilVistaTipoAccesos.FromSqlInterpolated($@"EXEC sp_Perfil_Select @TipoConsulta = {"PerfilVistaTipoAcceso"}, @Id = {vista.Id}, @PageSize = {null}, @PageNumber = {null}").ToListAsync();
+
+                        var res = await ctx.RelPerfilvistatipoaccesos.FromSqlInterpolated($@"EXEC sp_Perfil_Select @TipoConsulta = {"PerfilVistaTipoAcceso"}, @Id = {vista.Id}, @PageSize = {null}, @PageNumber = {null}").ToListAsync();
+
+                    }
+
+
+                }
+
+                Respuesta = TipoAccion.Positiva(Perfiles);
+            }
+            catch (Exception ex)
+            {
+                Respuesta = TipoAccion.Negativa(ex.Message);
+            }
+
+            return Respuesta;
+        }
+
 
         public async Task<TipoAccion> Insertar(PerfilDTO entidad)
         {

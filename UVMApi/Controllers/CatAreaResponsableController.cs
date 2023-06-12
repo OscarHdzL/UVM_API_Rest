@@ -15,7 +15,6 @@ namespace UVMApi.Controllers
     public class CatAreaResponsableController : ControllerBase
     {
 
-
         private readonly ILogger<CatAreaResponsableController> _logger;
         public catAreaResponsableNegocio negocio = new catAreaResponsableNegocio();
 
@@ -24,7 +23,6 @@ namespace UVMApi.Controllers
             _logger = logger;
         }
 
-
         [HttpGet]
         [Route("[action]")]
         public Task<TipoAccion> GetAll(int pageNumber = 1, int pageSize = 5)
@@ -32,7 +30,12 @@ namespace UVMApi.Controllers
             return negocio.Get(null, pageSize, pageNumber);
         }
 
-     
+        [HttpGet]
+        [Route("[action]")]
+        public Task<TipoAccion> GetById(int id)
+        {
+            return negocio.GetById(id, 5, 1);
+        }
 
         [HttpPost]
         [Route("[action]")]

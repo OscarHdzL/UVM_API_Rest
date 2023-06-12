@@ -10,6 +10,7 @@ using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Datos.ModelosDBSIAC.Entities;
 using Datos.ModelosDBSIAC.DTO;
+using Datos.ModelosDBSGAPI.Entities;
 
 namespace Negocio
 {
@@ -30,7 +31,7 @@ namespace Negocio
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
-                var resultados = await ctx.CatPonderacions.FromSqlInterpolated($@"EXEC sp_Ponderacion_Select @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                var resultados = await ctx.CatPonderacions.FromSqlInterpolated($@"EXEC sp_Ponderacion_Select @IdComponente = {null}, @IdNivelModalidad = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
                 Respuesta = TipoAccion.Positiva(resultados);
 
             }
@@ -42,6 +43,27 @@ namespace Negocio
             return Respuesta;
         }
 
+        public async Task<TipoAccion> GetById(int idComponente, int idNivelModalidad, int pageSize, int pageNumber)
+        {
+            try
+            {
+                List<CatPonderacion> lista = new List<CatPonderacion>();
+
+
+                if (pageSize == 0)
+                    throw new Exception("El parámetro pageSize debe ser mayor a cero");
+
+                var resultados = await ctx.CatPonderacions.FromSqlInterpolated($@"EXEC sp_Ponderacion_Select @IdComponente = {idComponente}, @IdNivelModalidad = {idNivelModalidad}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                Respuesta = TipoAccion.Positiva(resultados);
+
+            }
+            catch (Exception ex)
+            {
+                Respuesta = TipoAccion.Negativa(ex.Message);
+            }
+
+            return Respuesta;
+        }
 
 
         public async Task<TipoAccion> Insertar(PonderacionDTO entidad)

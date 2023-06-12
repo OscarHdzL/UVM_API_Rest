@@ -33,13 +33,13 @@ namespace UVMApi.Controllers
             return negocio.Get(null, pageSize, pageNumber);
         }
 
-        //[HttpGet]
-        //[Route("[action]")]
-        //public Task<TipoAccion> GetById(int id)
-        //{
-        //    //PAGINA 0, NO REGISTROS 1
-        //    return negocio.Get(id, 1, 0);
-        //}
+        [HttpGet]
+        [Route("[action]")]
+        public Task<TipoAccion> GetById(int id)
+        {
+            //PAGINA 0, NO REGISTROS 1
+            return negocio.GetById(id, 5, 1);
+        }
 
         [HttpPost]
         [Route("[action]")]

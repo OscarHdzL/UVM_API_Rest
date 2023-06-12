@@ -1,4 +1,5 @@
 using Datos.Modelos;
+using Datos.ModelosDBSGAPI.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
@@ -27,9 +28,9 @@ namespace UVMApi.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public Task<TipoAccion> GetAll(string idAcreditadora, int pageNumber = 0, int pageSize = 5)
+        public Task<TipoAccion> GetAll(int idAcreditadora, string idCarrera)
         {
-            return negocio.Get(idAcreditadora, pageSize, pageNumber);
+            return negocio.Get(idAcreditadora, idCarrera);
         }
 
        

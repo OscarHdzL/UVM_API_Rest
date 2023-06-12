@@ -24,9 +24,6 @@ namespace Negocio.Criterio
             try
             {
 
-                if (pageSize == 0)
-                    throw new Exception("El parámetro pageSize debe ser mayor a cero");
-
                 var resultados = await ctx.Criterios.Where(x=>x.AcreditadoraProcesoId == idAcreditadoraProceso && x.CarreraId == idCarrera).ToListAsync();
                 this.Respuesta = TipoAccion.Positiva(resultados);
                 

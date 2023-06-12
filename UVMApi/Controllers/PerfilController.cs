@@ -32,6 +32,13 @@ namespace UVMApi.Controllers
             return negocio.Get(null, pageSize, pageNumber);
         }
 
+        [HttpGet]
+        [Route("[action]")]
+        public Task<TipoAccion> GetById(int id)
+        {
+            return negocio.GetById(id, 5, 1);
+        }
+
 
         [HttpPost]
         [Route("[action]")]
