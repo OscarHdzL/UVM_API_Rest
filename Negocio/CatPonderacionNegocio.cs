@@ -31,7 +31,7 @@ namespace Negocio
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
-                var resultados = await ctx.CatPonderacions.FromSqlInterpolated($@"EXEC sp_Ponderacion_Select @IdComponente = {null}, @IdNivelModalidad = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                var resultados = await ctx.VwCatPonderacions.FromSqlInterpolated($@"EXEC sp_Ponderacion_Select @IdComponente = {null}, @IdNivelModalidad = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
                 Respuesta = TipoAccion.Positiva(resultados);
 
             }
@@ -53,7 +53,7 @@ namespace Negocio
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
-                var resultados = await ctx.CatPonderacions.FromSqlInterpolated($@"EXEC sp_Ponderacion_Select @IdComponente = {idComponente}, @IdNivelModalidad = {idNivelModalidad}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                var resultados = await ctx.VwCatPonderacions.FromSqlInterpolated($@"EXEC sp_Ponderacion_Select @IdComponente = {idComponente}, @IdNivelModalidad = {idNivelModalidad}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
                 Respuesta = TipoAccion.Positiva(resultados);
 
             }

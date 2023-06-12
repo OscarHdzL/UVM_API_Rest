@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Datos.ModelosDBSIAC.Entities;
 
@@ -83,6 +84,16 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
+    public virtual DbSet<VwCatAreaResponsable> VwCatAreaResponsables { get; set; }
+
+    public virtual DbSet<VwCatCampus> VwCatCampuses { get; set; }
+
+    public virtual DbSet<VwCatMatrizUvm> VwCatMatrizUvms { get; set; }
+
+    public virtual DbSet<VwCatPeriodoEvaluacion> VwCatPeriodoEvaluacions { get; set; }
+
+    public virtual DbSet<VwCatPonderacion> VwCatPonderacions { get; set; }
+
     public virtual DbSet<VwUsuario> VwUsuarios { get; set; }
 
     public virtual DbSet<VwUsuarioAreaCorporativa> VwUsuarioAreaCorporativas { get; set; }
@@ -104,9 +115,14 @@ public partial class AppSIACDbContext : DbContext
     public virtual DbSet<VwVistum> VwVista { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=tcp:dbsql-sgapi-qa-uvm.database.windows.net,1433;Initial Catalog=DBSIAC-Desa-UVM;Persist Security Info=False;User ID=appUser;Password=AdminM4n$pp5;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            IConfigurationRoot Configuration = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                                               .AddJsonFile("appsettings.json", optional: false).Build();
+            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("LibroFimpes"));
+        }
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AcreditadoraProceso>(entity =>
@@ -860,6 +876,94 @@ public partial class AppSIACDbContext : DbContext
                 .HasForeignKey(d => d.TblPerfilId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Usuario__Usuario__22401542");
+        });
+
+        modelBuilder.Entity<VwCatAreaResponsable>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_CatAreaResponsable");
+
+            entity.Property(e => e.AreaResponsablePadre).HasMaxLength(150);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.Nombre).HasMaxLength(150);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<VwCatCampus>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_CatCampus");
+
+            entity.Property(e => e.Clave).HasMaxLength(5);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Nombre).HasMaxLength(500);
+            entity.Property(e => e.Region).HasMaxLength(500);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<VwCatMatrizUvm>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_CatMatrizUvm");
+
+            entity.Property(e => e.ComponenteUvm).HasMaxLength(200);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<VwCatPeriodoEvaluacion>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_CatPeriodoEvaluacion");
+
+            entity.Property(e => e.AnioId).HasColumnName("AnioID");
+            entity.Property(e => e.Ciclo).HasMaxLength(50);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaFinAuditoria).HasColumnType("date");
+            entity.Property(e => e.FechaFinAutoEvaluacion).HasColumnType("date");
+            entity.Property(e => e.FechaFinCapturaResultados).HasColumnType("date");
+            entity.Property(e => e.FechaFinCargaEvidencia).HasColumnType("date");
+            entity.Property(e => e.FechaFinMeta).HasColumnType("date");
+            entity.Property(e => e.FechaFinPlanMejora).HasColumnType("date");
+            entity.Property(e => e.FechaFinRevision).HasColumnType("date");
+            entity.Property(e => e.FechaInicialAuditoria).HasColumnType("date");
+            entity.Property(e => e.FechaInicialAutoEvaluacion).HasColumnType("date");
+            entity.Property(e => e.FechaInicialCapturaResultados).HasColumnType("date");
+            entity.Property(e => e.FechaInicialCargaEvidencia).HasColumnType("date");
+            entity.Property(e => e.FechaInicialMeta).HasColumnType("date");
+            entity.Property(e => e.FechaInicialPlanMejora).HasColumnType("date");
+            entity.Property(e => e.FechaInicialRevision).HasColumnType("date");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.IdCiclo).HasMaxLength(50);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<VwCatPonderacion>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_CatPonderacion");
+
+            entity.Property(e => e.ComponenteId).HasColumnName("Componente_Id");
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Modalidad).HasMaxLength(100);
+            entity.Property(e => e.Nivel).HasMaxLength(100);
+            entity.Property(e => e.NivelModalidad).HasMaxLength(201);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });
 
         modelBuilder.Entity<VwUsuario>(entity =>
