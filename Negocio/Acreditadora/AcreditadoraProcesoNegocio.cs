@@ -27,9 +27,31 @@ namespace Negocio.AcreditadoraNegocio
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
-                var resultados = await ctx.AcreditadoraProcesos.Where(x=>x.AcreditadoraId == idAcreditadora).ToListAsync();
-                this.Respuesta = TipoAccion.Positiva(resultados);
-                
+                //var resultados = await ctx.AcreditadoraProcesos.Where(x=>x.AcreditadoraId == idAcreditadora).ToListAsync();
+                //this.Respuesta = TipoAccion.Positiva(resultados);
+
+
+                var resultados2 = await (from x in ctx.AcreditadoraProcesos
+                                         where
+                                         x.AcreditadoraId == idAcreditadora
+                                         select new AcreditadoraProcesoDTO
+                                         {
+                                             AcreditadoraId = x.AcreditadoraId,
+                                             Nombre = x.Nombre,
+                                             FechaInicio = x.FechaInicio,
+                                             FechaFin = x.FechaFin,
+                                             FechaCreacion = x.FechaCreacion,
+                                             UsuarioCreacion = x.UsuarioCreacion,
+                                             FechaModificacion = x.FechaModificacion,
+                                             UsuarioModificacion = x.UsuarioModificacion
+
+
+
+                                         }
+                         ).ToListAsync();
+
+                this.Respuesta = TipoAccion.Positiva(resultados2);
+
             }
             catch (Exception ex)
             {

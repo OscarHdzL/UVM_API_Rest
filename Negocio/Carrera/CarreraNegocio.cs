@@ -9,6 +9,7 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Datos.ModelosDBSGAPI.Entities;
+using Datos.Modelos;
 
 namespace Negocio.Carrera
 {
@@ -24,9 +25,32 @@ namespace Negocio.Carrera
             try
             {
 
-                var resultados = await ctx.Carreras.Where(x=>x.Activo == true).ToListAsync();
-                this.Respuesta = TipoAccion.Positiva(resultados);
-                
+                //var resultados = await ctx.Carreras.Where(x=>x.Activo == true).ToListAsync();
+
+               
+
+
+                var resultados2 = await (from x in ctx.Carreras
+                                         where
+                                         x.Activo == true
+                                         select new CarreraDTO
+                                         {
+                                             CarreraId = x.CarreraId,
+                                             Nombre = x.Nombre,
+                                             Plan = x.Plan,
+                                             Activo = x.Activo,
+                                             FechaCreacion = x.FechaCreacion,
+                                             UsuarioCreacion = x.UsuarioCreacion,
+                                             FechaModificacion = x.FechaModificacion,
+                                             UsuarioModificacion = x.UsuarioModificacion
+
+                                         }
+                         ).ToListAsync();
+
+                this.Respuesta = TipoAccion.Positiva(resultados2);
+
+
+
             }
             catch (Exception ex)
             {

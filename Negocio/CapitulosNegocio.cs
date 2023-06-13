@@ -31,9 +31,31 @@ namespace Negocio
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
                 //var resultados = await ctx.Capitulos.FromSqlInterpolated($@"EXEC sp_Sede_Select @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
-                var resultados = await ctx.Capitulos.Where(x => x.AcreditadoraProcesoId == id).ToListAsync();
+                //var resultados = await ctx.Capitulos.Where(x => x.AcreditadoraProcesoId == id).ToListAsync();
 
-                Respuesta = TipoAccion.Positiva(resultados);
+                //Respuesta = TipoAccion.Positiva(resultados);
+
+
+                var resultados2 = await (from x in ctx.Capitulos
+                                         where
+                                          x.AcreditadoraProcesoId == id
+                                         select new CapituloDTO
+                                         {
+                                             AcreditadoraProcesoId = x.AcreditadoraProcesoId,
+                                             CapituloId = x.CapituloId,
+                                             Nombre = x.Nombre,
+                                             Descripcion = x.Descripcion,
+                                             FechaCreacion = x.FechaCreacion,
+                                             UsuarioCreacion = x.UsuarioCreacion,
+                                             FechaModificacion = x.FechaModificacion,
+                                             UsuarioModificacion = x.UsuarioModificacion
+
+
+
+                                         }
+              ).ToListAsync();
+
+                this.Respuesta = TipoAccion.Positiva(resultados2);
 
             }
             catch (Exception ex)
