@@ -9,6 +9,8 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Datos.ModelosDBSGAPI.Entities;
+using Datos.Modelos;
+using Datos.ModelosDBSIAC.Entities;
 
 namespace Negocio.Criterio
 {
@@ -23,10 +25,25 @@ namespace Negocio.Criterio
         {
             try
             {
-
-                var resultados = await ctx.Criterios.Where(x=>x.AcreditadoraProcesoId == idAcreditadoraProceso && x.CarreraId == idCarrera).ToListAsync();
-                this.Respuesta = TipoAccion.Positiva(resultados);
-                
+                var resultados2 = await (from x in ctx.Criterios
+                                         where
+                                         x.AcreditadoraProcesoId == idAcreditadoraProceso && x.CarreraId == idCarrera
+                                         select new CriterioDTO
+                                         {
+                                             AcreditadoraProcesoId = x.AcreditadoraProcesoId,
+                                             CriterioId = x.CriterioId,
+                                             CarreraId = x.CarreraId,
+                                             CapituloId = x.CapituloId,
+                                             TipoEvidenciaId = x.TipoEvidenciaId,
+                                             Descripcion = x.Descripcion,
+                                             FechaCreacion = x.FechaCreacion,
+                                             UsuarioCreacion = x.UsuarioCreacion,
+                                             FechaModificacion = x.FechaModificacion,
+                                             UsuarioModificacion = x.UsuarioModificacion
+                                         }
+                                         ).ToListAsync();
+                CriterioDTO criterio_dto = new CriterioDTO();
+                this.Respuesta = TipoAccion.Positiva(resultados2);
             }
             catch (Exception ex)
             {
