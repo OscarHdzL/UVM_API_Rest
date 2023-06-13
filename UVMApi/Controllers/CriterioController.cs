@@ -28,9 +28,9 @@ namespace UVMApi.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public Task<TipoAccion> GetAll(int idAcreditadora, string idCarrera)
+        public Task<TipoAccion> GetAll(int idAcreditadoraProceso, string idCarrera)
         {
-            return negocio.Get(idAcreditadora, idCarrera);
+            return negocio.Get(idAcreditadoraProceso, idCarrera);
         }
 
        
