@@ -188,12 +188,6 @@ namespace Negocio
 
 
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_PeriodoEvaluacion_Actualiza
-                                    @TipoActualiza = {"D"}, @Id = {id},  @Clave = {null}, @Nombre = {null}, @Activo = {null}, @FechaCreacion = {null}, 
-                                    @UsuarioCreacion = {null}, @FechaModificacion = {null}, 
-                                    @UsuarioModificacion = {null}, 
-                                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
-
-                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_PeriodoEvaluacion_Actualiza
                                     @TipoActualiza = {"D"}, @Id = {id}, 
                                     @AnioID = {null}, 
                                     @CicloID = {null}, 
