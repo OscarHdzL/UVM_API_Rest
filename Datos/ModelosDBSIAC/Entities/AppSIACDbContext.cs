@@ -65,6 +65,8 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<ComponenteUvm> ComponenteUvms { get; set; }
 
+    public virtual DbSet<IndicadorUvm> IndicadorUvms { get; set; }
+
     public virtual DbSet<RelPerfilvistatipoacceso> RelPerfilvistatipoaccesos { get; set; }
 
     public virtual DbSet<RelPerfilvistum> RelPerfilvista { get; set; }
@@ -78,6 +80,8 @@ public partial class AppSIACDbContext : DbContext
     public virtual DbSet<RelUsuarionivelmodalidad> RelUsuarionivelmodalidads { get; set; }
 
     public virtual DbSet<RelUsuarioregion> RelUsuarioregions { get; set; }
+
+    public virtual DbSet<SubIndicadorUvm> SubIndicadorUvms { get; set; }
 
     public virtual DbSet<TblPerfil> TblPerfils { get; set; }
 
@@ -94,6 +98,12 @@ public partial class AppSIACDbContext : DbContext
     public virtual DbSet<VwCatPeriodoEvaluacion> VwCatPeriodoEvaluacions { get; set; }
 
     public virtual DbSet<VwCatPonderacion> VwCatPonderacions { get; set; }
+
+    public virtual DbSet<VwComponenteUvm> VwComponenteUvms { get; set; }
+
+    public virtual DbSet<VwIndicadorUvm> VwIndicadorUvms { get; set; }
+
+    public virtual DbSet<VwSubIndicadorUvm> VwSubIndicadorUvms { get; set; }
 
     public virtual DbSet<VwUsuario> VwUsuarios { get; set; }
 
@@ -717,6 +727,24 @@ public partial class AppSIACDbContext : DbContext
                 .HasComment("Usuario de última modificación del registro.");
         });
 
+        modelBuilder.Entity<IndicadorUvm>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Indicado__3214EC0787905E63");
+
+            entity.ToTable("IndicadorUvm");
+
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.NombreIndicadorUvm).HasMaxLength(500);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+
+            entity.HasOne(d => d.ComponenteUvm).WithMany(p => p.IndicadorUvms)
+                .HasForeignKey(d => d.ComponenteUvmId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Indicador__Usuar__7FB5F314");
+        });
+
         modelBuilder.Entity<RelPerfilvistatipoacceso>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__rel_perf__3214EC079C7A5463");
@@ -834,6 +862,24 @@ public partial class AppSIACDbContext : DbContext
                 .HasForeignKey(d => d.UsuarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__rel_usuar__CatRe__2610A626");
+        });
+
+        modelBuilder.Entity<SubIndicadorUvm>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__SubIndic__3214EC079DAB466F");
+
+            entity.ToTable("SubIndicadorUvm");
+
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.NombreSubIndicadorUvm).HasMaxLength(500);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+
+            entity.HasOne(d => d.IndicadorUvm).WithMany(p => p.SubIndicadorUvms)
+                .HasForeignKey(d => d.IndicadorUvmId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__SubIndica__Usuar__02925FBF");
         });
 
         modelBuilder.Entity<TblPerfil>(entity =>
@@ -972,6 +1018,51 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.Modalidad).HasMaxLength(100);
             entity.Property(e => e.Nivel).HasMaxLength(100);
             entity.Property(e => e.NivelModalidad).HasMaxLength(201);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<VwComponenteUvm>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_ComponenteUvm");
+
+            entity.Property(e => e.DescripcionComponenteUvm).HasMaxLength(500);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.NombreComponenteUvm).HasMaxLength(200);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<VwIndicadorUvm>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_IndicadorUvm");
+
+            entity.Property(e => e.DescripcionComponenteUvm).HasMaxLength(500);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.NombreComponenteUvm).HasMaxLength(200);
+            entity.Property(e => e.NombreIndicadorUvm).HasMaxLength(500);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<VwSubIndicadorUvm>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_SubIndicadorUvm");
+
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.NombreComponenteUvm).HasMaxLength(200);
+            entity.Property(e => e.NombreIndicadorUvm).HasMaxLength(500);
+            entity.Property(e => e.NombreSubIndicadorUvm).HasMaxLength(500);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });

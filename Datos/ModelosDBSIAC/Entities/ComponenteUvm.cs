@@ -46,4 +46,6 @@ public partial class ComponenteUvm
     public string? UsuarioModificacion { get; set; }
 
     public virtual ICollection<CatMatrizUvm> CatMatrizUvms { get; set; } = new List<CatMatrizUvm>();
+
+    public virtual ICollection<IndicadorUvm> IndicadorUvms { get; set; } = new List<IndicadorUvm>();
 }
