@@ -30,4 +30,6 @@ public partial class VwVistasPerfil
     public int? IdTipoAcceso { get; set; }
 
     public string? TipoAcceso { get; set; }
+
+    public string? TipoAccesoDescripcion { get; set; }
 }
