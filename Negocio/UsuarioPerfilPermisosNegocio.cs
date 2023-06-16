@@ -34,7 +34,7 @@ namespace Negocio
 
                 var Usuario = await ctx.VwUsuarioBases.FromSqlInterpolated($@"EXEC sp_Usuario_Perfil_Permisos_Select @TipoConsulta = {"Usuario"}, @Id = {null}, @Correo = {correo}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
 
-                if (Usuario == null)
+                if (Usuario.Count == 0)
                     throw new Exception("No se encontró al usuario");
 
                 UsuarioPerfilPermisosDTO usuarioPerfil = new UsuarioPerfilPermisosDTO();

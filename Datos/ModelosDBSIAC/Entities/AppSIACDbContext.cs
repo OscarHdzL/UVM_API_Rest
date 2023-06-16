@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Datos.ModelosDBSIAC.Entities;
 
@@ -100,9 +99,13 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<VwCatPonderacion> VwCatPonderacions { get; set; }
 
+    public virtual DbSet<VwCatTipoAcceso> VwCatTipoAccesos { get; set; }
+
     public virtual DbSet<VwComponenteUvm> VwComponenteUvms { get; set; }
 
     public virtual DbSet<VwIndicadorUvm> VwIndicadorUvms { get; set; }
+
+    public virtual DbSet<VwPerfilBase> VwPerfilBases { get; set; }
 
     public virtual DbSet<VwSubIndicadorUvm> VwSubIndicadorUvms { get; set; }
 
@@ -127,14 +130,9 @@ public partial class AppSIACDbContext : DbContext
     public virtual DbSet<VwVistum> VwVista { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            IConfigurationRoot Configuration = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                                               .AddJsonFile("appsettings.json", optional: false).Build();
-            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("LibroFimpes"));
-        }
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=tcp:dbsql-sgapi-qa-uvm.database.windows.net,1433;Initial Catalog=DBSIAC-Desa-UVM;Persist Security Info=False;User ID=appUser;Password=AdminM4n$pp5;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AcreditadoraProceso>(entity =>
@@ -1028,6 +1026,25 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<VwCatTipoAcceso>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_CatTipoAcceso");
+
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(150)
+                .IsUnicode(false);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.Nombre)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<VwComponenteUvm>(entity =>
         {
             entity
@@ -1054,6 +1071,20 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
             entity.Property(e => e.NombreComponenteUvm).HasMaxLength(200);
             entity.Property(e => e.NombreIndicadorUvm).HasMaxLength(500);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<VwPerfilBase>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("VW_Perfil_Base");
+
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.Nombre).HasMaxLength(100);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });

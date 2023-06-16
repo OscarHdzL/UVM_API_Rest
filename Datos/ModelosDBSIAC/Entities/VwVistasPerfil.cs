@@ -19,17 +19,17 @@ public partial class VwVistasPerfil
 
     public string? UsuarioModificacion { get; set; }
 
-    public int? IdVista { get; set; }
+    public int IdVista { get; set; }
 
-    public string? Vista { get; set; }
+    public string Vista { get; set; } = null!;
 
-    public int? IdTipoVista { get; set; }
+    public int IdTipoVista { get; set; }
 
-    public string? TipoVista { get; set; }
+    public string TipoVista { get; set; } = null!;
 
-    public int? IdTipoAcceso { get; set; }
+    public int IdTipoAcceso { get; set; }
 
-    public string? TipoAcceso { get; set; }
+    public string TipoAcceso { get; set; } = null!;
 
-    public string? TipoAccesoDescripcion { get; set; }
+    public string TipoAccesoDescripcion { get; set; } = null!;
 }

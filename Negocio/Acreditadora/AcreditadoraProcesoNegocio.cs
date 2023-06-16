@@ -36,6 +36,7 @@ namespace Negocio.AcreditadoraNegocio
                                          x.AcreditadoraId == idAcreditadora
                                          select new AcreditadoraProcesoDTO
                                          {
+                                             AcreditadoraProcesoId = x.AcreditadoraProcesoId,
                                              AcreditadoraId = x.AcreditadoraId,
                                              Nombre = x.Nombre,
                                              FechaInicio = x.FechaInicio,

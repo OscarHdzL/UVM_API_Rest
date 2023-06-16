@@ -13,6 +13,7 @@ using Datos.ModelosDBSIAC.DTO;
 using System.Text.Json.Nodes;
 using System.Text.Json;
 using Datos.Modelos;
+using Microsoft.Identity.Client;
 
 namespace Negocio
 {
@@ -82,6 +83,10 @@ namespace Negocio
             {
 
                 var Usuarios = await ctx.VwUsuarioBases.FromSqlInterpolated($@"EXEC sp_Usuario_Select @TipoConsulta = {"UsuarioLista"}, @Id = {idUsuario}, @PageSize = {1}, @PageNumber = {1}").ToListAsync();
+
+                if (Usuarios.Count == 0)
+                    throw new Exception("No se encontró el usuario");
+
 
                 List<UsuarioSidebarResponseDTO> list = new List<UsuarioSidebarResponseDTO>();
 
