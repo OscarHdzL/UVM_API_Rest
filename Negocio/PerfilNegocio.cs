@@ -89,7 +89,7 @@ namespace Negocio
                     List<VwVistasPerfil> VistasPermisos = await ctx.VwVistasPerfils.FromSqlInterpolated($@"EXEC sp_Perfil_Select @TipoConsulta = {"VistasPerfil"}, @Id = {perfil.Id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
 
                     //var vistas = VistasPermisos.Select(m => new VistasPerfilDTO { VistaId = (int)m.IdVista, Nombre = m.Vista, Permisos = new List<PermisoDTO>() }).Distinct();
-                    var vistas = VistasPermisos.Select(m => new { m.IdVista, m.Vista }).Distinct().ToList();
+                    var vistas = VistasPermisos.Select(m => new { m.IdVista, m.Vista, m.TipoVista }).Distinct().ToList();
 
 
                     foreach (var usu in vistas)
@@ -97,6 +97,7 @@ namespace Negocio
                         VistasPerfilDTO vista = new VistasPerfilDTO();
                         vista.VistaId = (int)usu.IdVista;
                         vista.Nombre = usu.Vista;
+                        vista.TipoVista = usu.TipoVista;
 
                         var permisos = VistasPermisos.Where(x => x.IdVista == usu.IdVista).Select(m => new { m.IdTipoAcceso, m.TipoAcceso, m.TipoAccesoDescripcion }).Distinct().ToList();
 

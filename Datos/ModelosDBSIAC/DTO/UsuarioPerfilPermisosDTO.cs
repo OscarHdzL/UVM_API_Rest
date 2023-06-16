@@ -11,6 +11,7 @@ namespace Datos.ModelosDBSIAC.DTO
     {
         public string Nombre { get; set; }
         public string Correo { get; set; }
+        
 
         public List<VistasPerfilDTO> Vistas { get; set; }
 
@@ -25,6 +26,7 @@ namespace Datos.ModelosDBSIAC.DTO
     {
         public int VistaId { get; set; }
         public string Nombre { get; set; }
+        public string TipoVista { get; set; }
 
         public List<PermisoDTO> Permisos { get; set; }
 
