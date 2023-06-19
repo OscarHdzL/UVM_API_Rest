@@ -77,6 +77,59 @@ namespace Negocio
             return Respuesta;
         }
 
+        public async Task<TipoAccion> GetById(int idUsuario, int pageSize, int pageNumber)
+        {
+            try
+            {
+
+                if (pageSize == 0)
+                    throw new Exception("El parámetro pageSize debe ser mayor a cero");
+
+                var Usuarios = await ctx.VwUsuarioBases.FromSqlInterpolated($@"EXEC sp_Usuario_Select @TipoConsulta = {"UsuarioLista"}, @Id = {idUsuario}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+
+                List<UsuarioResponseDTO> list = new List<UsuarioResponseDTO>();
+
+                foreach (var usu in Usuarios)
+                {
+
+                    UsuarioResponseDTO obj = new UsuarioResponseDTO
+                    {
+                        IdUsuario = usu.IdUsuario,
+                        Nombre = usu.Nombre,
+                        Apellidos = usu.Apellidos,
+                        Correo = usu.Correo,
+                        Activo = usu.Activo,
+                        CatNivelRevisionId = usu.CatNivelRevisionId,
+                        NivelRevision = usu.NivelRevision,
+                        TblPerfilId = usu.TblPerfilId,
+                        Perfil = usu.Perfil,
+                        Todos = usu.Todos,
+                        FechaCreacion = usu.FechaCreacion,
+                        UsuarioCreacion = usu.UsuarioCreacion,
+                        FechaModificacion = usu.FechaModificacion,
+                        UsuarioModificacion = usu.UsuarioModificacion
+                    };
+
+                    obj.Regiones = await ctx.VwUsuarioRegions.FromSqlInterpolated($@"EXEC sp_Usuario_Select @TipoConsulta = {"UsuarioRegion"}, @Id = {usu.IdUsuario}, @PageSize = {null}, @PageNumber = {null}").ToListAsync();
+                    obj.Campus = await ctx.VwUsuarioCampuses.FromSqlInterpolated($@"EXEC sp_Usuario_Select @TipoConsulta = {"UsuarioCampus"}, @Id = {usu.IdUsuario}, @PageSize = {null}, @PageNumber = {null}").ToListAsync();
+                    obj.NivelesModalidad = await ctx.VwUsuarioNivelModalidads.FromSqlInterpolated($@"EXEC sp_Usuario_Select @TipoConsulta = {"UsuarioNivelModalidad"}, @Id = {usu.IdUsuario}, @PageSize = {null}, @PageNumber = {null}").ToListAsync();
+                    obj.AreasResponsables = await ctx.VwUsuarioAreaResponsables.FromSqlInterpolated($@"EXEC sp_Usuario_Select @TipoConsulta = {"UsuarioAreaResponsable"}, @Id = {usu.IdUsuario}, @PageSize = {null}, @PageNumber = {null}").ToListAsync();
+                    obj.AreasCorporativas = await ctx.VwUsuarioAreaCorporativas.FromSqlInterpolated($@"EXEC sp_Usuario_Select @TipoConsulta = {"UsuarioAreaCorporativa"}, @Id = {usu.IdUsuario}, @PageSize = {null}, @PageNumber = {null}").ToListAsync();
+
+                    list.Add(obj);
+
+                }
+
+                Respuesta = TipoAccion.Positiva(list);
+            }
+            catch (Exception ex)
+            {
+                Respuesta = TipoAccion.Negativa(ex.Message);
+            }
+
+            return Respuesta;
+        }
+
         public async Task<TipoAccion> GetSidebar(int? idUsuario)
         {
             try

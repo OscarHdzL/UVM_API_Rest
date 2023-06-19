@@ -34,6 +34,13 @@ namespace UVMApi.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        public Task<TipoAccion> GetById(int idUsuario, int pageNumber = 1, int pageSize = 5)
+        {
+            return negocio.GetById(idUsuario, pageSize, pageNumber);
+        }
+
+        [HttpGet]
+        [Route("[action]")]
         public Task<TipoAccion> GetSidebar(int idUsuario)
         {
             return negocio.GetSidebar(idUsuario);
