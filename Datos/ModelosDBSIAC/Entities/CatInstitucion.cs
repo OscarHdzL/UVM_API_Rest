@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Datos.ModelosDBSIAC.Entities;
 
-public partial class Ciclo
+public partial class CatInstitucion
 {
     public int Id { get; set; }
 
-    public string Nombre { get; set; } = null!;
+    public string Institucion { get; set; } = null!;
 
     public bool Activo { get; set; }
 

@@ -33,7 +33,11 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<CatElementoEvaluacion> CatElementoEvaluacions { get; set; }
 
+    public virtual DbSet<CatEtapa> CatEtapas { get; set; }
+
     public virtual DbSet<CatIndicadorSiac> CatIndicadorSiacs { get; set; }
+
+    public virtual DbSet<CatInstitucion> CatInstitucions { get; set; }
 
     public virtual DbSet<CatMatrizUvm> CatMatrizUvms { get; set; }
 
@@ -67,6 +71,8 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<IndicadorUvm> IndicadorUvms { get; set; }
 
+    public virtual DbSet<RelEtapaPeriodoEvaluacion> RelEtapaPeriodoEvaluacions { get; set; }
+
     public virtual DbSet<RelPerfilvistatipoacceso> RelPerfilvistatipoaccesos { get; set; }
 
     public virtual DbSet<RelPerfilvistum> RelPerfilvista { get; set; }
@@ -93,9 +99,13 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<VwCatCiclo> VwCatCiclos { get; set; }
 
+    public virtual DbSet<VwCatEtapa> VwCatEtapas { get; set; }
+
     public virtual DbSet<VwCatMatrizUvm> VwCatMatrizUvms { get; set; }
 
     public virtual DbSet<VwCatPeriodoEvaluacion> VwCatPeriodoEvaluacions { get; set; }
+
+    public virtual DbSet<VwCatPeriodoEvaluacionBase> VwCatPeriodoEvaluacionBases { get; set; }
 
     public virtual DbSet<VwCatPonderacion> VwCatPonderacions { get; set; }
 
@@ -338,6 +348,19 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<CatEtapa>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__cat_Etap__3214EC073A8AE7D5");
+
+            entity.ToTable("cat_Etapa");
+
+            entity.Property(e => e.Etapa).HasMaxLength(200);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(100);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(100);
+        });
+
         modelBuilder.Entity<CatIndicadorSiac>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__cat_Indi__3214EC0770D48EEB");
@@ -351,6 +374,19 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.Nombre).HasMaxLength(500);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<CatInstitucion>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__cat_Inst__3214EC0712F68539");
+
+            entity.ToTable("cat_Institucion");
+
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Institucion).HasMaxLength(200);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(100);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(100);
         });
 
         modelBuilder.Entity<CatMatrizUvm>(entity =>
@@ -456,74 +492,26 @@ public partial class AppSIACDbContext : DbContext
 
         modelBuilder.Entity<CatPeriodoEvaluacion>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_PeriodoEvaluacion");
+            entity.HasKey(e => e.Id).HasName("PK__cat_Peri__3214EC07B727E86D");
 
-            entity.ToTable("cat_PeriodoEvaluacion", tb => tb.HasComment("Catálogo de periodo de evaluación."));
+            entity.ToTable("cat_PeriodoEvaluacion");
 
-            entity.Property(e => e.Activo).HasComment("Indica si el registro se encuentra activo en el sistema.");
-            entity.Property(e => e.AnioId).HasColumnName("AnioID");
-            entity.Property(e => e.CicloId)
-                .HasMaxLength(50)
-                .HasColumnName("CicloID");
-            entity.Property(e => e.FechaCreacion)
-                .HasComment("Fecha en la que fue creado el registro.")
-                .HasColumnType("datetime");
-            entity.Property(e => e.FechaFinAuditoria)
-                .HasComment("Fecha fin del proceso Auditoría .")
-                .HasColumnType("date");
-            entity.Property(e => e.FechaFinAutoEvaluacion)
-                .HasComment("Fecha fin del proceso Autoevaluación.")
-                .HasColumnType("date");
-            entity.Property(e => e.FechaFinCapturaResultados)
-                .HasComment("Fecha fin del proceso Captura de resultados.")
-                .HasColumnType("date");
-            entity.Property(e => e.FechaFinCargaEvidencia)
-                .HasComment("Fecha fin del proceso Carga de evidencias.")
-                .HasColumnType("date");
-            entity.Property(e => e.FechaFinMeta)
-                .HasComment("Fecha fin del proceso Meta.")
-                .HasColumnType("date");
-            entity.Property(e => e.FechaFinPlanMejora)
-                .HasComment("Fecha fin del proceso Plan mejora.")
-                .HasColumnType("date");
-            entity.Property(e => e.FechaFinRevision)
-                .HasComment("Fecha fin del proceso de Revisión.")
-                .HasColumnType("date");
-            entity.Property(e => e.FechaInicialAuditoria)
-                .HasComment("Fecha inicial del proceso Auditoría.")
-                .HasColumnType("date");
-            entity.Property(e => e.FechaInicialAutoEvaluacion)
-                .HasComment("Fecha inicial del proceso Autoevaluación.")
-                .HasColumnType("date");
-            entity.Property(e => e.FechaInicialCapturaResultados)
-                .HasComment("Fecha inicial del proceso Captura de resultados.")
-                .HasColumnType("date");
-            entity.Property(e => e.FechaInicialCargaEvidencia)
-                .HasComment("Fecha inicial del proceso Carga de evidencias.")
-                .HasColumnType("date");
-            entity.Property(e => e.FechaInicialMeta)
-                .HasComment("Fecha inicial del proceso Meta.")
-                .HasColumnType("date");
-            entity.Property(e => e.FechaInicialPlanMejora)
-                .HasComment("Fecha inicial del proceso Plan mejora.")
-                .HasColumnType("date");
-            entity.Property(e => e.FechaInicialRevision)
-                .HasComment("Fecha inicial del proceso de Revisión.")
-                .HasColumnType("date");
-            entity.Property(e => e.FechaModificacion)
-                .HasComment("Fecha de última modificación del registro.")
-                .HasColumnType("datetime");
-            entity.Property(e => e.UsuarioCreacion)
-                .HasMaxLength(50)
-                .HasComment("Usuario que generó el registro.");
-            entity.Property(e => e.UsuarioModificacion)
-                .HasMaxLength(50)
-                .HasComment("Usuario de última modificación del registro.");
+            entity.Property(e => e.CicloId).HasColumnName("CicloID");
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Proceso).HasMaxLength(50);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+
+            entity.HasOne(d => d.CatInstitucion).WithMany(p => p.CatPeriodoEvaluacions)
+                .HasForeignKey(d => d.CatInstitucionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__cat_Perio__CatIn__2C88998B");
 
             entity.HasOne(d => d.Ciclo).WithMany(p => p.CatPeriodoEvaluacions)
                 .HasForeignKey(d => d.CicloId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PeriodoEvaluacion_Ciclo");
+                .HasConstraintName("FK__cat_Perio__Ciclo__2B947552");
         });
 
         modelBuilder.Entity<CatPonderacion>(entity =>
@@ -693,16 +681,15 @@ public partial class AppSIACDbContext : DbContext
 
         modelBuilder.Entity<Ciclo>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Ciclo");
+            entity.HasKey(e => e.Id).HasName("PK__Ciclo__3214EC072F809D3D");
 
             entity.ToTable("Ciclo");
 
-            entity.Property(e => e.Id).HasMaxLength(50);
             entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
             entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
-            entity.Property(e => e.Nombre).HasMaxLength(50);
-            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
-            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+            entity.Property(e => e.Nombre).HasMaxLength(200);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(100);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(100);
         });
 
         modelBuilder.Entity<ComponenteUvm>(entity =>
@@ -747,6 +734,16 @@ public partial class AppSIACDbContext : DbContext
                 .HasForeignKey(d => d.ComponenteUvmId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Indicador__Usuar__7FB5F314");
+        });
+
+        modelBuilder.Entity<RelEtapaPeriodoEvaluacion>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__rel_Etap__3214EC07F23C6FFA");
+
+            entity.ToTable("rel_EtapaPeriodoEvaluacion");
+
+            entity.Property(e => e.FechaFin).HasColumnType("date");
+            entity.Property(e => e.FechaInicio).HasColumnType("date");
         });
 
         modelBuilder.Entity<RelPerfilvistatipoacceso>(entity =>
@@ -968,6 +965,20 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<VwCatEtapa>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_CatEtapa");
+
+            entity.Property(e => e.Etapa).HasMaxLength(200);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(100);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(100);
+        });
+
         modelBuilder.Entity<VwCatMatrizUvm>(entity =>
         {
             entity
@@ -987,25 +998,27 @@ public partial class AppSIACDbContext : DbContext
                 .HasNoKey()
                 .ToView("vw_CatPeriodoEvaluacion");
 
-            entity.Property(e => e.AnioId).HasColumnName("AnioID");
-            entity.Property(e => e.Ciclo).HasMaxLength(50);
+            entity.Property(e => e.Etapa).HasMaxLength(200);
             entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
-            entity.Property(e => e.FechaFinAuditoria).HasColumnType("date");
-            entity.Property(e => e.FechaFinAutoEvaluacion).HasColumnType("date");
-            entity.Property(e => e.FechaFinCapturaResultados).HasColumnType("date");
-            entity.Property(e => e.FechaFinCargaEvidencia).HasColumnType("date");
-            entity.Property(e => e.FechaFinMeta).HasColumnType("date");
-            entity.Property(e => e.FechaFinPlanMejora).HasColumnType("date");
-            entity.Property(e => e.FechaFinRevision).HasColumnType("date");
-            entity.Property(e => e.FechaInicialAuditoria).HasColumnType("date");
-            entity.Property(e => e.FechaInicialAutoEvaluacion).HasColumnType("date");
-            entity.Property(e => e.FechaInicialCapturaResultados).HasColumnType("date");
-            entity.Property(e => e.FechaInicialCargaEvidencia).HasColumnType("date");
-            entity.Property(e => e.FechaInicialMeta).HasColumnType("date");
-            entity.Property(e => e.FechaInicialPlanMejora).HasColumnType("date");
-            entity.Property(e => e.FechaInicialRevision).HasColumnType("date");
+            entity.Property(e => e.FechaFin).HasColumnType("date");
+            entity.Property(e => e.FechaInicio).HasColumnType("date");
             entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
-            entity.Property(e => e.IdCiclo).HasMaxLength(50);
+            entity.Property(e => e.Institucion).HasMaxLength(200);
+            entity.Property(e => e.Proceso).HasMaxLength(50);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<VwCatPeriodoEvaluacionBase>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_CatPeriodoEvaluacion_Base");
+
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Institucion).HasMaxLength(200);
+            entity.Property(e => e.Proceso).HasMaxLength(50);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });

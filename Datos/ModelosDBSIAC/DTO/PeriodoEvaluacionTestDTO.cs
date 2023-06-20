@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datos.ModelosDBSIAC.DTO
 {
-    public class PeriodoEvaluacionDTO
+    public class PeriodoEvaluacionTestDTO
     {
         public int Id { get; set; }
 

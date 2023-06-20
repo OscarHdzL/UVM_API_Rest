@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Datos.ModelosDBSIAC.Entities;
 
-public partial class Ciclo
+public partial class CatEtapa
 {
     public int Id { get; set; }
 
-    public string Nombre { get; set; } = null!;
+    public string Etapa { get; set; } = null!;
 
     public bool Activo { get; set; }
 
@@ -18,6 +18,4 @@ public partial class Ciclo
     public DateTime? FechaModificacion { get; set; }
 
     public string? UsuarioModificacion { get; set; }
-
-    public virtual ICollection<CatPeriodoEvaluacion> CatPeriodoEvaluacions { get; set; } = new List<CatPeriodoEvaluacion>();
 }

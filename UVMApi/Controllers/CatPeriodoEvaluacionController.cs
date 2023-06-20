@@ -41,12 +41,23 @@ namespace UVMApi.Controllers
             return negocio.GetById(id, 5, 1);
         }
 
+
+        [HttpGet]
+        [Route("[action]")]
+        public Task<TipoAccion> GetProcesoSiguiente(int id)
+        {
+            //PAGINA 0, NO REGISTROS 1
+            return negocio.GetById(id, 5, 1);
+        }
+
         [HttpPost]
         [Route("[action]")]
         public Task<TipoAccion> Add(PeriodoEvaluacionDTO entidad)
         {
             return negocio.Insertar(entidad);
         }
+        
+
 
         [HttpPut]
         [Route("[action]")]

@@ -10,6 +10,8 @@ using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Datos.ModelosDBSIAC.Entities;
 using Datos.ModelosDBSIAC.DTO;
+using System.Text.Json;
+using Datos.ModelosDBSGAPI.Entities;
 
 namespace Negocio
 {
@@ -24,14 +26,54 @@ namespace Negocio
         {
             try
             {
-                List<CatPeriodoEvaluacion> lista = new List<CatPeriodoEvaluacion>();
+                List<PeriodoEvaluacionResponseDTO> lista = new List<PeriodoEvaluacionResponseDTO>();
 
 
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
-                var resultados = await ctx.VwCatPeriodoEvaluacions.FromSqlInterpolated($@"EXEC sp_PeriodoEvaluacion_Select @Id={null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
-                Respuesta = TipoAccion.Positiva(resultados);
+                var resultados = await ctx.VwCatPeriodoEvaluacionBases.FromSqlInterpolated($@"EXEC sp_PeriodoEvaluacion_Select @TipoConsulta = {"PeriodoEvaluacionBase"}, @Id={null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+
+                if (resultados.Count == 0)
+                    throw new Exception("No se encontrarón resultados");
+
+                foreach (VwCatPeriodoEvaluacionBase item in resultados)
+                {
+                    PeriodoEvaluacionResponseDTO periodo = new PeriodoEvaluacionResponseDTO();
+                    periodo.IdPeriodoEvaluacion= item.IdPeriodoEvaluacion;
+                    periodo.Anio = item.Anio;
+                    periodo.IdCiclo= item.IdCiclo;
+                    periodo.IdInstitucion = item.IdInstitucion;
+                    periodo.Institucion = item.Institucion;
+                    periodo.Proceso = item.Proceso;
+                    periodo.Activo = item.Activo;
+                    periodo.FechaCreacion = item.FechaCreacion;
+                    periodo.UsuarioCreacion= item.UsuarioCreacion;
+                    periodo.FechaModificacion= item.FechaModificacion;
+                    periodo.UsuarioModificacion= item.UsuarioModificacion;
+                    periodo.Etapas = new List<EtapaPeriodoEvaluacionResponseDTO>();
+
+                    var etapasPeriodo = await ctx.VwCatPeriodoEvaluacions.FromSqlInterpolated($@"EXEC sp_PeriodoEvaluacion_Select @TipoConsulta = {"PeriodoEvaluacionEtapas"}, @Id={periodo.IdPeriodoEvaluacion}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+
+                    var etapas = etapasPeriodo.Select(m => new {m.IdRelEtapaPeriodoEvaluacion, m.IdEtapa, m.Etapa, m.FechaInicio, m.FechaFin, m.IdPeriodoEvaluacion }).Distinct().ToList();
+
+                    foreach (var etapa in etapas)
+                    {
+                        EtapaPeriodoEvaluacionResponseDTO etapaPeriodo = new EtapaPeriodoEvaluacionResponseDTO();
+                        etapaPeriodo.Id = etapa.IdRelEtapaPeriodoEvaluacion;
+                        etapaPeriodo.IdEtapa = etapa.IdEtapa;
+                        etapaPeriodo.Etapa = etapa.Etapa;
+                        etapaPeriodo.FechaInicio = etapa.FechaInicio;
+                        etapaPeriodo.FechaFin = etapa.FechaFin;
+                        periodo.Etapas.Add(etapaPeriodo);
+
+                    }
+                    lista.Add(periodo);
+                }
+
+                //var resultados = await ctx.VwCatPeriodoEvaluacions.FromSqlInterpolated($@"EXEC sp_PeriodoEvaluacion_Select @TipoConsulta = {"PeriodoEvaluacionBase"}, @Id={null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+
+                Respuesta = TipoAccion.Positiva(lista);
 
             }
             catch (Exception ex)
@@ -46,8 +88,7 @@ namespace Negocio
         {
             try
             {
-                List<CatPeriodoEvaluacion> lista = new List<CatPeriodoEvaluacion>();
-
+                
 
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
@@ -80,28 +121,36 @@ namespace Negocio
                 parametroMensaje.Direction = ParameterDirection.Output;
 
 
+                //await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_PeriodoEvaluacion_Actualiza
+                //                    @TipoActualiza = {"I"}, @Id = {0}, 
+                //                    @AnioID = {entidad.AnioId}, 
+                //                    @CicloID = {entidad.CicloId}, 
+                //                    @FechaInicialMeta = {entidad.FechaInicialMeta}, 
+                //                    @FechaFinMeta = {entidad.FechaFinMeta}, 
+                //                    @FechaInicialCapturaResultados = {entidad.FechaInicialCapturaResultados},
+                //                    @FechaFinCapturaResultados = {entidad.FechaFinCapturaResultados}, 
+                //                    @FechaInicialCargaEvidencia = {entidad.FechaInicialCargaEvidencia}, 
+                //                    @FechaFinCargaEvidencia = {entidad.FechaFinCargaEvidencia},
+                //                    @FechaInicialAutoEvaluacion = {entidad.FechaInicialAutoEvaluacion},
+                //                    @FechaFinAutoEvaluacion = {entidad.FechaFinAutoEvaluacion},
+                //                    @FechaInicialRevision = {entidad.FechaInicialRevision},
+                //                    @FechaFinRevision = {entidad.FechaFinRevision},
+                //                    @FechaInicialPlanMejora = {entidad.FechaInicialPlanMejora},
+                //                    @FechaFinPlanMejora = {entidad.FechaFinPlanMejora},
+                //                    @FechaInicialAuditoria = {entidad.FechaInicialAuditoria},
+                //                    @FechaFinAuditoria = {entidad.FechaFinAuditoria},
+                //                    @Activo = {entidad.Activo}, @FechaCreacion = {entidad.FechaCreacion}, 
+                //                    @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
+                //                    @UsuarioModificacion = {entidad.UsuarioModificacion}, 
+                //                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
+
+
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_PeriodoEvaluacion_Actualiza
-                                    @TipoActualiza = {"I"}, @Id = {0}, 
-                                    @AnioID = {entidad.AnioId}, 
-                                    @CicloID = {entidad.CicloId}, 
-                                    @FechaInicialMeta = {entidad.FechaInicialMeta}, 
-                                    @FechaFinMeta = {entidad.FechaFinMeta}, 
-                                    @FechaInicialCapturaResultados = {entidad.FechaInicialCapturaResultados},
-                                    @FechaFinCapturaResultados = {entidad.FechaFinCapturaResultados}, 
-                                    @FechaInicialCargaEvidencia = {entidad.FechaInicialCargaEvidencia}, 
-                                    @FechaFinCargaEvidencia = {entidad.FechaFinCargaEvidencia},
-                                    @FechaInicialAutoEvaluacion = {entidad.FechaInicialAutoEvaluacion},
-                                    @FechaFinAutoEvaluacion = {entidad.FechaFinAutoEvaluacion},
-                                    @FechaInicialRevision = {entidad.FechaInicialRevision},
-                                    @FechaFinRevision = {entidad.FechaFinRevision},
-                                    @FechaInicialPlanMejora = {entidad.FechaInicialPlanMejora},
-                                    @FechaFinPlanMejora = {entidad.FechaFinPlanMejora},
-                                    @FechaInicialAuditoria = {entidad.FechaInicialAuditoria},
-                                    @FechaFinAuditoria = {entidad.FechaFinAuditoria},
-                                    @Activo = {entidad.Activo}, @FechaCreacion = {entidad.FechaCreacion}, 
-                                    @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
-                                    @UsuarioModificacion = {entidad.UsuarioModificacion}, 
+                                    @TipoActualiza = {"I"},
+                                    @Entidad = {JsonSerializer.Serialize(entidad)}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
+
+
 
 
                 Respuesta = new TipoAccion();
@@ -134,28 +183,35 @@ namespace Negocio
                 var parametroMensaje = new SqlParameter("@mensaje", SqlDbType.NVarChar, -1);
                 parametroMensaje.Direction = ParameterDirection.Output;
 
+                //await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_PeriodoEvaluacion_Actualiza
+                //                    @TipoActualiza = {"U"}, @Id = {entidad.Id}, 
+                //                    @AnioID = {entidad.AnioId}, 
+                //                    @CicloID = {entidad.CicloId}, 
+                //                    @FechaInicialMeta = {entidad.FechaInicialMeta}, 
+                //                    @FechaFinMeta = {entidad.FechaFinMeta}, 
+                //                    @FechaInicialCapturaResultados = {entidad.FechaInicialCapturaResultados},
+                //                    @FechaFinCapturaResultados = {entidad.FechaFinCapturaResultados}, 
+                //                    @FechaInicialCargaEvidencia = {entidad.FechaInicialCargaEvidencia}, 
+                //                    @FechaFinCargaEvidencia = {entidad.FechaFinCargaEvidencia},
+                //                    @FechaInicialAutoEvaluacion = {entidad.FechaInicialAutoEvaluacion},
+                //                    @FechaFinAutoEvaluacion = {entidad.FechaFinAutoEvaluacion},
+                //                    @FechaInicialRevision = {entidad.FechaInicialRevision},
+                //                    @FechaFinRevision = {entidad.FechaFinRevision},
+                //                    @FechaInicialPlanMejora = {entidad.FechaInicialPlanMejora},
+                //                    @FechaFinPlanMejora = {entidad.FechaFinPlanMejora},
+                //                    @FechaInicialAuditoria = {entidad.FechaInicialAuditoria},
+                //                    @FechaFinAuditoria = {entidad.FechaFinAuditoria},
+                //                    @Activo = {entidad.Activo}, @FechaCreacion = {entidad.FechaCreacion}, 
+                //                    @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
+                //                    @UsuarioModificacion = {entidad.UsuarioModificacion}, 
+                //                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
+
+
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_PeriodoEvaluacion_Actualiza
-                                    @TipoActualiza = {"U"}, @Id = {entidad.Id}, 
-                                    @AnioID = {entidad.AnioId}, 
-                                    @CicloID = {entidad.CicloId}, 
-                                    @FechaInicialMeta = {entidad.FechaInicialMeta}, 
-                                    @FechaFinMeta = {entidad.FechaFinMeta}, 
-                                    @FechaInicialCapturaResultados = {entidad.FechaInicialCapturaResultados},
-                                    @FechaFinCapturaResultados = {entidad.FechaFinCapturaResultados}, 
-                                    @FechaInicialCargaEvidencia = {entidad.FechaInicialCargaEvidencia}, 
-                                    @FechaFinCargaEvidencia = {entidad.FechaFinCargaEvidencia},
-                                    @FechaInicialAutoEvaluacion = {entidad.FechaInicialAutoEvaluacion},
-                                    @FechaFinAutoEvaluacion = {entidad.FechaFinAutoEvaluacion},
-                                    @FechaInicialRevision = {entidad.FechaInicialRevision},
-                                    @FechaFinRevision = {entidad.FechaFinRevision},
-                                    @FechaInicialPlanMejora = {entidad.FechaInicialPlanMejora},
-                                    @FechaFinPlanMejora = {entidad.FechaFinPlanMejora},
-                                    @FechaInicialAuditoria = {entidad.FechaInicialAuditoria},
-                                    @FechaFinAuditoria = {entidad.FechaFinAuditoria},
-                                    @Activo = {entidad.Activo}, @FechaCreacion = {entidad.FechaCreacion}, 
-                                    @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
-                                    @UsuarioModificacion = {entidad.UsuarioModificacion}, 
+                                    @TipoActualiza = {"U"},
+                                    @Entidad = {JsonSerializer.Serialize(entidad)}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
+
 
 
                 Respuesta = new TipoAccion();
@@ -177,6 +233,10 @@ namespace Negocio
         {
             try
             {
+
+                PeriodoEvaluacionDTO entidad = new PeriodoEvaluacionDTO();
+                entidad.Id = id;
+
                 var parametroId = new SqlParameter("@idRespuesta", SqlDbType.Int);
                 parametroId.Direction = ParameterDirection.Output;
 
@@ -187,28 +247,35 @@ namespace Negocio
                 parametroMensaje.Direction = ParameterDirection.Output;
 
 
+                //await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_PeriodoEvaluacion_Actualiza
+                //                    @TipoActualiza = {"D"}, @Id = {id}, 
+                //                    @AnioID = {null}, 
+                //                    @CicloID = {null}, 
+                //                    @FechaInicialMeta = {null}, 
+                //                    @FechaFinMeta = {null}, 
+                //                    @FechaInicialCapturaResultados = {null},
+                //                    @FechaFinCapturaResultados = {null}, 
+                //                    @FechaInicialCargaEvidencia = {null}, 
+                //                    @FechaFinCargaEvidencia = {null},
+                //                    @FechaInicialAutoEvaluacion = {null},
+                //                    @FechaFinAutoEvaluacion = {null},
+                //                    @FechaInicialRevision = {null},
+                //                    @FechaFinRevision = {null},
+                //                    @FechaInicialPlanMejora = {null},
+                //                    @FechaFinPlanMejora = {null},
+                //                    @FechaInicialAuditoria = {null},
+                //                    @FechaFinAuditoria = {null},
+                //                    @Activo = {false}, @FechaCreacion = {null}, 
+                //                    @UsuarioCreacion = {null}, @FechaModificacion = {null}, 
+                //                    @UsuarioModificacion = {null}, 
+                //                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
+
+
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_PeriodoEvaluacion_Actualiza
-                                    @TipoActualiza = {"D"}, @Id = {id}, 
-                                    @AnioID = {null}, 
-                                    @CicloID = {null}, 
-                                    @FechaInicialMeta = {null}, 
-                                    @FechaFinMeta = {null}, 
-                                    @FechaInicialCapturaResultados = {null},
-                                    @FechaFinCapturaResultados = {null}, 
-                                    @FechaInicialCargaEvidencia = {null}, 
-                                    @FechaFinCargaEvidencia = {null},
-                                    @FechaInicialAutoEvaluacion = {null},
-                                    @FechaFinAutoEvaluacion = {null},
-                                    @FechaInicialRevision = {null},
-                                    @FechaFinRevision = {null},
-                                    @FechaInicialPlanMejora = {null},
-                                    @FechaFinPlanMejora = {null},
-                                    @FechaInicialAuditoria = {null},
-                                    @FechaFinAuditoria = {null},
-                                    @Activo = {false}, @FechaCreacion = {null}, 
-                                    @UsuarioCreacion = {null}, @FechaModificacion = {null}, 
-                                    @UsuarioModificacion = {null}, 
+                                    @TipoActualiza = {"D"},
+                                    @Entidad = {JsonSerializer.Serialize(entidad)}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
+
 
 
 

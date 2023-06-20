@@ -5,41 +5,27 @@ namespace Datos.ModelosDBSIAC.Entities;
 
 public partial class VwCatPeriodoEvaluacion
 {
-    public int Id { get; set; }
+    public int IdPeriodoEvaluacion { get; set; }
 
-    public int AnioId { get; set; }
+    public int Anio { get; set; }
 
-    public string IdCiclo { get; set; } = null!;
+    public int IdCiclo { get; set; }
 
-    public string? Ciclo { get; set; }
+    public int IdInstitucion { get; set; }
 
-    public DateTime FechaInicialMeta { get; set; }
+    public string Institucion { get; set; } = null!;
 
-    public DateTime FechaFinMeta { get; set; }
+    public string Proceso { get; set; } = null!;
 
-    public DateTime FechaInicialCapturaResultados { get; set; }
+    public int IdRelEtapaPeriodoEvaluacion { get; set; }
 
-    public DateTime FechaFinCapturaResultados { get; set; }
+    public int IdEtapa { get; set; }
 
-    public DateTime FechaInicialCargaEvidencia { get; set; }
+    public string Etapa { get; set; } = null!;
 
-    public DateTime FechaFinCargaEvidencia { get; set; }
+    public DateTime FechaInicio { get; set; }
 
-    public DateTime FechaInicialAutoEvaluacion { get; set; }
-
-    public DateTime FechaFinAutoEvaluacion { get; set; }
-
-    public DateTime FechaInicialRevision { get; set; }
-
-    public DateTime FechaFinRevision { get; set; }
-
-    public DateTime FechaInicialPlanMejora { get; set; }
-
-    public DateTime FechaFinPlanMejora { get; set; }
-
-    public DateTime FechaInicialAuditoria { get; set; }
-
-    public DateTime FechaFinAuditoria { get; set; }
+    public DateTime FechaFin { get; set; }
 
     public bool Activo { get; set; }
 

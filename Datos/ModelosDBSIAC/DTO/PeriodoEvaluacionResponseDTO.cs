@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 
 namespace Datos.ModelosDBSIAC.DTO
 {
-    public class PeriodoEvaluacionDTO
+    public class PeriodoEvaluacionResponseDTO
     {
-        public int Id { get; set; }
+        public int IdPeriodoEvaluacion { get; set; }
 
         public int Anio { get; set; }
 
-        public int CicloId { get; set; }
+        public int IdCiclo { get; set; }
 
-        public int CatInstitucionId { get; set; }
+        public int IdInstitucion { get; set; }
+
+        public string Institucion { get; set; } = null!;
 
         public string Proceso { get; set; } = null!;
 
@@ -28,6 +30,6 @@ namespace Datos.ModelosDBSIAC.DTO
 
         public string? UsuarioModificacion { get; set; }
 
-        public List<EtapaPeriodoEvaluacionDTO> Etapas { get; set; }
+        public List<EtapaPeriodoEvaluacionResponseDTO> Etapas { get; set; }
     }
 }
