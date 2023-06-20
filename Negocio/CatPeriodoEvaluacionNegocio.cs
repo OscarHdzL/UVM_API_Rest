@@ -12,6 +12,7 @@ using Datos.ModelosDBSIAC.Entities;
 using Datos.ModelosDBSIAC.DTO;
 using System.Text.Json;
 using Datos.ModelosDBSGAPI.Entities;
+using System.Diagnostics;
 
 namespace Negocio
 {
@@ -88,13 +89,88 @@ namespace Negocio
         {
             try
             {
-                
+                List<PeriodoEvaluacionResponseDTO> lista = new List<PeriodoEvaluacionResponseDTO>();
+
 
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
-                var resultados = await ctx.VwCatPeriodoEvaluacions.FromSqlInterpolated($@"EXEC sp_PeriodoEvaluacion_Select @Id={id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
-                Respuesta = TipoAccion.Positiva(resultados);
+                var resultados = await ctx.VwCatPeriodoEvaluacionBases.FromSqlInterpolated($@"EXEC sp_PeriodoEvaluacion_Select @TipoConsulta = {"PeriodoEvaluacionBase"}, @Id={id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+
+                if (resultados.Count == 0)
+                    throw new Exception("No se encontrarón resultados");
+
+                foreach (VwCatPeriodoEvaluacionBase item in resultados)
+                {
+                    PeriodoEvaluacionResponseDTO periodo = new PeriodoEvaluacionResponseDTO();
+                    periodo.IdPeriodoEvaluacion = item.IdPeriodoEvaluacion;
+                    periodo.Anio = item.Anio;
+                    periodo.IdCiclo = item.IdCiclo;
+                    periodo.IdInstitucion = item.IdInstitucion;
+                    periodo.Institucion = item.Institucion;
+                    periodo.Proceso = item.Proceso;
+                    periodo.Activo = item.Activo;
+                    periodo.FechaCreacion = item.FechaCreacion;
+                    periodo.UsuarioCreacion = item.UsuarioCreacion;
+                    periodo.FechaModificacion = item.FechaModificacion;
+                    periodo.UsuarioModificacion = item.UsuarioModificacion;
+                    periodo.Etapas = new List<EtapaPeriodoEvaluacionResponseDTO>();
+
+                    var etapasPeriodo = await ctx.VwCatPeriodoEvaluacions.FromSqlInterpolated($@"EXEC sp_PeriodoEvaluacion_Select @TipoConsulta = {"PeriodoEvaluacionEtapas"}, @Id={periodo.IdPeriodoEvaluacion}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+
+                    var etapas = etapasPeriodo.Select(m => new { m.IdRelEtapaPeriodoEvaluacion, m.IdEtapa, m.Etapa, m.FechaInicio, m.FechaFin, m.IdPeriodoEvaluacion }).Distinct().ToList();
+
+                    foreach (var etapa in etapas)
+                    {
+                        EtapaPeriodoEvaluacionResponseDTO etapaPeriodo = new EtapaPeriodoEvaluacionResponseDTO();
+                        etapaPeriodo.Id = etapa.IdRelEtapaPeriodoEvaluacion;
+                        etapaPeriodo.IdEtapa = etapa.IdEtapa;
+                        etapaPeriodo.Etapa = etapa.Etapa;
+                        etapaPeriodo.FechaInicio = etapa.FechaInicio;
+                        etapaPeriodo.FechaFin = etapa.FechaFin;
+                        periodo.Etapas.Add(etapaPeriodo);
+
+                    }
+                    lista.Add(periodo);
+                }
+
+                //var resultados = await ctx.VwCatPeriodoEvaluacions.FromSqlInterpolated($@"EXEC sp_PeriodoEvaluacion_Select @TipoConsulta = {"PeriodoEvaluacionBase"}, @Id={null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+
+                Respuesta = TipoAccion.Positiva(lista);
+
+            }
+            catch (Exception ex)
+            {
+                Respuesta = TipoAccion.Negativa(ex.Message);
+            }
+
+            return Respuesta;
+        }
+
+        public async Task<TipoAccion> GetSiguienteProceso(int anio, int ciclo, int institucion, int pageSize, int pageNumber)
+        {
+            try
+            {
+
+
+                if (pageSize == 0)
+                    throw new Exception("El parámetro pageSize debe ser mayor a cero");
+
+                var resultados = await ctx.VwCatPeriodoEvaluacionBases.FromSqlInterpolated($@"EXEC sp_PeriodoEvaluacion_Select @TipoConsulta = {"PeriodoEvaluacionBase"}, @Id={null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+
+                var PeriodosFiltro = resultados.Where(x=> x.Anio == anio && x.IdInstitucion == institucion && x.IdCiclo == ciclo);
+
+
+                if (resultados.Count == 0)
+                {
+                    string Proceso1 = "0001";
+                    Respuesta = TipoAccion.Positiva(Proceso1);
+                } else
+                {
+                    int contador = resultados.Count + 1;
+                    object ProcesoN = contador.ToString("0000");
+                    Respuesta = TipoAccion.Positiva(ProcesoN);
+                }
 
             }
             catch (Exception ex)

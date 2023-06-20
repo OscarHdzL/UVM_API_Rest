@@ -101,6 +101,8 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<VwCatEtapa> VwCatEtapas { get; set; }
 
+    public virtual DbSet<VwCatInstitucion> VwCatInstitucions { get; set; }
+
     public virtual DbSet<VwCatMatrizUvm> VwCatMatrizUvms { get; set; }
 
     public virtual DbSet<VwCatPeriodoEvaluacion> VwCatPeriodoEvaluacions { get; set; }
@@ -975,6 +977,20 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
             entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(100);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(100);
+        });
+
+        modelBuilder.Entity<VwCatInstitucion>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_CatInstitucion");
+
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.Institucion).HasMaxLength(200);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(100);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(100);
         });

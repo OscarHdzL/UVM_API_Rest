@@ -44,10 +44,10 @@ namespace UVMApi.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public Task<TipoAccion> GetProcesoSiguiente(int id)
+        public Task<TipoAccion> GetProcesoSiguiente(int anio, int ciclo, int institucion)
         {
             //PAGINA 0, NO REGISTROS 1
-            return negocio.GetById(id, 5, 1);
+            return negocio.GetSiguienteProceso(anio, ciclo, institucion, 5, 1);
         }
 
         [HttpPost]
