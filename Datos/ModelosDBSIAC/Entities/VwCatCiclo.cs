@@ -5,7 +5,7 @@ namespace Datos.ModelosDBSIAC.Entities;
 
 public partial class VwCatCiclo
 {
-    public string Id { get; set; } = null!;
+    public int Id { get; set; }
 
     public string Nombre { get; set; } = null!;
 

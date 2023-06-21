@@ -158,16 +158,16 @@ namespace Negocio
 
                 var resultados = await ctx.VwCatPeriodoEvaluacionBases.FromSqlInterpolated($@"EXEC sp_PeriodoEvaluacion_Select @TipoConsulta = {"PeriodoEvaluacionBase"}, @Id={null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
 
-                var PeriodosFiltro = resultados.Where(x=> x.Anio == anio && x.IdInstitucion == institucion && x.IdCiclo == ciclo);
+                var PeriodosFiltro = resultados.Where(x=> x.Anio == anio && x.IdInstitucion == institucion && x.IdCiclo == ciclo).ToList();
 
 
-                if (resultados.Count == 0)
+                if (PeriodosFiltro.Count == 0)
                 {
                     string Proceso1 = "0001";
                     Respuesta = TipoAccion.Positiva(Proceso1);
                 } else
                 {
-                    int contador = resultados.Count + 1;
+                    int contador = PeriodosFiltro.Count + 1;
                     object ProcesoN = contador.ToString("0000");
                     Respuesta = TipoAccion.Positiva(ProcesoN);
                 }
