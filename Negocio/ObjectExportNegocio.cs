@@ -55,6 +55,7 @@ namespace Negocio
                     response = ctx_siac.CatNivelModalidads.FromSqlInterpolated($@"EXEC  {SP} @PageSize = {0}, @PageNumber = {0} ,@Id = {null}").ToList();
                     dt = ToDataTable(response);
                     dt.Columns.Remove("CatPonderacions");
+                    dt.Columns.Remove("RelCampusnivelmodalidads");
                 }
                 else if (SP == "sp_Usuario_Select")
                 {
@@ -138,6 +139,8 @@ namespace Negocio
                     dt = ToDataTable(response);
 
                     dt.Columns.Remove("Id");
+                    dt.Columns.Remove("CatPonderacions");
+                    
                     dt.Columns.Remove("FechaCreacion");
                     dt.Columns.Remove("UsuarioCreacion");
                     dt.Columns.Remove("FechaModificacion");
@@ -214,6 +217,30 @@ namespace Negocio
                 {
                     List<CatIndicadorSiac> response = new List<CatIndicadorSiac>();
                     response = ctx_siac.CatIndicadorSiacs.FromSqlInterpolated($@"EXEC  {SP}  @Id={null}, @PageSize = {0}, @PageNumber = {0}").ToList();
+                    dt = ToDataTable(response);
+
+                    dt.Columns.Remove("FechaCreacion");
+                    dt.Columns.Remove("UsuarioCreacion");
+                    dt.Columns.Remove("FechaModificacion");
+                    dt.Columns.Remove("UsuarioModificacion");
+                }
+                else if (SP == "sp_InstitucionesAcreditadoras_Select")
+                {
+                    
+                    List<Datos.ModelosDBSGAPI.Entities.Acreditadora> response = new List<Datos.ModelosDBSGAPI.Entities.Acreditadora>();
+                    response = ctx_fimpes.Acreditadoras.Where(x=>x.Activo == true).ToList();
+                    dt = ToDataTable(response);
+                    dt.Columns.Remove("AcreditadoraProcesos");
+                    dt.Columns.Remove("FechaCreacion");
+                    dt.Columns.Remove("UsuarioCreacion");
+                    dt.Columns.Remove("FechaModificacion");
+                    dt.Columns.Remove("UsuarioModificacion");
+                }
+                else if (SP == "sp_Sede_Select")
+                {
+
+                    List<CatSede> response = new List<CatSede>();
+                    response = ctx_siac.CatSedes.FromSqlInterpolated($@"EXEC  {SP}  @Id={null}, @PageSize = {0}, @PageNumber = {0}").ToList();
                     dt = ToDataTable(response);
 
                     dt.Columns.Remove("FechaCreacion");
