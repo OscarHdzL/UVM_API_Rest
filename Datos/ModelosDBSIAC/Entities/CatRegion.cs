@@ -45,5 +45,9 @@ public partial class CatRegion
 
     public string Clave { get; set; } = null!;
 
+    public int? UsuarioDirectorRegionalId { get; set; }
+
     public virtual ICollection<CatCampus> CatCampuses { get; set; } = new List<CatCampus>();
+
+    public virtual Usuario? UsuarioDirectorRegional { get; set; }
 }

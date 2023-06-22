@@ -31,5 +31,7 @@ public partial class Usuario
 
     public virtual CatNivelRevision CatNivelRevision { get; set; } = null!;
 
+    public virtual ICollection<CatRegion> CatRegions { get; set; } = new List<CatRegion>();
+
     public virtual TblPerfil TblPerfil { get; set; } = null!;
 }

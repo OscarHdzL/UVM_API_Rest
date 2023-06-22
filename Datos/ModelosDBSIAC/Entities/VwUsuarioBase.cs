@@ -32,4 +32,10 @@ public partial class VwUsuarioBase
     public DateTime? FechaModificacion { get; set; }
 
     public string? UsuarioModificacion { get; set; }
+
+    public string? Campus { get; set; }
+
+    public string? Region { get; set; }
+
+    public string? AreaResponsable { get; set; }
 }

@@ -38,9 +38,13 @@ namespace Negocio
                     throw new Exception("No se encontró al usuario");
 
                 UsuarioPerfilPermisosDTO usuarioPerfil = new UsuarioPerfilPermisosDTO();
-
+                usuarioPerfil.IdUsuario = Usuario[0].IdUsuario;
                 usuarioPerfil.Nombre = String.Concat(Usuario[0].Nombre, " ", Usuario[0].Apellidos);
                 usuarioPerfil.Correo = Usuario[0].Correo;
+                usuarioPerfil.Perfil = Usuario[0].Perfil;
+                usuarioPerfil.Campus = Usuario[0].Campus;
+                usuarioPerfil.Region = Usuario[0].Region;
+                usuarioPerfil.AreaResponsable = Usuario[0].AreaResponsable;
 
                 List<VwVistasPerfil> VistasPermisos = await ctx.VwVistasPerfils.FromSqlInterpolated($@"EXEC sp_Usuario_Perfil_Permisos_Select @TipoConsulta = {"UsuarioVistasPerfil"}, @Id = {Usuario[0].TblPerfilId}, @Correo = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
 
