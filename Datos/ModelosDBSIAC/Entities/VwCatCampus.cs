@@ -24,4 +24,6 @@ public partial class VwCatCampus
     public string? UsuarioModificacion { get; set; }
 
     public string Clave { get; set; } = null!;
+
+    public string? NivelModalidad { get; set; }
 }

@@ -38,4 +38,10 @@ public partial class VwUsuarioBase
     public string? Region { get; set; }
 
     public string? AreaResponsable { get; set; }
+
+    public string? AreaCorporativa { get; set; }
+
+    public string? DependenciaArea { get; set; }
+
+    public string? NivelModalidad { get; set; }
 }

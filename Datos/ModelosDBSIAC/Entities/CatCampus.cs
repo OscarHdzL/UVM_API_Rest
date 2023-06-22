@@ -51,4 +51,6 @@ public partial class CatCampus
     public string Clave { get; set; } = null!;
 
     public virtual CatRegion? Region { get; set; }
+
+    public virtual ICollection<RelCampusnivelmodalidad> RelCampusnivelmodalidads { get; set; } = new List<RelCampusnivelmodalidad>();
 }

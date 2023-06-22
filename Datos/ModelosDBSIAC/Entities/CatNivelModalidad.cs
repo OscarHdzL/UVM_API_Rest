@@ -51,4 +51,6 @@ public partial class CatNivelModalidad
     public string Clave { get; set; } = null!;
 
     public virtual ICollection<CatPonderacion> CatPonderacions { get; set; } = new List<CatPonderacion>();
+
+    public virtual ICollection<RelCampusnivelmodalidad> RelCampusnivelmodalidads { get; set; } = new List<RelCampusnivelmodalidad>();
 }

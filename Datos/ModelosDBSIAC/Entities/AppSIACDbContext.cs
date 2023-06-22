@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Datos.ModelosDBSIAC.Entities;
 
@@ -74,6 +73,8 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<IndicadorUvm> IndicadorUvms { get; set; }
 
+    public virtual DbSet<RelCampusnivelmodalidad> RelCampusnivelmodalidads { get; set; }
+
     public virtual DbSet<RelEtapaPeriodoEvaluacion> RelEtapaPeriodoEvaluacions { get; set; }
 
     public virtual DbSet<RelPerfilvistatipoacceso> RelPerfilvistatipoaccesos { get; set; }
@@ -95,6 +96,8 @@ public partial class AppSIACDbContext : DbContext
     public virtual DbSet<TblPerfil> TblPerfils { get; set; }
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
+
+    public virtual DbSet<VwCampusNivelModalidad> VwCampusNivelModalidads { get; set; }
 
     public virtual DbSet<VwCatAreaResponsable> VwCatAreaResponsables { get; set; }
 
@@ -149,14 +152,9 @@ public partial class AppSIACDbContext : DbContext
     public virtual DbSet<VwVistum> VwVista { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            IConfigurationRoot Configuration = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                                               .AddJsonFile("appsettings.json", optional: false).Build();
-            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("LibroFimpes"));
-        }
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=tcp:dbsql-sgapi-qa-uvm.database.windows.net,1433;Initial Catalog=DBSIAC-Desa-UVM;Persist Security Info=False;User ID=appUser;Password=AdminM4n$pp5;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AcreditadoraProceso>(entity =>
@@ -767,6 +765,23 @@ public partial class AppSIACDbContext : DbContext
                 .HasConstraintName("FK__Indicador__Usuar__7FB5F314");
         });
 
+        modelBuilder.Entity<RelCampusnivelmodalidad>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__rel_camp__3214EC0760833CF4");
+
+            entity.ToTable("rel_campusnivelmodalidad");
+
+            entity.HasOne(d => d.CatCampus).WithMany(p => p.RelCampusnivelmodalidads)
+                .HasForeignKey(d => d.CatCampusId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__rel_campu__CatNi__4FD1D5C8");
+
+            entity.HasOne(d => d.CatNivelModalidad).WithMany(p => p.RelCampusnivelmodalidads)
+                .HasForeignKey(d => d.CatNivelModalidadId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__rel_campu__CatNi__50C5FA01");
+        });
+
         modelBuilder.Entity<RelEtapaPeriodoEvaluacion>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__rel_Etap__3214EC07F23C6FFA");
@@ -952,6 +967,16 @@ public partial class AppSIACDbContext : DbContext
                 .HasConstraintName("FK__Usuario__Usuario__22401542");
         });
 
+        modelBuilder.Entity<VwCampusNivelModalidad>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_CampusNivelModalidad");
+
+            entity.Property(e => e.Campus).HasMaxLength(500);
+            entity.Property(e => e.NivelModalidad).HasMaxLength(201);
+        });
+
         modelBuilder.Entity<VwCatAreaResponsable>(entity =>
         {
             entity
@@ -976,6 +1001,7 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.Clave).HasMaxLength(5);
             entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
             entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.NivelModalidad).HasMaxLength(4000);
             entity.Property(e => e.Nombre).HasMaxLength(500);
             entity.Property(e => e.Region).HasMaxLength(500);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
@@ -1230,6 +1256,7 @@ public partial class AppSIACDbContext : DbContext
                 .ToView("vw_UsuarioAreaResponsable");
 
             entity.Property(e => e.AreaResponsable).HasMaxLength(150);
+            entity.Property(e => e.DependenciaArea).HasMaxLength(200);
         });
 
         modelBuilder.Entity<VwUsuarioBase>(entity =>
@@ -1239,11 +1266,14 @@ public partial class AppSIACDbContext : DbContext
                 .ToView("vw_Usuario_Base");
 
             entity.Property(e => e.Apellidos).HasMaxLength(150);
+            entity.Property(e => e.AreaCorporativa).HasMaxLength(4000);
             entity.Property(e => e.AreaResponsable).HasMaxLength(4000);
             entity.Property(e => e.Campus).HasMaxLength(4000);
             entity.Property(e => e.Correo).HasMaxLength(500);
+            entity.Property(e => e.DependenciaArea).HasMaxLength(4000);
             entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
             entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.NivelModalidad).HasMaxLength(4000);
             entity.Property(e => e.NivelRevision).HasMaxLength(150);
             entity.Property(e => e.Nombre).HasMaxLength(150);
             entity.Property(e => e.Perfil).HasMaxLength(100);
