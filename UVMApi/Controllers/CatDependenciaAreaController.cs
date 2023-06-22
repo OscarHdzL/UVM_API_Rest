@@ -13,14 +13,14 @@ namespace UVMApi.Controllers
     [ApiController]
     [Route("[controller]")]
     //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
-    public class CatRegionController : ControllerBase
+    public class CatDependenciaAreaController : ControllerBase
     {
 
 
-        private readonly ILogger<CatRegionController> _logger;
-        public CatRegionNegocio negocio = new CatRegionNegocio();
+        private readonly ILogger<CatDependenciaAreaController> _logger;
+        public CatDependenciaAreaNegocio negocio = new CatDependenciaAreaNegocio();
 
-        public CatRegionController(ILogger<CatRegionController> logger)
+        public CatDependenciaAreaController(ILogger<CatDependenciaAreaController> logger)
         {
             _logger = logger;
         }
@@ -43,14 +43,14 @@ namespace UVMApi.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public Task<TipoAccion> Add(RegionDTO entidad)
+        public Task<TipoAccion> Add(DependenciaAreaDTO entidad)
         {
             return negocio.Insertar(entidad);
         }
 
         [HttpPut]
         [Route("[action]")]
-        public Task<TipoAccion> Update(RegionDTO entidad)
+        public Task<TipoAccion> Update(DependenciaAreaDTO entidad)
         {
             return negocio.Actualizar(entidad);
         }

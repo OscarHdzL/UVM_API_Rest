@@ -9,15 +9,24 @@ namespace Datos.ModelosDBSIAC.DTO
 {
     public class UsuarioPerfilPermisosDTO
     {
+        public int IdUsuario { get; set; }
         public string Nombre { get; set; }
         public string Correo { get; set; }
-        
+        public string Perfil { get; set; }
+        public string Campus { get; set; }
+        public string Region { get; set; }
+        public string AreaResponsable { get; set; }
+
 
         public List<VistasPerfilDTO> Vistas { get; set; }
 
         public UsuarioPerfilPermisosDTO() { 
             this.Nombre = string.Empty;
             this.Correo = string.Empty;
+            this.Perfil = string.Empty;
+            this.Campus = string.Empty;
+            this.Region = string.Empty;
+            this.AreaResponsable= string.Empty;
             this.Vistas = new List<VistasPerfilDTO>();
         }
     }
