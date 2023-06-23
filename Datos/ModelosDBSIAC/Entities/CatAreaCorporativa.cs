@@ -42,4 +42,8 @@ public partial class CatAreaCorporativa
     /// Usuario de última modificación del registro.
     /// </summary>
     public string? UsuarioModificacion { get; set; }
+
+    public string? Siglas { get; set; }
+
+    public virtual ICollection<RelAreacorporativasubarea> RelAreacorporativasubareas { get; set; } = new List<RelAreacorporativasubarea>();
 }

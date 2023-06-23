@@ -1,4 +1,5 @@
 using Datos.Modelos;
+using Datos.ModelosDBSIAC.DTO;
 using Datos.ModelosDBSIAC.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,14 +43,14 @@ namespace UVMApi.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public Task<TipoAccion> Add(CatAreaCorporativa entidad)
+        public Task<TipoAccion> Add(AreaCorporativaDTO entidad)
         {
             return negocio.Insertar(entidad);
         }
 
         [HttpPut]
         [Route("[action]")]
-        public Task<TipoAccion> Update(CatAreaCorporativa entidad)
+        public Task<TipoAccion> Update(AreaCorporativaDTO entidad)
         {
             return negocio.Actualizar(entidad);
         }

@@ -26,4 +26,12 @@ public partial class VwCatAreaResponsable
     public DateTime? FechaModificacion { get; set; }
 
     public string? UsuarioModificacion { get; set; }
+
+    public string? NivelModalidad { get; set; }
+
+    public string? NivelModalidadIds { get; set; }
+
+    public int? CatDependenciaAreaId { get; set; }
+
+    public string? DependenciaArea { get; set; }
 }

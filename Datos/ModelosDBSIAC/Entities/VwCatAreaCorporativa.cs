@@ -3,15 +3,13 @@ using System.Collections.Generic;
 
 namespace Datos.ModelosDBSIAC.Entities;
 
-public partial class VwCatCampus
+public partial class VwCatAreaCorporativa
 {
     public int Id { get; set; }
 
+    public string? Siglas { get; set; }
+
     public string Nombre { get; set; } = null!;
-
-    public int? IdRegion { get; set; }
-
-    public string? Region { get; set; }
 
     public bool Activo { get; set; }
 
@@ -23,9 +21,5 @@ public partial class VwCatCampus
 
     public string? UsuarioModificacion { get; set; }
 
-    public string Clave { get; set; } = null!;
-
-    public string? NivelModalidad { get; set; }
-
-    public string? NivelModalidadIds { get; set; }
+    public string? Subareas { get; set; }
 }

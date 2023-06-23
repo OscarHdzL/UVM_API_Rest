@@ -9,6 +9,8 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Datos.ModelosDBSIAC.Entities;
+using System.Text.Json;
+using Datos.ModelosDBSIAC.DTO;
 
 namespace Negocio
 {
@@ -23,13 +25,18 @@ namespace Negocio
         {
             try
             {
-                List<CatCampus> lista = new List<CatCampus>();
+                List<CampusResponseDTO> lista = new List<CampusResponseDTO>();
 
 
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
-                var resultados = await ctx.VwCatCampuses.FromSqlInterpolated($@"EXEC sp_Campus_Select @Id = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                //var resultados = await ctx.VwCatCampuses.FromSqlInterpolated($@"EXEC sp_Campus_Select_test @Id = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                var resultados = await ctx.VwCatCampuses.FromSqlInterpolated($@"EXEC sp_Campus_Select_test @TipoConsulta = {"CampusLista"}, @Id = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+
+
+
+
                 Respuesta = TipoAccion.Positiva(resultados);
 
             }
@@ -49,7 +56,8 @@ namespace Negocio
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
-                var resultados = await ctx.VwCatCampuses.FromSqlInterpolated($@"EXEC sp_Campus_Select @Id = {id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                //var resultados = await ctx.VwCatCampuses.FromSqlInterpolated($@"EXEC sp_Campus_Select_test @Id = {id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                var resultados = await ctx.VwCatCampuses.FromSqlInterpolated($@"EXEC sp_Campus_Select_test @TipoConsulta = {"CampusLista"}, @Id = {id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
                 Respuesta = TipoAccion.Positiva(resultados);
 
             }
@@ -63,7 +71,7 @@ namespace Negocio
 
 
 
-        public async Task<TipoAccion> Insertar(CatCampus entidad)
+        public async Task<TipoAccion> Insertar(CampusDTO entidad)
         {
             try
             {
@@ -77,10 +85,18 @@ namespace Negocio
                 parametroMensaje.Direction = ParameterDirection.Output;
 
 
-                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Campus_Actualiza
-                                    @TipoActualiza = {"I"}, @Id = {0},  @Clave = {entidad.Clave}, @Nombre = {entidad.Nombre}, @RegionId = {entidad.RegionId}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
-                                    @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
-                                    @UsuarioModificacion = {entidad.UsuarioModificacion}, 
+                
+
+                //await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Campus_Actualiza
+                //                    @TipoActualiza = {"I"}, @Id = {0},  @Clave = {entidad.Clave}, @Nombre = {entidad.Nombre}, @RegionId = {entidad.RegionId}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
+                //                    @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
+                //                    @UsuarioModificacion = {entidad.UsuarioModificacion}, 
+                //                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
+
+
+                    await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Campus_Actualiza
+                                    @TipoActualiza = {"I"},
+                                    @Entidad = {JsonSerializer.Serialize(entidad)}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
 
 
@@ -101,7 +117,7 @@ namespace Negocio
         }
 
 
-        public async Task<TipoAccion> Actualizar(CatCampus entidad)
+        public async Task<TipoAccion> Actualizar(CampusDTO entidad)
         {
             try
             {
@@ -114,12 +130,16 @@ namespace Negocio
                 var parametroMensaje = new SqlParameter("@mensaje", SqlDbType.NVarChar, -1);
                 parametroMensaje.Direction = ParameterDirection.Output;
 
-                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Campus_Actualiza
-                                    @TipoActualiza = {"U"}, @Id = {entidad.Id},  @Clave = {entidad.Clave}, @Nombre = {entidad.Nombre}, @RegionId = {entidad.RegionId}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
-                                    @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
-                                    @UsuarioModificacion = {entidad.UsuarioModificacion}, 
-                                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
+                //await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Campus_Actualiza
+                //                    @TipoActualiza = {"U"}, @Id = {entidad.Id},  @Clave = {entidad.Clave}, @Nombre = {entidad.Nombre}, @RegionId = {entidad.RegionId}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
+                //                    @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
+                //                    @UsuarioModificacion = {entidad.UsuarioModificacion}, 
+                //                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
 
+                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Campus_Actualiza
+                                    @TipoActualiza = {"U"},
+                                    @Entidad = {JsonSerializer.Serialize(entidad)}, 
+                                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
 
                 Respuesta = new TipoAccion();
                 Respuesta.id = (int)parametroId.Value;
@@ -140,6 +160,10 @@ namespace Negocio
         {
             try
             {
+
+                CampusDTO entidad = new CampusDTO();
+                entidad.Id= id;
+
                 var parametroId = new SqlParameter("@idRespuesta", SqlDbType.Int);
                 parametroId.Direction = ParameterDirection.Output;
 
@@ -150,11 +174,17 @@ namespace Negocio
                 parametroMensaje.Direction = ParameterDirection.Output;
 
 
+                //await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Campus_Actualiza
+                //                    @TipoActualiza = {"D"}, @Id = {id},  @Clave = {null}, @Nombre = {null}, @RegionId = {null}, @Activo = {null}, @FechaCreacion = {null}, 
+                //                    @UsuarioCreacion = {null}, @FechaModificacion = {null}, 
+                //                    @UsuarioModificacion = {null}, 
+                //                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
+
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Campus_Actualiza
-                                    @TipoActualiza = {"D"}, @Id = {id},  @Clave = {null}, @Nombre = {null}, @RegionId = {null}, @Activo = {null}, @FechaCreacion = {null}, 
-                                    @UsuarioCreacion = {null}, @FechaModificacion = {null}, 
-                                    @UsuarioModificacion = {null}, 
+                                    @TipoActualiza = {"D"},
+                                    @Entidad = {JsonSerializer.Serialize(entidad)}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
+
 
 
                 Respuesta = new TipoAccion();

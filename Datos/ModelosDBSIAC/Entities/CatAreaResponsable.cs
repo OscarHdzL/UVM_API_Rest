@@ -25,7 +25,11 @@ public partial class CatAreaResponsable
 
     public string? UsuarioModificacion { get; set; }
 
+    public int? CatDependenciaAreaId { get; set; }
+
     public virtual CatAreaResponsable? AreaResponsablePadreNavigation { get; set; }
 
     public virtual ICollection<CatAreaResponsable> InverseAreaResponsablePadreNavigation { get; set; } = new List<CatAreaResponsable>();
+
+    public virtual ICollection<RelArearesponsablenivelmodalidad> RelArearesponsablenivelmodalidads { get; set; } = new List<RelArearesponsablenivelmodalidad>();
 }

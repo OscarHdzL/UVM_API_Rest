@@ -89,7 +89,7 @@ namespace Negocio
                 else if (SP == "sp_Campus_Select")
                 {
                     List<VwCatCampus> response = new List<VwCatCampus>();
-                    response = ctx_siac.VwCatCampuses.FromSqlInterpolated($@"EXEC  {SP} @Id={null}, @PageSize = {0}, @PageNumber = {0}").ToList();
+                    response = ctx_siac.VwCatCampuses.FromSqlInterpolated($@"EXEC  {SP} @TipoConsulta = {"CampusLista"}, @Id={null}, @PageSize = {0}, @PageNumber = {0}").ToList();
                     dt = ToDataTable(response);
                     dt.Columns.Remove("IdRegion");
                     dt.Columns.Remove("Id");
@@ -97,6 +97,8 @@ namespace Negocio
                     dt.Columns.Remove("UsuarioCreacion");
                     dt.Columns.Remove("FechaModificacion");
                     dt.Columns.Remove("UsuarioModificacion");
+                    dt.Columns.Remove("NivelModalidadIds");
+                    
                 }
                 else if (SP == "sp_AreaResponsable_Select")
                 {
@@ -109,6 +111,8 @@ namespace Negocio
                     dt.Columns.Remove("UsuarioCreacion");
                     dt.Columns.Remove("FechaModificacion");
                     dt.Columns.Remove("UsuarioModificacion");
+                    dt.Columns.Remove("CatDependenciaAreaId");
+                    dt.Columns.Remove("NivelModalidadIds");
                 }
                 else if (SP == "sp_DependenciaArea_Select")
                 {
@@ -122,8 +126,8 @@ namespace Negocio
                 }
                 else if (SP == "sp_AreaCorporativa_Select")
                 {
-                    List<CatAreaCorporativa> response = new List<CatAreaCorporativa>();
-                    response = ctx_siac.CatAreaCorporativas.FromSqlInterpolated($@"EXEC  {SP} @Id={null}, @PageSize = {0}, @PageNumber = {0}").ToList();
+                    List<VwCatAreaCorporativa> response = new List<VwCatAreaCorporativa>();
+                    response = ctx_siac.VwCatAreaCorporativas.FromSqlInterpolated($@"EXEC  {SP} @Id={null}, @PageSize = {0}, @PageNumber = {0}").ToList();
                     dt = ToDataTable(response);
                     
                     

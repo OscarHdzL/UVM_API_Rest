@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+
 namespace Datos.ModelosDBSIAC.Entities;
 
 public partial class AppSIACDbContext : DbContext
@@ -73,6 +73,10 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<IndicadorUvm> IndicadorUvms { get; set; }
 
+    public virtual DbSet<RelAreacorporativasubarea> RelAreacorporativasubareas { get; set; }
+
+    public virtual DbSet<RelArearesponsablenivelmodalidad> RelArearesponsablenivelmodalidads { get; set; }
+
     public virtual DbSet<RelCampusnivelmodalidad> RelCampusnivelmodalidads { get; set; }
 
     public virtual DbSet<RelEtapaPeriodoEvaluacion> RelEtapaPeriodoEvaluacions { get; set; }
@@ -97,7 +101,13 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
+    public virtual DbSet<VwAreaCorporativaSubarea> VwAreaCorporativaSubareas { get; set; }
+
+    public virtual DbSet<VwAreaResponsableNivelModalidad> VwAreaResponsableNivelModalidads { get; set; }
+
     public virtual DbSet<VwCampusNivelModalidad> VwCampusNivelModalidads { get; set; }
+
+    public virtual DbSet<VwCatAreaCorporativa> VwCatAreaCorporativas { get; set; }
 
     public virtual DbSet<VwCatAreaResponsable> VwCatAreaResponsables { get; set; }
 
@@ -152,14 +162,9 @@ public partial class AppSIACDbContext : DbContext
     public virtual DbSet<VwVistum> VwVista { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            IConfigurationRoot Configuration = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                                               .AddJsonFile("appsettings.json", optional: false).Build();
-            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("LibroFimpes"));
-        }
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=tcp:dbsql-sgapi-qa-uvm.database.windows.net,1433;Initial Catalog=DBSIAC-Desa-UVM;Persist Security Info=False;User ID=appUser;Password=AdminM4n$pp5;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AcreditadoraProceso>(entity =>
@@ -246,6 +251,7 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.Nombre)
                 .HasMaxLength(150)
                 .HasComment("Nombre de la área corporativa.");
+            entity.Property(e => e.Siglas).HasMaxLength(5);
             entity.Property(e => e.UsuarioCreacion)
                 .HasMaxLength(50)
                 .HasComment("Usuario que generó el registro.");
@@ -770,6 +776,37 @@ public partial class AppSIACDbContext : DbContext
                 .HasConstraintName("FK__Indicador__Usuar__7FB5F314");
         });
 
+        modelBuilder.Entity<RelAreacorporativasubarea>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__rel_area__3214EC070610C0F1");
+
+            entity.ToTable("rel_areacorporativasubareas");
+
+            entity.Property(e => e.Subarea).HasMaxLength(150);
+
+            entity.HasOne(d => d.CatAreaCorporativa).WithMany(p => p.RelAreacorporativasubareas)
+                .HasForeignKey(d => d.CatAreaCorporativaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__rel_areac__CatAr__63D8CE75");
+        });
+
+        modelBuilder.Entity<RelArearesponsablenivelmodalidad>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__rel_area__3214EC073E81A0E6");
+
+            entity.ToTable("rel_arearesponsablenivelmodalidad");
+
+            entity.HasOne(d => d.CatAreaResponsable).WithMany(p => p.RelArearesponsablenivelmodalidads)
+                .HasForeignKey(d => d.CatAreaResponsableId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__rel_arear__CatAr__5B438874");
+
+            entity.HasOne(d => d.CatNivelModalidad).WithMany(p => p.RelArearesponsablenivelmodalidads)
+                .HasForeignKey(d => d.CatNivelModalidadId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__rel_arear__CatNi__5C37ACAD");
+        });
+
         modelBuilder.Entity<RelCampusnivelmodalidad>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__rel_camp__3214EC0760833CF4");
@@ -972,6 +1009,26 @@ public partial class AppSIACDbContext : DbContext
                 .HasConstraintName("FK__Usuario__Usuario__22401542");
         });
 
+        modelBuilder.Entity<VwAreaCorporativaSubarea>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_AreaCorporativaSubareas");
+
+            entity.Property(e => e.AreaCorporativa).HasMaxLength(150);
+            entity.Property(e => e.Subarea).HasMaxLength(150);
+        });
+
+        modelBuilder.Entity<VwAreaResponsableNivelModalidad>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_AreaResponsableNivelModalidad");
+
+            entity.Property(e => e.AreaResponsable).HasMaxLength(150);
+            entity.Property(e => e.NivelModalidad).HasMaxLength(201);
+        });
+
         modelBuilder.Entity<VwCampusNivelModalidad>(entity =>
         {
             entity
@@ -982,6 +1039,22 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.NivelModalidad).HasMaxLength(201);
         });
 
+        modelBuilder.Entity<VwCatAreaCorporativa>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_CatAreaCorporativa");
+
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.Nombre).HasMaxLength(150);
+            entity.Property(e => e.Siglas).HasMaxLength(5);
+            entity.Property(e => e.Subareas).HasMaxLength(4000);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<VwCatAreaResponsable>(entity =>
         {
             entity
@@ -989,9 +1062,11 @@ public partial class AppSIACDbContext : DbContext
                 .ToView("vw_CatAreaResponsable");
 
             entity.Property(e => e.AreaResponsablePadre).HasMaxLength(150);
+            entity.Property(e => e.DependenciaArea).HasMaxLength(200);
             entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
             entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
-            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.NivelModalidad).HasMaxLength(4000);
+            entity.Property(e => e.NivelModalidadIds).HasMaxLength(4000);
             entity.Property(e => e.Nombre).HasMaxLength(150);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
@@ -1007,6 +1082,7 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
             entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
             entity.Property(e => e.NivelModalidad).HasMaxLength(4000);
+            entity.Property(e => e.NivelModalidadIds).HasMaxLength(4000);
             entity.Property(e => e.Nombre).HasMaxLength(500);
             entity.Property(e => e.Region).HasMaxLength(500);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
