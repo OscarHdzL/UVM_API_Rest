@@ -93,7 +93,7 @@ namespace Negocio
                 //                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
 
 
-                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_AreaCorporativa_Actualiza_test
+                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_AreaCorporativa_Actualiza
                                     @TipoActualiza = {"I"},
                                     @Entidad = {JsonSerializer.Serialize(entidad)}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
@@ -134,14 +134,14 @@ namespace Negocio
                 //                    @TipoActualiza = {"U"}, 
                 //                    @Id = {entidad.Id}, 
                 //                    @Nombre = {entidad.Nombre}, 
-                //                    @Activo = {true}, 
+                //                    @Activo = {entidad.Activo}, 
                 //                    @FechaCreacion = {entidad.FechaCreacion}, 
                 //                    @UsuarioCreacion = {entidad.UsuarioCreacion}, 
                 //                    @FechaModificacion = {entidad.FechaModificacion}, 
                 //                    @UsuarioModificacion = {entidad.UsuarioModificacion}, 
                 //                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
 
-                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_AreaCorporativa_Actualiza_test
+                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_AreaCorporativa_Actualiza
                                     @TipoActualiza = {"U"},
                                     @Entidad = {JsonSerializer.Serialize(entidad)}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
@@ -186,7 +186,7 @@ namespace Negocio
                 //                    @UsuarioModificacion = {null}, 
                 //                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
 
-                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_AreaCorporativa_Actualiza_test
+                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_AreaCorporativa_Actualiza
                                     @TipoActualiza = {"D"},
                                     @Entidad = {JsonSerializer.Serialize(entidad)}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");

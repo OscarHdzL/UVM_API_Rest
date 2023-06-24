@@ -9,172 +9,204 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Datos.ModelosDBSIAC.Entities;
+using Datos.ModelosDBSGAPI.Entities;
 
 namespace Negocio
 {
     public class CatSedeNegocio
     {
-        public AppSIACDbContext ctx = new AppSIACDbContext();
+        public AppSGAPIDbContext ctx = new AppSGAPIDbContext();
 
         public TipoAccion Respuesta { get; set; }
 
 
-        public async Task<TipoAccion> Get(int? id, int pageSize, int pageNumber)
+        public async Task<TipoAccion> Get()
         {
             try
             {
-                List<CatSede> lista = new List<CatSede>();
 
+                //var res = await this.ctx.Sedes.ToListAsync();
 
-                if (pageSize == 0)
-                    throw new Exception("El parámetro pageSize debe ser mayor a cero");
-
-                var resultados = await ctx.CatSedes.FromSqlInterpolated($@"EXEC sp_Sede_Select @Id = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
-                Respuesta = TipoAccion.Positiva(resultados);
-
+                var resultados2 = await (from x in ctx.Sedes
+                                         select new SedeDTO
+                                         {
+                                             SedeId = x.SedeId,
+                                             Nombre = x.Nombre,
+                                             Activo = x.Activo,
+                                             FechaCreacion = x.FechaCreacion,
+                                             UsuarioCreacion = x.UsuarioCreacion,
+                                             FechaModificacion = x.FechaModificacion,
+                                             UsuarioModificacion = x.UsuarioModificacion
+                                         }
+                                         ).ToListAsync();
+                this.Respuesta = TipoAccion.Positiva(resultados2);
             }
             catch (Exception ex)
             {
-                Respuesta = TipoAccion.Negativa(ex.Message);
+                this.Respuesta = TipoAccion.Negativa(ex.Message);
             }
 
-            return Respuesta;
-        }
-
-        public async Task<TipoAccion> GetById(int id, int pageSize, int pageNumber)
-        {
-            try
-            {
-                List<CatSede> lista = new List<CatSede>();
-
-
-                if (pageSize == 0)
-                    throw new Exception("El parámetro pageSize debe ser mayor a cero");
-
-                var resultados = await ctx.CatSedes.FromSqlInterpolated($@"EXEC sp_Sede_Select @Id = {id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
-                Respuesta = TipoAccion.Positiva(resultados);
-
-            }
-            catch (Exception ex)
-            {
-                Respuesta = TipoAccion.Negativa(ex.Message);
-            }
-
-            return Respuesta;
+            return this.Respuesta;
         }
 
 
 
-        public async Task<TipoAccion> Insertar(CatSede entidad)
-        {
-            try
-            {
-                var parametroId = new SqlParameter("@idRespuesta", SqlDbType.Int);
-                parametroId.Direction = ParameterDirection.Output;
-
-                var parametroExito = new SqlParameter("@exito", SqlDbType.Int);
-                parametroExito.Direction = ParameterDirection.Output;
-
-                var parametroMensaje = new SqlParameter("@mensaje", SqlDbType.NVarChar, -1);
-                parametroMensaje.Direction = ParameterDirection.Output;
+        //public async Task<TipoAccion> Get(int? id, int pageSize, int pageNumber)
+        //{
+        //    try
+        //    {
+        //        List<CatSede> lista = new List<CatSede>();
 
 
-                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Sede_Actualiza
-                                    @TipoActualiza = {"I"}, @Id = {0}, @Nombre = {entidad.Nombre}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
-                                    @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
-                                    @UsuarioModificacion = {entidad.UsuarioModificacion}, 
-                                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
+        //        if (pageSize == 0)
+        //            throw new Exception("El parámetro pageSize debe ser mayor a cero");
+
+        //        var resultados = await ctx.CatSedes.FromSqlInterpolated($@"EXEC sp_Sede_Select @Id = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+        //        Respuesta = TipoAccion.Positiva(resultados);
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Respuesta = TipoAccion.Negativa(ex.Message);
+        //    }
+
+        //    return Respuesta;
+        //}
+
+        //public async Task<TipoAccion> GetById(int id, int pageSize, int pageNumber)
+        //{
+        //    try
+        //    {
+        //        List<CatSede> lista = new List<CatSede>();
 
 
-                Respuesta = new TipoAccion();
-                Respuesta.id = (int)parametroId.Value;
-                Respuesta.Exito = (int)parametroExito.Value == 1 ? true : false;
-                Respuesta.Mensaje = (string)parametroMensaje.Value;
+        //        if (pageSize == 0)
+        //            throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
+        //        var resultados = await ctx.CatSedes.FromSqlInterpolated($@"EXEC sp_Sede_Select @Id = {id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+        //        Respuesta = TipoAccion.Positiva(resultados);
 
-            }
-            catch (Exception ex)
-            {
-                Respuesta = TipoAccion.Negativa(ex.Message);
-            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Respuesta = TipoAccion.Negativa(ex.Message);
+        //    }
 
-            return Respuesta;
-
-        }
-
-
-        public async Task<TipoAccion> Actualizar(CatSede entidad)
-        {
-            try
-            {
-                var parametroId = new SqlParameter("@idRespuesta", SqlDbType.Int);
-                parametroId.Direction = ParameterDirection.Output;
-
-                var parametroExito = new SqlParameter("@exito", SqlDbType.Int);
-                parametroExito.Direction = ParameterDirection.Output;
-
-                var parametroMensaje = new SqlParameter("@mensaje", SqlDbType.NVarChar, -1);
-                parametroMensaje.Direction = ParameterDirection.Output;
-
-
-                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Sede_Actualiza
-                                    @TipoActualiza = {"U"}, @Id = {entidad.Id}, @Nombre = {entidad.Nombre}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
-                                    @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
-                                    @UsuarioModificacion = {entidad.UsuarioModificacion}, 
-                                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
+        //    return Respuesta;
+        //}
 
 
 
-                Respuesta = new TipoAccion();
-                Respuesta.id = (int)parametroId.Value;
-                Respuesta.Exito = (int)parametroExito.Value == 1 ? true : false;
-                Respuesta.Mensaje = (string)parametroMensaje.Value;
+        //public async Task<TipoAccion> Insertar(CatSede entidad)
+        //{
+        //    try
+        //    {
+        //        var parametroId = new SqlParameter("@idRespuesta", SqlDbType.Int);
+        //        parametroId.Direction = ParameterDirection.Output;
 
-            }
-            catch (Exception ex)
-            {
-                Respuesta = TipoAccion.Negativa(ex.Message);
-            }
+        //        var parametroExito = new SqlParameter("@exito", SqlDbType.Int);
+        //        parametroExito.Direction = ParameterDirection.Output;
 
-            return Respuesta;
-
-        }
-
-        public async Task<TipoAccion> Deshabilitar(int id)
-        {
-            try
-            {
-                var parametroId = new SqlParameter("@idRespuesta", SqlDbType.Int);
-                parametroId.Direction = ParameterDirection.Output;
-
-                var parametroExito = new SqlParameter("@exito", SqlDbType.Int);
-                parametroExito.Direction = ParameterDirection.Output;
-
-                var parametroMensaje = new SqlParameter("@mensaje", SqlDbType.NVarChar, -1);
-                parametroMensaje.Direction = ParameterDirection.Output;
+        //        var parametroMensaje = new SqlParameter("@mensaje", SqlDbType.NVarChar, -1);
+        //        parametroMensaje.Direction = ParameterDirection.Output;
 
 
-                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Sede_Actualiza
-                                    @TipoActualiza = {"D"}, @Id = {id}, @Nombre = {null}, @Activo = {null}, @FechaCreacion = {null}, 
-                                    @UsuarioCreacion = {null}, @FechaModificacion = {null}, 
-                                    @UsuarioModificacion = {null}, 
-                                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
+        //        await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Sede_Actualiza
+        //                            @TipoActualiza = {"I"}, @Id = {0}, @Nombre = {entidad.Nombre}, @Activo = {entidad.Activo}, @FechaCreacion = {entidad.FechaCreacion}, 
+        //                            @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
+        //                            @UsuarioModificacion = {entidad.UsuarioModificacion}, 
+        //                            @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
 
 
-                Respuesta = new TipoAccion();
-                Respuesta.id = (int)parametroId.Value;
-                Respuesta.Exito = (int)parametroExito.Value == 1 ? true : false;
-                Respuesta.Mensaje = (string)parametroMensaje.Value;
+        //        Respuesta = new TipoAccion();
+        //        Respuesta.id = (int)parametroId.Value;
+        //        Respuesta.Exito = (int)parametroExito.Value == 1 ? true : false;
+        //        Respuesta.Mensaje = (string)parametroMensaje.Value;
 
-            }
-            catch (Exception ex)
-            {
-                Respuesta = TipoAccion.Negativa(ex.Message);
-            }
 
-            return Respuesta;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Respuesta = TipoAccion.Negativa(ex.Message);
+        //    }
 
-        }
+        //    return Respuesta;
+
+        //}
+
+
+        //public async Task<TipoAccion> Actualizar(CatSede entidad)
+        //{
+        //    try
+        //    {
+        //        var parametroId = new SqlParameter("@idRespuesta", SqlDbType.Int);
+        //        parametroId.Direction = ParameterDirection.Output;
+
+        //        var parametroExito = new SqlParameter("@exito", SqlDbType.Int);
+        //        parametroExito.Direction = ParameterDirection.Output;
+
+        //        var parametroMensaje = new SqlParameter("@mensaje", SqlDbType.NVarChar, -1);
+        //        parametroMensaje.Direction = ParameterDirection.Output;
+
+
+        //        await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Sede_Actualiza
+        //                            @TipoActualiza = {"U"}, @Id = {entidad.Id}, @Nombre = {entidad.Nombre}, @Activo = {entidad.Activo}, @FechaCreacion = {entidad.FechaCreacion}, 
+        //                            @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
+        //                            @UsuarioModificacion = {entidad.UsuarioModificacion}, 
+        //                            @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
+
+
+
+        //        Respuesta = new TipoAccion();
+        //        Respuesta.id = (int)parametroId.Value;
+        //        Respuesta.Exito = (int)parametroExito.Value == 1 ? true : false;
+        //        Respuesta.Mensaje = (string)parametroMensaje.Value;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Respuesta = TipoAccion.Negativa(ex.Message);
+        //    }
+
+        //    return Respuesta;
+
+        //}
+
+        //public async Task<TipoAccion> Deshabilitar(int id)
+        //{
+        //    try
+        //    {
+        //        var parametroId = new SqlParameter("@idRespuesta", SqlDbType.Int);
+        //        parametroId.Direction = ParameterDirection.Output;
+
+        //        var parametroExito = new SqlParameter("@exito", SqlDbType.Int);
+        //        parametroExito.Direction = ParameterDirection.Output;
+
+        //        var parametroMensaje = new SqlParameter("@mensaje", SqlDbType.NVarChar, -1);
+        //        parametroMensaje.Direction = ParameterDirection.Output;
+
+
+        //        await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Sede_Actualiza
+        //                            @TipoActualiza = {"D"}, @Id = {id}, @Nombre = {null}, @Activo = {null}, @FechaCreacion = {null}, 
+        //                            @UsuarioCreacion = {null}, @FechaModificacion = {null}, 
+        //                            @UsuarioModificacion = {null}, 
+        //                            @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
+
+
+        //        Respuesta = new TipoAccion();
+        //        Respuesta.id = (int)parametroId.Value;
+        //        Respuesta.Exito = (int)parametroExito.Value == 1 ? true : false;
+        //        Respuesta.Mensaje = (string)parametroMensaje.Value;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Respuesta = TipoAccion.Negativa(ex.Message);
+        //    }
+
+        //    return Respuesta;
+
+        //}
 
 
     }

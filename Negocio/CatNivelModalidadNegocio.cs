@@ -80,7 +80,7 @@ namespace Negocio
 
 
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_NivelModalidad_Actualiza
-                                    @TipoActualiza = {"I"}, @Id = {0},  @Clave = {entidad.Clave}, @Nivel = {entidad.Nivel}, @Modalidad = {entidad.Modalidad}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
+                                    @TipoActualiza = {"I"}, @Id = {0},  @Clave = {entidad.Clave}, @Nivel = {entidad.Nivel}, @Modalidad = {entidad.Modalidad}, @Activo = {entidad.Activo}, @FechaCreacion = {entidad.FechaCreacion}, 
                                     @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
                                     @UsuarioModificacion = {entidad.UsuarioModificacion}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
@@ -118,7 +118,7 @@ namespace Negocio
 
 
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_NivelModalidad_Actualiza
-                                    @TipoActualiza = {"U"}, @Id = {entidad.Id}, @Clave = {entidad.Clave}, @Nivel = {entidad.Nivel}, @Modalidad = {entidad.Modalidad}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
+                                    @TipoActualiza = {"U"}, @Id = {entidad.Id}, @Clave = {entidad.Clave}, @Nivel = {entidad.Nivel}, @Modalidad = {entidad.Modalidad}, @Activo = {entidad.Activo}, @FechaCreacion = {entidad.FechaCreacion}, 
                                     @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
                                     @UsuarioModificacion = {entidad.UsuarioModificacion}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");

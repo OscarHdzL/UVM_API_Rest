@@ -8,6 +8,7 @@ namespace Datos.ModelosDBSIAC.DTO
 {
     public class PonderacionDTO
     {
+        public int Id { get; set; }
         public int ComponenteId { get; set; }
 
         public int NivelModalidadId { get; set; }

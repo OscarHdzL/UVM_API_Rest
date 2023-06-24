@@ -32,7 +32,7 @@ namespace Negocio
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
                 //var resultados = await ctx.VwCatCampuses.FromSqlInterpolated($@"EXEC sp_Campus_Select_test @Id = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
-                var resultados = await ctx.VwCatCampuses.FromSqlInterpolated($@"EXEC sp_Campus_Select_test @TipoConsulta = {"CampusLista"}, @Id = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                var resultados = await ctx.VwCatCampuses.FromSqlInterpolated($@"EXEC sp_Campus_Select @TipoConsulta = {"CampusLista"}, @Id = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
 
 
 
@@ -57,7 +57,7 @@ namespace Negocio
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
                 //var resultados = await ctx.VwCatCampuses.FromSqlInterpolated($@"EXEC sp_Campus_Select_test @Id = {id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
-                var resultados = await ctx.VwCatCampuses.FromSqlInterpolated($@"EXEC sp_Campus_Select_test @TipoConsulta = {"CampusLista"}, @Id = {id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                var resultados = await ctx.VwCatCampuses.FromSqlInterpolated($@"EXEC sp_Campus_Select @TipoConsulta = {"CampusLista"}, @Id = {id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
                 Respuesta = TipoAccion.Positiva(resultados);
 
             }
@@ -88,7 +88,7 @@ namespace Negocio
                 
 
                 //await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Campus_Actualiza
-                //                    @TipoActualiza = {"I"}, @Id = {0},  @Clave = {entidad.Clave}, @Nombre = {entidad.Nombre}, @RegionId = {entidad.RegionId}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
+                //                    @TipoActualiza = {"I"}, @Id = {0},  @Clave = {entidad.Clave}, @Nombre = {entidad.Nombre}, @RegionId = {entidad.RegionId}, @Activo = {entidad.Activo}, @FechaCreacion = {entidad.FechaCreacion}, 
                 //                    @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
                 //                    @UsuarioModificacion = {entidad.UsuarioModificacion}, 
                 //                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
@@ -131,7 +131,7 @@ namespace Negocio
                 parametroMensaje.Direction = ParameterDirection.Output;
 
                 //await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Campus_Actualiza
-                //                    @TipoActualiza = {"U"}, @Id = {entidad.Id},  @Clave = {entidad.Clave}, @Nombre = {entidad.Nombre}, @RegionId = {entidad.RegionId}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
+                //                    @TipoActualiza = {"U"}, @Id = {entidad.Id},  @Clave = {entidad.Clave}, @Nombre = {entidad.Nombre}, @RegionId = {entidad.RegionId}, @Activo = {entidad.Activo}, @FechaCreacion = {entidad.FechaCreacion}, 
                 //                    @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
                 //                    @UsuarioModificacion = {entidad.UsuarioModificacion}, 
                 //                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");

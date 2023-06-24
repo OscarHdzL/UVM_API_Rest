@@ -243,8 +243,27 @@ namespace Negocio
                 else if (SP == "sp_Sede_Select")
                 {
 
-                    List<CatSede> response = new List<CatSede>();
-                    response = ctx_siac.CatSedes.FromSqlInterpolated($@"EXEC  {SP}  @Id={null}, @PageSize = {0}, @PageNumber = {0}").ToList();
+                    //List<CatSede> response = new List<CatSede>();
+                    //response = ctx_siac.CatSedes.FromSqlInterpolated($@"EXEC  {SP}  @Id={null}, @PageSize = {0}, @PageNumber = {0}").ToList();
+                    //dt = ToDataTable(response);
+
+                    //dt.Columns.Remove("FechaCreacion");
+                    //dt.Columns.Remove("UsuarioCreacion");
+                    //dt.Columns.Remove("FechaModificacion");
+                    //dt.Columns.Remove("UsuarioModificacion");
+
+                    var response = (from x in ctx_fimpes.Sedes
+                                            select new SedeDTO
+                                            {
+                                                SedeId = x.SedeId,
+                                                Nombre = x.Nombre,
+                                                Activo = x.Activo,
+                                                FechaCreacion = x.FechaCreacion,
+                                                UsuarioCreacion = x.UsuarioCreacion,
+                                                FechaModificacion = x.FechaModificacion,
+                                                UsuarioModificacion = x.UsuarioModificacion
+                                            }
+                                         ).ToList();
                     dt = ToDataTable(response);
 
                     dt.Columns.Remove("FechaCreacion");

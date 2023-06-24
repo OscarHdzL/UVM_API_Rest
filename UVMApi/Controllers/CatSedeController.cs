@@ -27,39 +27,39 @@ namespace UVMApi.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public Task<TipoAccion> GetAll(int pageNumber = 1, int pageSize = 5)
+        public Task<TipoAccion> GetAll()
         {
-            return negocio.Get(null, pageSize, pageNumber);
+            return negocio.Get();
         }
 
-        [HttpGet]
-        [Route("[action]")]
-        public Task<TipoAccion> GetById(int id)
-        {
-            //PAGINA 0, NO REGISTROS 1
-            return negocio.GetById(id, 5, 1);
-        }
+        //[HttpGet]
+        //[Route("[action]")]
+        //public Task<TipoAccion> GetById(int id)
+        //{
+        //    //PAGINA 0, NO REGISTROS 1
+        //    return negocio.GetById(id, 5, 1);
+        //}
 
-        [HttpPost]
-        [Route("[action]")]
-        public Task<TipoAccion> Add(CatSede entidad)
-        {
-            return negocio.Insertar(entidad);
-        }
+        //[HttpPost]
+        //[Route("[action]")]
+        //public Task<TipoAccion> Add(CatSede entidad)
+        //{
+        //    return negocio.Insertar(entidad);
+        //}
 
-        [HttpPut]
-        [Route("[action]")]
-        public Task<TipoAccion> Update(CatSede entidad)
-        {
-            return negocio.Actualizar(entidad);
-        }
+        //[HttpPut]
+        //[Route("[action]")]
+        //public Task<TipoAccion> Update(CatSede entidad)
+        //{
+        //    return negocio.Actualizar(entidad);
+        //}
 
-        [HttpDelete]
-        [Route("[action]")]
-        public Task<TipoAccion> Disable(int id)
-        {
-            //PAGINA 0, NO REGISTROS 1
-            return negocio.Deshabilitar(id);
-        }
+        //[HttpDelete]
+        //[Route("[action]")]
+        //public Task<TipoAccion> Disable(int id)
+        //{
+        //    //PAGINA 0, NO REGISTROS 1
+        //    return negocio.Deshabilitar(id);
+        //}
     }
 }

@@ -81,7 +81,7 @@ namespace Negocio
 
 
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_MatrizUVM_Actualiza
-                                    @TipoActualiza = {"I"}, @Id = {0}, @ComponenteUvmID = {entidad.ComponenteUvmId}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
+                                    @TipoActualiza = {"I"}, @Id = {0}, @ComponenteUvmID = {entidad.ComponenteUvmId}, @Activo = {entidad.Activo}, @FechaCreacion = {entidad.FechaCreacion}, 
                                     @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
                                     @UsuarioModificacion = {entidad.UsuarioModificacion}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
@@ -119,7 +119,7 @@ namespace Negocio
 
 
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_MatrizUVM_Actualiza
-                                    @TipoActualiza = {"U"}, @Id = {entidad.Id}, @ComponenteUvmID = {entidad.ComponenteUvmId}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
+                                    @TipoActualiza = {"U"}, @Id = {entidad.Id}, @ComponenteUvmID = {entidad.ComponenteUvmId}, @Activo = {entidad.Activo}, @FechaCreacion = {entidad.FechaCreacion}, 
                                     @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
                                     @UsuarioModificacion = {entidad.UsuarioModificacion}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");

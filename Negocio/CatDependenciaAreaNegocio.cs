@@ -78,7 +78,7 @@ namespace Negocio
 
 
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_DependenciaArea_Actualiza
-                                    @TipoActualiza = {"I"}, @Id = {0}, @Nombre = {entidad.Nombre}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
+                                    @TipoActualiza = {"I"}, @Id = {0}, @Nombre = {entidad.Nombre}, @Activo = {entidad.Activo}, @FechaCreacion = {entidad.FechaCreacion}, 
                                     @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
                                     @UsuarioModificacion = {entidad.UsuarioModificacion}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
@@ -116,7 +116,7 @@ namespace Negocio
 
 
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_DependenciaArea_Actualiza
-                                    @TipoActualiza = {"U"}, @Id = {entidad.Id}, @Nombre = {entidad.Nombre}, @Activo = {true}, @FechaCreacion = {entidad.FechaCreacion}, 
+                                    @TipoActualiza = {"U"}, @Id = {entidad.Id}, @Nombre = {entidad.Nombre}, @Activo = {entidad.Activo}, @FechaCreacion = {entidad.FechaCreacion}, 
                                     @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
                                     @UsuarioModificacion = {entidad.UsuarioModificacion},
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");

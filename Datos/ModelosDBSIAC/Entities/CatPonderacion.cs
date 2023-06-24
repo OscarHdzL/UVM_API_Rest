@@ -5,6 +5,8 @@ namespace Datos.ModelosDBSIAC.Entities;
 
 public partial class CatPonderacion
 {
+    public int Id { get; set; }
+
     public int ComponenteId { get; set; }
 
     public int NivelModalidadId { get; set; }

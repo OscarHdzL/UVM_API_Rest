@@ -97,7 +97,7 @@ namespace Negocio
                 //    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
 
 
-                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_AreaResponsable_Actualiza_test
+                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_AreaResponsable_Actualiza
                                     @TipoActualiza = {"I"},
                                     @Entidad = {JsonSerializer.Serialize(entidad)}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
@@ -147,7 +147,7 @@ namespace Negocio
                 //    @UsuarioModificacion  = {entidad.UsuarioModificacion},    
                 //    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
 
-                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_AreaResponsable_Actualiza_test
+                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_AreaResponsable_Actualiza
                                     @TipoActualiza = {"U"},
                                     @Entidad = {JsonSerializer.Serialize(entidad)}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
@@ -201,7 +201,7 @@ namespace Negocio
                 //                    @UsuarioModificacion  = {null},    
                 //                    @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");
 
-                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_AreaResponsable_Actualiza_test
+                await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_AreaResponsable_Actualiza
                                     @TipoActualiza = {"D"},
                                     @Entidad = {JsonSerializer.Serialize(entidad)}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");

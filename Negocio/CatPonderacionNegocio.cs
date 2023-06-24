@@ -31,7 +31,8 @@ namespace Negocio
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
-                var resultados = await ctx.VwCatPonderacions.FromSqlInterpolated($@"EXEC sp_Ponderacion_Select @IdComponente = {null}, @IdNivelModalidad = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                //var resultados = await ctx.VwCatPonderacions.FromSqlInterpolated($@"EXEC sp_Ponderacion_Select @IdComponente = {null}, @IdNivelModalidad = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                var resultados = await ctx.VwCatPonderacions.FromSqlInterpolated($@"EXEC sp_Ponderacion_Select @Id = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
                 Respuesta = TipoAccion.Positiva(resultados);
 
             }
@@ -43,7 +44,7 @@ namespace Negocio
             return Respuesta;
         }
 
-        public async Task<TipoAccion> GetById(int idComponente, int idNivelModalidad, int pageSize, int pageNumber)
+        public async Task<TipoAccion> GetById(int id, int pageSize, int pageNumber)
         {
             try
             {
@@ -53,7 +54,9 @@ namespace Negocio
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
-                var resultados = await ctx.VwCatPonderacions.FromSqlInterpolated($@"EXEC sp_Ponderacion_Select @IdComponente = {idComponente}, @IdNivelModalidad = {idNivelModalidad}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                //var resultados = await ctx.VwCatPonderacions.FromSqlInterpolated($@"EXEC sp_Ponderacion_Select @IdComponente = {idComponente}, @IdNivelModalidad = {idNivelModalidad}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                var resultados = await ctx.VwCatPonderacions.FromSqlInterpolated($@"EXEC sp_Ponderacion_Select @Id = {id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+
                 Respuesta = TipoAccion.Positiva(resultados);
 
             }
@@ -119,7 +122,7 @@ namespace Negocio
 
 
                 await ctx.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_Ponderacion_Actualiza
-                                    @TipoActualiza = {"U"}, @Id = {0}, @Componente_Id = {entidad.ComponenteId}, @NivelModalidad_Id = {entidad.NivelModalidadId}, @Puntuacion = {entidad.Puntuacion}, @Activo = {entidad.Activo}, @FechaCreacion = {entidad.FechaCreacion}, 
+                                    @TipoActualiza = {"U"}, @Id = {entidad.Id}, @Componente_Id = {entidad.ComponenteId}, @NivelModalidad_Id = {entidad.NivelModalidadId}, @Puntuacion = {entidad.Puntuacion}, @Activo = {entidad.Activo}, @FechaCreacion = {entidad.FechaCreacion}, 
                                     @UsuarioCreacion = {entidad.UsuarioCreacion}, @FechaModificacion = {entidad.FechaModificacion}, 
                                     @UsuarioModificacion = {entidad.UsuarioModificacion}, 
                                     @idRespuesta = {parametroId} OUTPUT, @exito = {parametroExito} OUTPUT,  @mensaje = {parametroMensaje} OUTPUT");

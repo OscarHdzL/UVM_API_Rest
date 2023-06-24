@@ -552,14 +552,14 @@ public partial class AppSIACDbContext : DbContext
 
         modelBuilder.Entity<CatPonderacion>(entity =>
         {
-            entity.HasKey(e => new { e.ComponenteId, e.NivelModalidadId }).HasName("PK_cat_Ponderacion_1");
+            entity.HasKey(e => e.Id).HasName("PK__cat_Pond__3214EC077A593D85");
 
             entity.ToTable("cat_Ponderacion");
 
             entity.Property(e => e.ComponenteId).HasColumnName("Componente_Id");
-            entity.Property(e => e.NivelModalidadId).HasColumnName("NivelModalidad_Id");
             entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
             entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.NivelModalidadId).HasColumnName("NivelModalidad_Id");
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
 

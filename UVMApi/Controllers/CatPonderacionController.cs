@@ -35,10 +35,10 @@ namespace UVMApi.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public Task<TipoAccion> GetById(int idComponente, int idNivelModalidad)
+        public Task<TipoAccion> GetById(int id)
         {
             //PAGINA 0, NO REGISTROS 1
-            return negocio.GetById(idComponente, idNivelModalidad, 5, 1);
+            return negocio.GetById(id, 5, 1);
         }
 
         [HttpPost]
