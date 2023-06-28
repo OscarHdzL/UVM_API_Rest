@@ -22,4 +22,6 @@ public partial class CatIndicadorSiac
     public DateTime? FechaModificacion { get; set; }
 
     public string? UsuarioModificacion { get; set; }
+
+    public virtual ICollection<ConfIndicadorSiac> ConfIndicadorSiacs { get; set; } = new List<ConfIndicadorSiac>();
 }

@@ -22,4 +22,6 @@ public partial class CatComponente
     public string? UsuarioModificacion { get; set; }
 
     public virtual ICollection<CatPonderacion> CatPonderacions { get; set; } = new List<CatPonderacion>();
+
+    public virtual ICollection<ConfElementoEvaluacion> ConfElementoEvaluacions { get; set; } = new List<ConfElementoEvaluacion>();
 }

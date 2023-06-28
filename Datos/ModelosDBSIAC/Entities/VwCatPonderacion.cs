@@ -9,6 +9,8 @@ public partial class VwCatPonderacion
 
     public int ComponenteId { get; set; }
 
+    public string? Nombre { get; set; }
+
     public int IdNivelModalidad { get; set; }
 
     public string? Nivel { get; set; }

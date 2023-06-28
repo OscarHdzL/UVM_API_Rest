@@ -21,5 +21,7 @@ public partial class SubIndicadorUvm
 
     public string? UsuarioModificacion { get; set; }
 
+    public virtual ICollection<ConfIndicadorSiac> ConfIndicadorSiacs { get; set; } = new List<ConfIndicadorSiac>();
+
     public virtual IndicadorUvm IndicadorUvm { get; set; } = null!;
 }

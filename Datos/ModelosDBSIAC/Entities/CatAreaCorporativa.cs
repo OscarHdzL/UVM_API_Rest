@@ -45,5 +45,9 @@ public partial class CatAreaCorporativa
 
     public string? Siglas { get; set; }
 
+    public virtual ICollection<ConfElementoEvaluacion> ConfElementoEvaluacions { get; set; } = new List<ConfElementoEvaluacion>();
+
+    public virtual ICollection<RelAreacorporativasubarea1> RelAreacorporativasubarea1s { get; set; } = new List<RelAreacorporativasubarea1>();
+
     public virtual ICollection<RelAreacorporativasubarea> RelAreacorporativasubareas { get; set; } = new List<RelAreacorporativasubarea>();
 }

@@ -56,6 +56,8 @@ namespace Negocio
                     dt = ToDataTable(response);
                     dt.Columns.Remove("CatPonderacions");
                     dt.Columns.Remove("RelCampusnivelmodalidads");
+                    dt.Columns.Remove("RelArearesponsablenivelmodalidads");
+                    
                 }
                 else if (SP == "sp_Usuario_Select")
                 {
@@ -131,6 +133,18 @@ namespace Negocio
                     dt = ToDataTable(response);
                     
                     
+                    dt.Columns.Remove("FechaCreacion");
+                    dt.Columns.Remove("UsuarioCreacion");
+                    dt.Columns.Remove("FechaModificacion");
+                    dt.Columns.Remove("UsuarioModificacion");
+                }
+                else if (SP == "sp_SubAreaCorporativa_Select")
+                {
+                    List<VwCatSubAreaCorporativa> response = new List<VwCatSubAreaCorporativa>();
+                    response = ctx_siac.VwCatSubAreaCorporativas.FromSqlInterpolated($@"EXEC  {SP} @Id={null}, @PageSize = {0}, @PageNumber = {0}").ToList();
+                    dt = ToDataTable(response);
+
+
                     dt.Columns.Remove("FechaCreacion");
                     dt.Columns.Remove("UsuarioCreacion");
                     dt.Columns.Remove("FechaModificacion");

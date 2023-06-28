@@ -20,4 +20,6 @@ public partial class CatElementoEvaluacion
     public DateTime? FechaModificacion { get; set; }
 
     public string? UsuarioModificacion { get; set; }
+
+    public virtual ICollection<ConfElementoEvaluacion> ConfElementoEvaluacions { get; set; } = new List<ConfElementoEvaluacion>();
 }

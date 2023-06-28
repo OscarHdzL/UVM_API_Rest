@@ -52,6 +52,8 @@ public partial class CatNivelModalidad
 
     public virtual ICollection<CatPonderacion> CatPonderacions { get; set; } = new List<CatPonderacion>();
 
+    public virtual ICollection<ConfElementoEvaluacion> ConfElementoEvaluacions { get; set; } = new List<ConfElementoEvaluacion>();
+
     public virtual ICollection<RelArearesponsablenivelmodalidad> RelArearesponsablenivelmodalidads { get; set; } = new List<RelArearesponsablenivelmodalidad>();
 
     public virtual ICollection<RelCampusnivelmodalidad> RelCampusnivelmodalidads { get; set; } = new List<RelCampusnivelmodalidad>();

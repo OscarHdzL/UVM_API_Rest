@@ -28,4 +28,6 @@ public partial class CatPeriodoEvaluacion
     public virtual CatInstitucion CatInstitucion { get; set; } = null!;
 
     public virtual Ciclo Ciclo { get; set; } = null!;
+
+    public virtual ICollection<ConfElementoEvaluacion> ConfElementoEvaluacions { get; set; } = new List<ConfElementoEvaluacion>();
 }

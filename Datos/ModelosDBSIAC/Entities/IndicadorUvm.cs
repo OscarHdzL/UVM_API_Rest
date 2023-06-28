@@ -23,5 +23,7 @@ public partial class IndicadorUvm
 
     public virtual ComponenteUvm ComponenteUvm { get; set; } = null!;
 
+    public virtual ICollection<ConfIndicadorSiac> ConfIndicadorSiacs { get; set; } = new List<ConfIndicadorSiac>();
+
     public virtual ICollection<SubIndicadorUvm> SubIndicadorUvms { get; set; } = new List<SubIndicadorUvm>();
 }

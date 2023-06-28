@@ -3,15 +3,19 @@ using System.Collections.Generic;
 
 namespace Datos.ModelosDBSIAC.Entities;
 
-public partial class CatNormativa
+public partial class VwEscalaMedicionCondicion
 {
-    public int Id { get; set; }
+    public int EscalaMedicionCondicionId { get; set; }
 
-    public string? Clave { get; set; }
+    public int ConfEscalaMedicionId { get; set; }
+
+    public int CatEscalaMedicionId { get; set; }
+
+    public string? Escala { get; set; }
 
     public string? Nombre { get; set; }
 
-    public bool? Activo { get; set; }
+    public string Condicion { get; set; } = null!;
 
     public DateTime FechaCreacion { get; set; }
 
@@ -20,6 +24,4 @@ public partial class CatNormativa
     public DateTime? FechaModificacion { get; set; }
 
     public string? UsuarioModificacion { get; set; }
-
-    public virtual ICollection<ConfElementoEvaluacion> ConfElementoEvaluacions { get; set; } = new List<ConfElementoEvaluacion>();
 }

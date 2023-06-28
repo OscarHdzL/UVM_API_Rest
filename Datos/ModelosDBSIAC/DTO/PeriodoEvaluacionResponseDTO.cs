@@ -13,6 +13,7 @@ namespace Datos.ModelosDBSIAC.DTO
         public int Anio { get; set; }
 
         public int IdCiclo { get; set; }
+        public string Ciclo { get; set; } = null!;
 
         public int IdInstitucion { get; set; }
 

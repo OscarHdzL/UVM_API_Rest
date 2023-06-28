@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+
 namespace Datos.ModelosDBSIAC.Entities;
 
 public partial class AppSIACDbContext : DbContext
@@ -35,6 +36,8 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<CatElementoEvaluacion> CatElementoEvaluacions { get; set; }
 
+    public virtual DbSet<CatEscalaMedicion> CatEscalaMedicions { get; set; }
+
     public virtual DbSet<CatEtapa> CatEtapas { get; set; }
 
     public virtual DbSet<CatIndicadorSiac> CatIndicadorSiacs { get; set; }
@@ -59,6 +62,8 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<CatSede> CatSedes { get; set; }
 
+    public virtual DbSet<CatSubAreaCorporativa> CatSubAreaCorporativas { get; set; }
+
     public virtual DbSet<CatTipoAcceso> CatTipoAccesos { get; set; }
 
     public virtual DbSet<CatTipoVistum> CatTipoVista { get; set; }
@@ -71,13 +76,23 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<ComponenteUvm> ComponenteUvms { get; set; }
 
+    public virtual DbSet<ConfElementoEvaluacion> ConfElementoEvaluacions { get; set; }
+
+    public virtual DbSet<ConfEscalaMedicion> ConfEscalaMedicions { get; set; }
+
+    public virtual DbSet<ConfIndicadorSiac> ConfIndicadorSiacs { get; set; }
+
     public virtual DbSet<IndicadorUvm> IndicadorUvms { get; set; }
 
     public virtual DbSet<RelAreacorporativasubarea> RelAreacorporativasubareas { get; set; }
 
+    public virtual DbSet<RelAreacorporativasubarea1> RelAreacorporativasubareas1 { get; set; }
+
     public virtual DbSet<RelArearesponsablenivelmodalidad> RelArearesponsablenivelmodalidads { get; set; }
 
     public virtual DbSet<RelCampusnivelmodalidad> RelCampusnivelmodalidads { get; set; }
+
+    public virtual DbSet<RelEscalamedicioncondicion> RelEscalamedicioncondicions { get; set; }
 
     public virtual DbSet<RelEtapaPeriodoEvaluacion> RelEtapaPeriodoEvaluacions { get; set; }
 
@@ -117,6 +132,8 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<VwCatDependenciaArea> VwCatDependenciaAreas { get; set; }
 
+    public virtual DbSet<VwCatEscalaMedicion> VwCatEscalaMedicions { get; set; }
+
     public virtual DbSet<VwCatEtapa> VwCatEtapas { get; set; }
 
     public virtual DbSet<VwCatInstitucion> VwCatInstitucions { get; set; }
@@ -131,9 +148,19 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<VwCatRegion> VwCatRegions { get; set; }
 
+    public virtual DbSet<VwCatSubAreaCorporativa> VwCatSubAreaCorporativas { get; set; }
+
     public virtual DbSet<VwCatTipoAcceso> VwCatTipoAccesos { get; set; }
 
     public virtual DbSet<VwComponenteUvm> VwComponenteUvms { get; set; }
+
+    public virtual DbSet<VwConfElementoEvaluacion> VwConfElementoEvaluacions { get; set; }
+
+    public virtual DbSet<VwConfEscalaMedicionBase> VwConfEscalaMedicionBases { get; set; }
+
+    public virtual DbSet<VwConfIndicadorSiac> VwConfIndicadorSiacs { get; set; }
+
+    public virtual DbSet<VwEscalaMedicionCondicion> VwEscalaMedicionCondicions { get; set; }
 
     public virtual DbSet<VwIndicadorUvm> VwIndicadorUvms { get; set; }
 
@@ -389,6 +416,23 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<CatEscalaMedicion>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__cat_Esca__3214EC0764770F32");
+
+            entity.ToTable("cat_EscalaMedicion");
+
+            entity.Property(e => e.Activo)
+                .IsRequired()
+                .HasDefaultValueSql("((1))");
+            entity.Property(e => e.Escala).HasMaxLength(100);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Nombre).HasMaxLength(500);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<CatEtapa>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__cat_Etap__3214EC073A8AE7D5");
@@ -634,6 +678,20 @@ public partial class AppSIACDbContext : DbContext
                 .HasComment("Usuario de última modificación del registro.");
         });
 
+        modelBuilder.Entity<CatSubAreaCorporativa>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__cat_SubA__3214EC0781E52A88");
+
+            entity.ToTable("cat_SubAreaCorporativa");
+
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Nombre).HasMaxLength(150);
+            entity.Property(e => e.Siglas).HasMaxLength(5);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<CatTipoAcceso>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Cat_Tipo__3214EC0735A7F38E");
@@ -763,6 +821,109 @@ public partial class AppSIACDbContext : DbContext
                 .HasComment("Usuario de última modificación del registro.");
         });
 
+        modelBuilder.Entity<ConfElementoEvaluacion>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__conf_Ele__3214EC07140287D5");
+
+            entity.ToTable("conf_ElementoEvaluacion");
+
+            entity.Property(e => e.Archivo).HasMaxLength(500);
+            entity.Property(e => e.Descripcion).HasMaxLength(150);
+            entity.Property(e => e.Evidencia).HasMaxLength(150);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.MimeTypeArchivo).HasMaxLength(100);
+            entity.Property(e => e.NombreArchivo).HasMaxLength(500);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+
+            entity.HasOne(d => d.CatAreaCorporativa).WithMany(p => p.ConfElementoEvaluacions)
+                .HasForeignKey(d => d.CatAreaCorporativaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__conf_Elem__CatAr__75035A77");
+
+            entity.HasOne(d => d.CatAreaResponsable).WithMany(p => p.ConfElementoEvaluacions)
+                .HasForeignKey(d => d.CatAreaResponsableId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__conf_Elem__CatAr__7132C993");
+
+            entity.HasOne(d => d.CatComponente).WithMany(p => p.ConfElementoEvaluacions)
+                .HasForeignKey(d => d.CatComponenteId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__conf_Elem__CatCo__731B1205");
+
+            entity.HasOne(d => d.CatElementoEvaluacion).WithMany(p => p.ConfElementoEvaluacions)
+                .HasForeignKey(d => d.CatElementoEvaluacionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__conf_Elem__CatEl__740F363E");
+
+            entity.HasOne(d => d.CatNivelModalidad).WithMany(p => p.ConfElementoEvaluacions)
+                .HasForeignKey(d => d.CatNivelModalidadId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__conf_Elem__CatNi__7226EDCC");
+
+            entity.HasOne(d => d.CatNormativa).WithMany(p => p.ConfElementoEvaluacions)
+                .HasForeignKey(d => d.CatNormativaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__conf_Elem__CatNo__75F77EB0");
+
+            entity.HasOne(d => d.CatPeriodoEvaluacion).WithMany(p => p.ConfElementoEvaluacions)
+                .HasForeignKey(d => d.CatPeriodoEvaluacionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__conf_Elem__Usuar__703EA55A");
+        });
+
+        modelBuilder.Entity<ConfEscalaMedicion>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__conf_Esc__3214EC07EBD9DF21");
+
+            entity.ToTable("conf_EscalaMedicion");
+
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+
+            entity.HasOne(d => d.ConfIndicadorSiac).WithMany(p => p.ConfEscalaMedicions)
+                .HasForeignKey(d => d.ConfIndicadorSiacId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__conf_Esca__Usuar__0169315C");
+        });
+
+        modelBuilder.Entity<ConfIndicadorSiac>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__conf_Ind__3214EC07FDB03AD1");
+
+            entity.ToTable("conf_IndicadorSIAC");
+
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+
+            entity.HasOne(d => d.CatIndicadorSiac).WithMany(p => p.ConfIndicadorSiacs)
+                .HasForeignKey(d => d.CatIndicadorSiacId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__conf_Indi__CatIn__79C80F94");
+
+            entity.HasOne(d => d.ComponenteUvm).WithMany(p => p.ConfIndicadorSiacs)
+                .HasForeignKey(d => d.ComponenteUvmId)
+                .HasConstraintName("FK__conf_Indi__Compo__7ABC33CD");
+
+            entity.HasOne(d => d.ConfElementoEvaluacion).WithMany(p => p.ConfIndicadorSiacs)
+                .HasForeignKey(d => d.ConfElementoEvaluacionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__conf_Indi__Usuar__78D3EB5B");
+
+            entity.HasOne(d => d.IndicadorUvm).WithMany(p => p.ConfIndicadorSiacs)
+                .HasForeignKey(d => d.IndicadorUvmId)
+                .HasConstraintName("FK__conf_Indi__Indic__7BB05806");
+
+            entity.HasOne(d => d.SubindicadorUvm).WithMany(p => p.ConfIndicadorSiacs)
+                .HasForeignKey(d => d.SubindicadorUvmId)
+                .HasConstraintName("FK__conf_Indi__Subin__7CA47C3F");
+        });
+
         modelBuilder.Entity<IndicadorUvm>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Indicado__3214EC0787905E63");
@@ -783,13 +944,30 @@ public partial class AppSIACDbContext : DbContext
 
         modelBuilder.Entity<RelAreacorporativasubarea>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__rel_area__3214EC071BAA72D1");
+
+            entity.ToTable("rel_areacorporativasubarea");
+
+            entity.HasOne(d => d.CatAreaCorporativa).WithMany(p => p.RelAreacorporativasubareas)
+                .HasForeignKey(d => d.CatAreaCorporativaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__rel_areac__CatSu__320C68B7");
+
+            entity.HasOne(d => d.CatSubAreaCorporativa).WithMany(p => p.RelAreacorporativasubareas)
+                .HasForeignKey(d => d.CatSubAreaCorporativaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__rel_areac__CatSu__33008CF0");
+        });
+
+        modelBuilder.Entity<RelAreacorporativasubarea1>(entity =>
+        {
             entity.HasKey(e => e.Id).HasName("PK__rel_area__3214EC070610C0F1");
 
             entity.ToTable("rel_areacorporativasubareas");
 
             entity.Property(e => e.Subarea).HasMaxLength(150);
 
-            entity.HasOne(d => d.CatAreaCorporativa).WithMany(p => p.RelAreacorporativasubareas)
+            entity.HasOne(d => d.CatAreaCorporativa).WithMany(p => p.RelAreacorporativasubarea1s)
                 .HasForeignKey(d => d.CatAreaCorporativaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__rel_areac__CatAr__63D8CE75");
@@ -827,6 +1005,29 @@ public partial class AppSIACDbContext : DbContext
                 .HasForeignKey(d => d.CatNivelModalidadId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__rel_campu__CatNi__50C5FA01");
+        });
+
+        modelBuilder.Entity<RelEscalamedicioncondicion>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__rel_esca__3214EC07B02A9BFF");
+
+            entity.ToTable("rel_escalamedicioncondicion");
+
+            entity.Property(e => e.Condicion).HasMaxLength(2000);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+
+            entity.HasOne(d => d.CatEscalaMedicion).WithMany(p => p.RelEscalamedicioncondicions)
+                .HasForeignKey(d => d.CatEscalaMedicionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__rel_escal__CatEs__0BE6BFCF");
+
+            entity.HasOne(d => d.ConfEscalaMedicion).WithMany(p => p.RelEscalamedicioncondicions)
+                .HasForeignKey(d => d.ConfEscalaMedicionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__rel_escal__Usuar__0AF29B96");
         });
 
         modelBuilder.Entity<RelEtapaPeriodoEvaluacion>(entity =>
@@ -1056,6 +1257,7 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.Nombre).HasMaxLength(150);
             entity.Property(e => e.Siglas).HasMaxLength(5);
             entity.Property(e => e.Subareas).HasMaxLength(4000);
+            entity.Property(e => e.SubareasIds).HasMaxLength(4000);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });
@@ -1122,6 +1324,21 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(100);
         });
 
+        modelBuilder.Entity<VwCatEscalaMedicion>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_CatEscalaMedicion");
+
+            entity.Property(e => e.CatEsEscalaMedicionId).ValueGeneratedOnAdd();
+            entity.Property(e => e.Escala).HasMaxLength(100);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Nombre).HasMaxLength(500);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<VwCatEtapa>(entity =>
         {
             entity
@@ -1186,6 +1403,7 @@ public partial class AppSIACDbContext : DbContext
                 .HasNoKey()
                 .ToView("vw_CatPeriodoEvaluacion_Base");
 
+            entity.Property(e => e.Ciclo).HasMaxLength(200);
             entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
             entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
             entity.Property(e => e.Institucion).HasMaxLength(200);
@@ -1206,6 +1424,7 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.Modalidad).HasMaxLength(100);
             entity.Property(e => e.Nivel).HasMaxLength(100);
             entity.Property(e => e.NivelModalidad).HasMaxLength(201);
+            entity.Property(e => e.Nombre).HasMaxLength(50);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });
@@ -1221,6 +1440,21 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
             entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
             entity.Property(e => e.Nombre).HasMaxLength(500);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<VwCatSubAreaCorporativa>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_CatSubAreaCorporativa");
+
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.Nombre).HasMaxLength(150);
+            entity.Property(e => e.Siglas).HasMaxLength(5);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });
@@ -1255,6 +1489,120 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.NombreComponenteUvm).HasMaxLength(200);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<VwConfElementoEvaluacion>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_ConfElementoEvaluacion");
+
+            entity.Property(e => e.Archivo).HasMaxLength(500);
+            entity.Property(e => e.AreaCorporativa).HasMaxLength(150);
+            entity.Property(e => e.AreaResponsable).HasMaxLength(150);
+            entity.Property(e => e.Ciclo).HasMaxLength(200);
+            entity.Property(e => e.ClaveComponente).HasMaxLength(50);
+            entity.Property(e => e.ClaveElementoEvaluacion).HasMaxLength(50);
+            entity.Property(e => e.ClaveNormativa).HasMaxLength(10);
+            entity.Property(e => e.Componente).HasMaxLength(50);
+            entity.Property(e => e.Descripcion).HasMaxLength(150);
+            entity.Property(e => e.ElementoEvaluacion).HasMaxLength(500);
+            entity.Property(e => e.Evidencia).HasMaxLength(150);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Institucion).HasMaxLength(200);
+            entity.Property(e => e.MimeTypeArchivo).HasMaxLength(100);
+            entity.Property(e => e.NivelModalidad).HasMaxLength(201);
+            entity.Property(e => e.NombreArchivo).HasMaxLength(500);
+            entity.Property(e => e.Normativa).HasMaxLength(500);
+            entity.Property(e => e.Proceso).HasMaxLength(50);
+            entity.Property(e => e.SiglasAreaCorporativa).HasMaxLength(5);
+            entity.Property(e => e.SubareasAreaCorporativa).HasMaxLength(4000);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<VwConfEscalaMedicionBase>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_ConfEscalaMedicionBase");
+
+            entity.Property(e => e.AreaCorporativa).HasMaxLength(150);
+            entity.Property(e => e.AreaResponsable).HasMaxLength(150);
+            entity.Property(e => e.Ciclo).HasMaxLength(200);
+            entity.Property(e => e.ClaveComponente).HasMaxLength(50);
+            entity.Property(e => e.ClaveElementoEvaluacion).HasMaxLength(50);
+            entity.Property(e => e.ClaveIndicadorSiac).HasMaxLength(50);
+            entity.Property(e => e.ClaveNormativa).HasMaxLength(10);
+            entity.Property(e => e.Componente).HasMaxLength(50);
+            entity.Property(e => e.Descripcion).HasMaxLength(150);
+            entity.Property(e => e.DescripcionComponenteUvm).HasMaxLength(500);
+            entity.Property(e => e.ElementoEvaluacion).HasMaxLength(500);
+            entity.Property(e => e.Evidencia).HasMaxLength(150);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.IndicadorSiac).HasMaxLength(500);
+            entity.Property(e => e.Institucion).HasMaxLength(200);
+            entity.Property(e => e.NivelModalidad).HasMaxLength(201);
+            entity.Property(e => e.NombreComponenteUvm).HasMaxLength(200);
+            entity.Property(e => e.NombreIndicadorUvm).HasMaxLength(500);
+            entity.Property(e => e.NombreSubIndicadorUvm).HasMaxLength(500);
+            entity.Property(e => e.Normativa).HasMaxLength(500);
+            entity.Property(e => e.Proceso).HasMaxLength(50);
+            entity.Property(e => e.SiglasAreaCorporativa).HasMaxLength(5);
+            entity.Property(e => e.SubareasAreaCorporativa).HasMaxLength(4000);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<VwConfIndicadorSiac>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_ConfIndicadorSIAC");
+
+            entity.Property(e => e.AreaCorporativa).HasMaxLength(150);
+            entity.Property(e => e.AreaResponsable).HasMaxLength(150);
+            entity.Property(e => e.Ciclo).HasMaxLength(200);
+            entity.Property(e => e.ClaveComponente).HasMaxLength(50);
+            entity.Property(e => e.ClaveElementoEvaluacion).HasMaxLength(50);
+            entity.Property(e => e.ClaveIndicadorSiac).HasMaxLength(50);
+            entity.Property(e => e.ClaveNormativa).HasMaxLength(10);
+            entity.Property(e => e.Componente).HasMaxLength(50);
+            entity.Property(e => e.Descripcion).HasMaxLength(150);
+            entity.Property(e => e.DescripcionComponenteUvm).HasMaxLength(500);
+            entity.Property(e => e.ElementoEvaluacion).HasMaxLength(500);
+            entity.Property(e => e.Evidencia).HasMaxLength(150);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.IndicadorSiac).HasMaxLength(500);
+            entity.Property(e => e.Institucion).HasMaxLength(200);
+            entity.Property(e => e.NivelModalidad).HasMaxLength(201);
+            entity.Property(e => e.NombreComponenteUvm).HasMaxLength(200);
+            entity.Property(e => e.NombreIndicadorUvm).HasMaxLength(500);
+            entity.Property(e => e.NombreSubIndicadorUvm).HasMaxLength(500);
+            entity.Property(e => e.Normativa).HasMaxLength(500);
+            entity.Property(e => e.Proceso).HasMaxLength(50);
+            entity.Property(e => e.SiglasAreaCorporativa).HasMaxLength(5);
+            entity.Property(e => e.SubareasAreaCorporativa).HasMaxLength(4000);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<VwEscalaMedicionCondicion>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_EscalaMedicionCondicion");
+
+            entity.Property(e => e.Condicion).HasMaxLength(2000);
+            entity.Property(e => e.Escala).HasMaxLength(100);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Nombre).HasMaxLength(500);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });

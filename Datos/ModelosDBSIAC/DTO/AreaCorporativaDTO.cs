@@ -41,7 +41,7 @@ namespace Datos.ModelosDBSIAC.DTO
         public string? UsuarioModificacion { get; set; }
 
         public string? Siglas { get; set; }
-        public List<string> ListaSubareas { get; set; } = new List<string>();
+        public List<int> ListaSubareas { get; set; } = new List<int>();
 
     }
 }

@@ -9,6 +9,8 @@ public partial class VwAreaCorporativaSubarea
 
     public int CatAreaCorporativaId { get; set; }
 
+    public int CatSubAreaCorporativaId { get; set; }
+
     public string AreaCorporativa { get; set; } = null!;
 
     public string Subarea { get; set; } = null!;

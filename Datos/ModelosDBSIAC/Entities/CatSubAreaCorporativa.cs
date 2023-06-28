@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Datos.ModelosDBSIAC.Entities;
 
-public partial class VwCatAreaCorporativa
+public partial class CatSubAreaCorporativa
 {
     public int Id { get; set; }
 
@@ -21,7 +21,5 @@ public partial class VwCatAreaCorporativa
 
     public string? UsuarioModificacion { get; set; }
 
-    public string? Subareas { get; set; }
-
-    public string? SubareasIds { get; set; }
+    public virtual ICollection<RelAreacorporativasubarea> RelAreacorporativasubareas { get; set; } = new List<RelAreacorporativasubarea>();
 }

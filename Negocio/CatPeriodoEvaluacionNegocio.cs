@@ -44,6 +44,7 @@ namespace Negocio
                     periodo.IdPeriodoEvaluacion= item.IdPeriodoEvaluacion;
                     periodo.Anio = item.Anio;
                     periodo.IdCiclo= item.IdCiclo;
+                    periodo.Ciclo = item.Ciclo;
                     periodo.IdInstitucion = item.IdInstitucion;
                     periodo.Institucion = item.Institucion;
                     periodo.Proceso = item.Proceso;

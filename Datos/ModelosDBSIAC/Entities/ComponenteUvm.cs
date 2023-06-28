@@ -47,5 +47,7 @@ public partial class ComponenteUvm
 
     public virtual ICollection<CatMatrizUvm> CatMatrizUvms { get; set; } = new List<CatMatrizUvm>();
 
+    public virtual ICollection<ConfIndicadorSiac> ConfIndicadorSiacs { get; set; } = new List<ConfIndicadorSiac>();
+
     public virtual ICollection<IndicadorUvm> IndicadorUvms { get; set; } = new List<IndicadorUvm>();
 }

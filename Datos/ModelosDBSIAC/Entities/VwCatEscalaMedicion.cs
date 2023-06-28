@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Datos.ModelosDBSIAC.Entities;
 
-public partial class VwCatAreaCorporativa
+public partial class VwCatEscalaMedicion
 {
-    public int Id { get; set; }
+    public int CatEsEscalaMedicionId { get; set; }
 
-    public string? Siglas { get; set; }
+    public string Escala { get; set; } = null!;
 
     public string Nombre { get; set; } = null!;
 
@@ -20,8 +20,4 @@ public partial class VwCatAreaCorporativa
     public DateTime? FechaModificacion { get; set; }
 
     public string? UsuarioModificacion { get; set; }
-
-    public string? Subareas { get; set; }
-
-    public string? SubareasIds { get; set; }
 }

@@ -29,6 +29,8 @@ public partial class CatAreaResponsable
 
     public virtual CatAreaResponsable? AreaResponsablePadreNavigation { get; set; }
 
+    public virtual ICollection<ConfElementoEvaluacion> ConfElementoEvaluacions { get; set; } = new List<ConfElementoEvaluacion>();
+
     public virtual ICollection<CatAreaResponsable> InverseAreaResponsablePadreNavigation { get; set; } = new List<CatAreaResponsable>();
 
     public virtual ICollection<RelArearesponsablenivelmodalidad> RelArearesponsablenivelmodalidads { get; set; } = new List<RelArearesponsablenivelmodalidad>();

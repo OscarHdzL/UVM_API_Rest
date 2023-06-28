@@ -3,15 +3,11 @@ using System.Collections.Generic;
 
 namespace Datos.ModelosDBSIAC.Entities;
 
-public partial class VwCatAreaCorporativa
+public partial class ConfEscalaMedicion
 {
     public int Id { get; set; }
 
-    public string? Siglas { get; set; }
-
-    public string Nombre { get; set; } = null!;
-
-    public bool Activo { get; set; }
+    public int ConfIndicadorSiacId { get; set; }
 
     public DateTime FechaCreacion { get; set; }
 
@@ -21,7 +17,7 @@ public partial class VwCatAreaCorporativa
 
     public string? UsuarioModificacion { get; set; }
 
-    public string? Subareas { get; set; }
+    public virtual ConfIndicadorSiac ConfIndicadorSiac { get; set; } = null!;
 
-    public string? SubareasIds { get; set; }
+    public virtual ICollection<RelEscalamedicioncondicion> RelEscalamedicioncondicions { get; set; } = new List<RelEscalamedicioncondicion>();
 }
