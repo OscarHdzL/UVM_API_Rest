@@ -29,7 +29,53 @@ namespace Negocio
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
                 var resultados = await ctx.VwConfElementoEvaluacions.FromSqlInterpolated($@"EXEC sp_ConfiguracionElementoEvaluacion_Select @TipoConsulta={"ConfiguracionElementoEvaluacionLista"}, @Id = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
-                Respuesta = TipoAccion.Positiva(resultados);
+
+                List<ConfiguracionElementoEvaluacionResponseDTO> lista = new List<ConfiguracionElementoEvaluacionResponseDTO>();
+
+                foreach (VwConfElementoEvaluacion item in resultados){ 
+
+                    ConfiguracionElementoEvaluacionResponseDTO objeto = new ConfiguracionElementoEvaluacionResponseDTO();
+                    objeto.Id = item.Id;
+                    objeto.CatPeriodoEvaluacionId = item.CatPeriodoEvaluacionId;
+                    objeto.Anio = item.Anio;
+                    objeto.IdCiclo = item.IdCiclo;
+                    objeto.Ciclo = item.Ciclo;
+                    objeto.IdInstitucion = item.IdInstitucion;
+                    objeto.Institucion = item.Institucion;
+                    objeto.Proceso = item.Proceso;
+                    objeto.CatAreaResponsableId = item.CatAreaResponsableId;
+                    objeto.AreaResponsable = item.AreaResponsable;
+                    objeto.CatNivelModalidadId = item.CatNivelModalidadId;
+                    objeto.NivelModalidad = item.NivelModalidad;
+                    objeto.CatComponenteId = item.CatComponenteId;
+                    objeto.ClaveComponente = item.ClaveComponente;
+                    objeto.Componente = item.Componente;
+                    objeto.CatElementoEvaluacionId = item.CatElementoEvaluacionId;
+                    objeto.ClaveElementoEvaluacion = item.ClaveElementoEvaluacion;
+                    objeto.ElementoEvaluacion = item.ElementoEvaluacion;
+                    objeto.CatAreaCorporativaId = item.CatAreaCorporativaId;
+                    objeto.SiglasAreaCorporativa = item.SiglasAreaCorporativa;
+                    objeto.AreaCorporativa = item.AreaCorporativa;
+                    objeto.SubareasAreaCorporativa = item.SubareasAreaCorporativa;
+                    objeto.CatNormativaId = item.CatNormativaId;
+                    objeto.ClaveNormativa = item.ClaveNormativa;
+                    objeto.Normativa = item.Normativa;
+                    objeto.Evidencia = item.Evidencia;
+                    objeto.Descripcion = item.Descripcion;
+                    objeto.Cantidad = item.Cantidad;
+                    objeto.Activo = item.Activo;
+                    objeto.FechaCreacion = item.FechaCreacion;
+                    objeto.UsuarioCreacion = item.UsuarioCreacion;
+                    objeto.FechaModificacion = item.FechaModificacion;
+                    objeto.UsuarioModificacion = item.UsuarioModificacion;
+                    objeto.ListaArchivos = await ctx.VwConfElementoEvaluacionFiles.FromSqlInterpolated($@"EXEC sp_ConfiguracionElementoEvaluacion_Select @TipoConsulta={"ConfiguracionElementoEvaluacionFiles"}, @Id = {objeto.Id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                    lista.Add(objeto);
+                };
+
+
+
+
+                Respuesta = TipoAccion.Positiva(lista);
 
             }
             catch (Exception ex)
@@ -49,7 +95,53 @@ namespace Negocio
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
                 var resultados = await ctx.VwConfElementoEvaluacions.FromSqlInterpolated($@"EXEC sp_ConfiguracionElementoEvaluacion_Select @TipoConsulta={"ConfiguracionElementoEvaluacionLista"}, @Id = {id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
-                Respuesta = TipoAccion.Positiva(resultados);
+                List<ConfiguracionElementoEvaluacionResponseDTO> lista = new List<ConfiguracionElementoEvaluacionResponseDTO>();
+
+                foreach (VwConfElementoEvaluacion item in resultados)
+                {
+
+                    ConfiguracionElementoEvaluacionResponseDTO objeto = new ConfiguracionElementoEvaluacionResponseDTO();
+                    objeto.Id = item.Id;
+                    objeto.CatPeriodoEvaluacionId = item.CatPeriodoEvaluacionId;
+                    objeto.Anio = item.Anio;
+                    objeto.IdCiclo = item.IdCiclo;
+                    objeto.Ciclo = item.Ciclo;
+                    objeto.IdInstitucion = item.IdInstitucion;
+                    objeto.Institucion = item.Institucion;
+                    objeto.Proceso = item.Proceso;
+                    objeto.CatAreaResponsableId = item.CatAreaResponsableId;
+                    objeto.AreaResponsable = item.AreaResponsable;
+                    objeto.CatNivelModalidadId = item.CatNivelModalidadId;
+                    objeto.NivelModalidad = item.NivelModalidad;
+                    objeto.CatComponenteId = item.CatComponenteId;
+                    objeto.ClaveComponente = item.ClaveComponente;
+                    objeto.Componente = item.Componente;
+                    objeto.CatElementoEvaluacionId = item.CatElementoEvaluacionId;
+                    objeto.ClaveElementoEvaluacion = item.ClaveElementoEvaluacion;
+                    objeto.ElementoEvaluacion = item.ElementoEvaluacion;
+                    objeto.CatAreaCorporativaId = item.CatAreaCorporativaId;
+                    objeto.SiglasAreaCorporativa = item.SiglasAreaCorporativa;
+                    objeto.AreaCorporativa = item.AreaCorporativa;
+                    objeto.SubareasAreaCorporativa = item.SubareasAreaCorporativa;
+                    objeto.CatNormativaId = item.CatNormativaId;
+                    objeto.ClaveNormativa = item.ClaveNormativa;
+                    objeto.Normativa = item.Normativa;
+                    objeto.Evidencia = item.Evidencia;
+                    objeto.Descripcion = item.Descripcion;
+                    objeto.Cantidad = item.Cantidad;
+                    objeto.Activo = item.Activo;
+                    objeto.FechaCreacion = item.FechaCreacion;
+                    objeto.UsuarioCreacion = item.UsuarioCreacion;
+                    objeto.FechaModificacion = item.FechaModificacion;
+                    objeto.UsuarioModificacion = item.UsuarioModificacion;
+                    objeto.ListaArchivos = await ctx.VwConfElementoEvaluacionFiles.FromSqlInterpolated($@"EXEC sp_ConfiguracionElementoEvaluacion_Select @TipoConsulta={"ConfiguracionElementoEvaluacionFiles"}, @Id = {objeto.Id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                    lista.Add(objeto);
+                };
+
+
+
+
+                Respuesta = TipoAccion.Positiva(lista);
 
             }
             catch (Exception ex)

@@ -26,41 +26,41 @@ namespace UVMApi.Controllers
         }
 
 
-        //[HttpGet]
-        //[Route("[action]")]
-        //public Task<TipoAccion> GetAll(int pageNumber = 1, int pageSize = 5)
-        //{
-        //    return negocio.Get(null, pageSize, pageNumber);
-        //}
+        [HttpGet]
+        [Route("[action]")]
+        public Task<TipoAccion> GetAll(int pageNumber = 1, int pageSize = 5)
+        {
+            return negocio.Get(null, pageSize, pageNumber);
+        }
 
-        //[HttpGet]
+        [HttpGet]
+        [Route("[action]")]
+        public Task<TipoAccion> GetById(int id)
+        {
+            //PAGINA 0, NO REGISTROS 1
+            return negocio.GetById(id, 5, 1);
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public Task<TipoAccion> Add(ConfiguracionEscalaMedicionDTO entidad)
+        {
+            return negocio.Insertar(entidad);
+        }
+
+        [HttpPut]
+        [Route("[action]")]
+        public Task<TipoAccion> Update(ConfiguracionEscalaMedicionDTO entidad)
+        {
+            return negocio.Actualizar(entidad);
+        }
+
+        //[HttpDelete]
         //[Route("[action]")]
-        //public Task<TipoAccion> GetById(int id)
+        //public Task<TipoAccion> Disable(int id)
         //{
         //    //PAGINA 0, NO REGISTROS 1
-        //    return negocio.GetById(id, 5, 1);
+        //    return negocio.Deshabilitar(id);
         //}
-
-        //[HttpPost]
-        //[Route("[action]")]
-        //public Task<TipoAccion> Add(ConfiguracionEscalaMedicionDTO entidad)
-        //{
-        //    return negocio.Insertar(entidad);
-        //}
-
-        //[HttpPut]
-        //[Route("[action]")]
-        //public Task<TipoAccion> Update(ConfiguracionEscalaMedicionDTO entidad)
-        //{
-        //    return negocio.Actualizar(entidad);
-        //}
-
-        ////[HttpDelete]
-        ////[Route("[action]")]
-        ////public Task<TipoAccion> Disable(int id)
-        ////{
-        ////    //PAGINA 0, NO REGISTROS 1
-        ////    return negocio.Deshabilitar(id);
-        ////}
     }
 }

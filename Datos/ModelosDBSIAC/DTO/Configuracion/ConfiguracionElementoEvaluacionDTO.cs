@@ -30,12 +30,6 @@ namespace Datos.ModelosDBSIAC.DTO
 
         public int Cantidad { get; set; }
 
-        public string? Archivo { get; set; }
-
-        public string? NombreArchivo { get; set; }
-
-        public string? MimeTypeArchivo { get; set; }
-
         public bool Activo { get; set; }
 
         public DateTime FechaCreacion { get; set; }
@@ -45,6 +39,8 @@ namespace Datos.ModelosDBSIAC.DTO
         public DateTime? FechaModificacion { get; set; }
 
         public string? UsuarioModificacion { get; set; }
+
+        public List<int> Archivos { get; set; } = new List<int>();
 
     }
 

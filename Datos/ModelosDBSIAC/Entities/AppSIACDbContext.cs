@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Configuration;
 namespace Datos.ModelosDBSIAC.Entities;
 
 public partial class AppSIACDbContext : DbContext
@@ -17,6 +16,8 @@ public partial class AppSIACDbContext : DbContext
     }
 
     public virtual DbSet<AcreditadoraProceso> AcreditadoraProcesos { get; set; }
+
+    public virtual DbSet<AzureStorageFile> AzureStorageFiles { get; set; }
 
     public virtual DbSet<Capitulo> Capitulos { get; set; }
 
@@ -92,6 +93,8 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<RelCampusnivelmodalidad> RelCampusnivelmodalidads { get; set; }
 
+    public virtual DbSet<RelConfelementoevaluacionfile> RelConfelementoevaluacionfiles { get; set; }
+
     public virtual DbSet<RelEscalamedicioncondicion> RelEscalamedicioncondicions { get; set; }
 
     public virtual DbSet<RelEtapaPeriodoEvaluacion> RelEtapaPeriodoEvaluacions { get; set; }
@@ -119,6 +122,8 @@ public partial class AppSIACDbContext : DbContext
     public virtual DbSet<VwAreaCorporativaSubarea> VwAreaCorporativaSubareas { get; set; }
 
     public virtual DbSet<VwAreaResponsableNivelModalidad> VwAreaResponsableNivelModalidads { get; set; }
+
+    public virtual DbSet<VwAzureStorageFile> VwAzureStorageFiles { get; set; }
 
     public virtual DbSet<VwCampusNivelModalidad> VwCampusNivelModalidads { get; set; }
 
@@ -155,6 +160,8 @@ public partial class AppSIACDbContext : DbContext
     public virtual DbSet<VwComponenteUvm> VwComponenteUvms { get; set; }
 
     public virtual DbSet<VwConfElementoEvaluacion> VwConfElementoEvaluacions { get; set; }
+
+    public virtual DbSet<VwConfElementoEvaluacionFile> VwConfElementoEvaluacionFiles { get; set; }
 
     public virtual DbSet<VwConfEscalaMedicionBase> VwConfEscalaMedicionBases { get; set; }
 
@@ -204,6 +211,22 @@ public partial class AppSIACDbContext : DbContext
             entity.ToTable("AcreditadoraProceso");
 
             entity.Property(e => e.Nombre).HasMaxLength(500);
+        });
+
+        modelBuilder.Entity<AzureStorageFile>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__AzureSto__3214EC075F344D0D");
+
+            entity.ToTable("AzureStorageFile");
+
+            entity.Property(e => e.ContentType).HasMaxLength(200);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.FileName).HasMaxLength(200);
+            entity.Property(e => e.Name).HasMaxLength(200);
+            entity.Property(e => e.Url).HasMaxLength(500);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Capitulo>(entity =>
@@ -827,13 +850,10 @@ public partial class AppSIACDbContext : DbContext
 
             entity.ToTable("conf_ElementoEvaluacion");
 
-            entity.Property(e => e.Archivo).HasMaxLength(500);
             entity.Property(e => e.Descripcion).HasMaxLength(150);
             entity.Property(e => e.Evidencia).HasMaxLength(150);
             entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
             entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
-            entity.Property(e => e.MimeTypeArchivo).HasMaxLength(100);
-            entity.Property(e => e.NombreArchivo).HasMaxLength(500);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
 
@@ -1005,6 +1025,23 @@ public partial class AppSIACDbContext : DbContext
                 .HasForeignKey(d => d.CatNivelModalidadId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__rel_campu__CatNi__50C5FA01");
+        });
+
+        modelBuilder.Entity<RelConfelementoevaluacionfile>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__rel_conf__3214EC07A2797613");
+
+            entity.ToTable("rel_confelementoevaluacionfile");
+
+            entity.HasOne(d => d.AzureStorageFile).WithMany(p => p.RelConfelementoevaluacionfiles)
+                .HasForeignKey(d => d.AzureStorageFileId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__rel_confe__Azure__4336F4B9");
+
+            entity.HasOne(d => d.ConfElementoEvaluacion).WithMany(p => p.RelConfelementoevaluacionfiles)
+                .HasForeignKey(d => d.ConfElementoEvaluacionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__rel_confe__Azure__4242D080");
         });
 
         modelBuilder.Entity<RelEscalamedicioncondicion>(entity =>
@@ -1233,6 +1270,23 @@ public partial class AppSIACDbContext : DbContext
 
             entity.Property(e => e.AreaResponsable).HasMaxLength(150);
             entity.Property(e => e.NivelModalidad).HasMaxLength(201);
+        });
+
+        modelBuilder.Entity<VwAzureStorageFile>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_AzureStorageFile");
+
+            entity.Property(e => e.ContentType).HasMaxLength(200);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.FileName).HasMaxLength(200);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.Name).HasMaxLength(200);
+            entity.Property(e => e.Url).HasMaxLength(500);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });
 
         modelBuilder.Entity<VwCampusNivelModalidad>(entity =>
@@ -1499,7 +1553,6 @@ public partial class AppSIACDbContext : DbContext
                 .HasNoKey()
                 .ToView("vw_ConfElementoEvaluacion");
 
-            entity.Property(e => e.Archivo).HasMaxLength(500);
             entity.Property(e => e.AreaCorporativa).HasMaxLength(150);
             entity.Property(e => e.AreaResponsable).HasMaxLength(150);
             entity.Property(e => e.Ciclo).HasMaxLength(200);
@@ -1513,15 +1566,22 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
             entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
             entity.Property(e => e.Institucion).HasMaxLength(200);
-            entity.Property(e => e.MimeTypeArchivo).HasMaxLength(100);
             entity.Property(e => e.NivelModalidad).HasMaxLength(201);
-            entity.Property(e => e.NombreArchivo).HasMaxLength(500);
             entity.Property(e => e.Normativa).HasMaxLength(500);
             entity.Property(e => e.Proceso).HasMaxLength(50);
             entity.Property(e => e.SiglasAreaCorporativa).HasMaxLength(5);
             entity.Property(e => e.SubareasAreaCorporativa).HasMaxLength(4000);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<VwConfElementoEvaluacionFile>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_ConfElementoEvaluacionFile");
+
+            entity.Property(e => e.FileName).HasMaxLength(200);
         });
 
         modelBuilder.Entity<VwConfEscalaMedicionBase>(entity =>

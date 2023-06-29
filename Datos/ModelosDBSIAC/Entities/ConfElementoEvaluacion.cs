@@ -27,12 +27,6 @@ public partial class ConfElementoEvaluacion
 
     public int Cantidad { get; set; }
 
-    public string? Archivo { get; set; }
-
-    public string? NombreArchivo { get; set; }
-
-    public string? MimeTypeArchivo { get; set; }
-
     public bool Activo { get; set; }
 
     public DateTime FechaCreacion { get; set; }
@@ -58,4 +52,6 @@ public partial class ConfElementoEvaluacion
     public virtual CatPeriodoEvaluacion CatPeriodoEvaluacion { get; set; } = null!;
 
     public virtual ICollection<ConfIndicadorSiac> ConfIndicadorSiacs { get; set; } = new List<ConfIndicadorSiac>();
+
+    public virtual ICollection<RelConfelementoevaluacionfile> RelConfelementoevaluacionfiles { get; set; } = new List<RelConfelementoevaluacionfile>();
 }

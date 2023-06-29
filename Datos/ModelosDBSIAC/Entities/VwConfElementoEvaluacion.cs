@@ -61,12 +61,6 @@ public partial class VwConfElementoEvaluacion
 
     public int Cantidad { get; set; }
 
-    public string? Archivo { get; set; }
-
-    public string? NombreArchivo { get; set; }
-
-    public string? MimeTypeArchivo { get; set; }
-
     public bool Activo { get; set; }
 
     public DateTime FechaCreacion { get; set; }
