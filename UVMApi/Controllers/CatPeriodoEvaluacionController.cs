@@ -9,7 +9,7 @@ using Negocio.Respuesta;
 
 namespace UVMApi.Controllers
 {
-    [Authorize]
+   //[Authorize]
     [ApiController]
     [Route("[controller]")]
     //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
@@ -49,6 +49,37 @@ namespace UVMApi.Controllers
             //PAGINA 0, NO REGISTROS 1
             return negocio.GetSiguienteProceso(anio, ciclo, institucion, 5, 1);
         }
+
+
+
+        //[HttpGet]
+        //[Route("[action]")]
+        //public Task<TipoAccion> GetAnios(int pageNumber = 1, int pageSize = 5)
+        //{
+        //    return negocio.GetAnios(null, pageSize, pageNumber);
+        //}
+
+
+        //[HttpGet]
+        //[Route("[action]")]
+        //public Task<TipoAccion> GetCiclos(int anio, int pageNumber = 1, int pageSize = 5)
+        //{
+        //    return negocio.GetCiclos(anio, pageSize, pageNumber);
+        //}
+
+        //[HttpGet]
+        //[Route("[action]")]
+        //public Task<TipoAccion> GetInstituciones(int anio, int idCiclo, int pageNumber = 1, int pageSize = 5)
+        //{
+        //    return negocio.GetInstituciones(anio, idCiclo, pageSize, pageNumber);
+        //}
+
+        //[HttpGet]
+        //[Route("[action]")]
+        //public Task<TipoAccion> GetProceso(int anio, int idCiclo, int idInstitucion, int pageNumber = 1, int pageSize = 5)
+        //{
+        //    return negocio.GetProcesos(anio, idCiclo, idInstitucion, pageSize, pageNumber);
+        //}
 
         [HttpPost]
         [Route("[action]")]

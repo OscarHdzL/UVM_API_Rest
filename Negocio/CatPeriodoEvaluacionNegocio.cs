@@ -13,6 +13,7 @@ using Datos.ModelosDBSIAC.DTO;
 using System.Text.Json;
 using Datos.ModelosDBSGAPI.Entities;
 using System.Diagnostics;
+using Datos.ModelosDBSIAC.DTO.Configuracion.ParametrosConfiguracion;
 
 namespace Negocio
 {
@@ -182,6 +183,164 @@ namespace Negocio
             return Respuesta;
         }
 
+
+
+
+
+
+        public async Task<TipoAccion> GetAnios(int? id, int pageSize, int pageNumber)
+        {
+            try
+            {
+                List<AniosPeriodoEvaluacionDTO> lista = new List<AniosPeriodoEvaluacionDTO>();
+
+
+                if (pageSize == 0)
+                    throw new Exception("El parámetro pageSize debe ser mayor a cero");
+
+                var resultados = await ctx.VwCatPeriodoEvaluacionBases.FromSqlInterpolated($@"EXEC sp_PeriodoEvaluacion_Select @TipoConsulta = {"PeriodoEvaluacionBase"}, @Id={null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+
+                var aniosFiltro = resultados.Where(x=>x.Activo == true).Select(m => new {m.Anio}).Distinct().ToList();
+
+                if (aniosFiltro.Count == 0)
+                    throw new Exception("No se encontrarón resultados");
+
+                foreach (var item in aniosFiltro)
+                {
+                    AniosPeriodoEvaluacionDTO obj = new AniosPeriodoEvaluacionDTO();
+                    obj.Anio = item.Anio;
+
+
+                    lista.Add(obj);
+                }
+
+                Respuesta = TipoAccion.Positiva(lista.OrderByDescending(x=>x.Anio).ToList());
+
+            }
+            catch (Exception ex)
+            {
+                Respuesta = TipoAccion.Negativa(ex.Message);
+            }
+
+            return Respuesta;
+        }
+
+        public async Task<TipoAccion> GetCiclos(int anio, int pageSize, int pageNumber)
+        {
+            try
+            {
+                List<CiclosPeriodoEvaluacionDTO> lista = new List<CiclosPeriodoEvaluacionDTO>();
+
+
+                if (pageSize == 0)
+                    throw new Exception("El parámetro pageSize debe ser mayor a cero");
+
+                var resultados = await ctx.VwCatPeriodoEvaluacionBases.FromSqlInterpolated($@"EXEC sp_PeriodoEvaluacion_Select @TipoConsulta = {"PeriodoEvaluacionBase"}, @Id={null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+
+                var ciclosFiltro = resultados.Where(x=>x.Anio == anio && x.Activo == true).Select(m => new { m.IdCiclo, m.Ciclo }).Distinct().ToList();
+
+                if (ciclosFiltro.Count == 0)
+                    throw new Exception("No se encontrarón resultados");
+
+                foreach (var item in ciclosFiltro)
+                {
+                    CiclosPeriodoEvaluacionDTO obj = new CiclosPeriodoEvaluacionDTO();
+                    obj.IdCiclo = item.IdCiclo;
+                    obj.Ciclo = item.Ciclo;
+
+
+                    lista.Add(obj);
+                }
+                
+
+                Respuesta = TipoAccion.Positiva(lista.OrderBy(x => x.IdCiclo).ToList());
+
+            }
+            catch (Exception ex)
+            {
+                Respuesta = TipoAccion.Negativa(ex.Message);
+            }
+
+            return Respuesta;
+        }
+
+
+        public async Task<TipoAccion> GetInstituciones(int anio, int idCiclo, int pageSize, int pageNumber)
+        {
+            try
+            {
+                List<InstitucionesPeriodoEvaluacionDTO> lista = new List<InstitucionesPeriodoEvaluacionDTO>();
+
+
+                if (pageSize == 0)
+                    throw new Exception("El parámetro pageSize debe ser mayor a cero");
+
+                var resultados = await ctx.VwCatPeriodoEvaluacionBases.FromSqlInterpolated($@"EXEC sp_PeriodoEvaluacion_Select @TipoConsulta = {"PeriodoEvaluacionBase"}, @Id={null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+
+                var institucionesFiltro = resultados.Where(x => x.Anio == anio && x.IdCiclo == idCiclo && x.Activo == true).Select(m => new { m.IdInstitucion, m.Institucion }).Distinct().ToList();
+
+                if (institucionesFiltro.Count == 0)
+                    throw new Exception("No se encontrarón resultados");
+
+                foreach (var item in institucionesFiltro)
+                {
+                    InstitucionesPeriodoEvaluacionDTO obj = new InstitucionesPeriodoEvaluacionDTO();
+                    obj.IdInstitucion = item.IdInstitucion;
+                    obj.Institucion = item.Institucion;
+
+
+                    lista.Add(obj);
+                }
+
+
+                Respuesta = TipoAccion.Positiva(lista.OrderBy(x => x.IdInstitucion).ToList());
+
+            }
+            catch (Exception ex)
+            {
+                Respuesta = TipoAccion.Negativa(ex.Message);
+            }
+
+            return Respuesta;
+        }
+
+        public async Task<TipoAccion> GetProcesos(int anio, int idCiclo, int idInstitucion, int pageSize, int pageNumber)
+        {
+            try
+            {
+                List<ProcesoPeriodoEvaluacionDTO> lista = new List<ProcesoPeriodoEvaluacionDTO>();
+
+
+                if (pageSize == 0)
+                    throw new Exception("El parámetro pageSize debe ser mayor a cero");
+
+                var resultados = await ctx.VwCatPeriodoEvaluacionBases.FromSqlInterpolated($@"EXEC sp_PeriodoEvaluacion_Select @TipoConsulta = {"PeriodoEvaluacionBase"}, @Id={null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+
+                var procesosFiltro = resultados.Where(x => x.Anio == anio && x.IdCiclo == idCiclo && x.IdInstitucion == idInstitucion && x.Activo == true).Select(m => new { m.IdPeriodoEvaluacion, m.Proceso }).Distinct().ToList();
+
+                if (procesosFiltro.Count == 0)
+                    throw new Exception("No se encontrarón resultados");
+
+                foreach (var item in procesosFiltro)
+                {
+                    ProcesoPeriodoEvaluacionDTO obj = new ProcesoPeriodoEvaluacionDTO();
+                    obj.IdPeriodoEvaluacion = item.IdPeriodoEvaluacion;
+                    obj.Proceso = item.Proceso;
+
+                    lista.Add(obj);
+                }
+
+
+                Respuesta = TipoAccion.Positiva(lista.OrderBy(x => x.Proceso).ToList());
+
+            }
+            catch (Exception ex)
+            {
+                Respuesta = TipoAccion.Negativa(ex.Message);
+            }
+
+            return Respuesta;
+        }
 
 
         public async Task<TipoAccion> Insertar(PeriodoEvaluacionDTO entidad)
