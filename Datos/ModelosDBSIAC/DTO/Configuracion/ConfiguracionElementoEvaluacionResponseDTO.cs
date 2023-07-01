@@ -53,18 +53,6 @@ namespace Datos.ModelosDBSIAC.DTO
 
         public string? SubareasAreaCorporativa { get; set; }
 
-        public int CatNormativaId { get; set; }
-
-        public string? ClaveNormativa { get; set; }
-
-        public string? Normativa { get; set; }
-
-        public string Evidencia { get; set; } = null!;
-
-        public string Descripcion { get; set; } = null!;
-
-        public int Cantidad { get; set; }
-
         public bool Activo { get; set; }
 
         public DateTime FechaCreacion { get; set; }

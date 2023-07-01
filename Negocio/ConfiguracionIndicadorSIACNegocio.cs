@@ -29,8 +29,67 @@ namespace Negocio
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
                 var resultados = await ctx.VwConfIndicadorSiacs.FromSqlInterpolated($@"EXEC sp_ConfiguracionIndicadorSIAC_Select @TipoConsulta={"ConfiguracionIndicadorSIACLista"}, @Id = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
-                Respuesta = TipoAccion.Positiva(resultados);
 
+
+
+                List<ConfiguracionIndicadorSiacResponseDTO> lista = new List<ConfiguracionIndicadorSiacResponseDTO>();
+
+                foreach (VwConfIndicadorSiac item in resultados)
+                {
+                    ConfiguracionIndicadorSiacResponseDTO obj = new ConfiguracionIndicadorSiacResponseDTO();
+                    obj.Id = item.Id;
+                    obj.ConfElementoEvaluacionId = item.ConfElementoEvaluacionId;
+                    obj.CatIndicadorSiacId = item.CatIndicadorSiacId;
+                    obj.ClaveIndicadorSiac = item.ClaveIndicadorSiac;
+                    obj.IndicadorSiac = item.IndicadorSiac;
+                    obj.ComponenteUvmId = item.ComponenteUvmId;
+                    obj.NombreComponenteUvm = item.NombreComponenteUvm;
+                    obj.DescripcionComponenteUvm = item.DescripcionComponenteUvm;
+                    obj.IndicadorUvmId = item.IndicadorUvmId;
+                    obj.NombreIndicadorUvm = item.NombreIndicadorUvm;
+                    obj.SubindicadorUvmId = item.SubindicadorUvmId;
+                    obj.NombreSubIndicadorUvm = item.NombreSubIndicadorUvm;
+                    obj.CatPeriodoEvaluacionId = item.CatPeriodoEvaluacionId;
+                    obj.Anio = item.Anio;
+                    obj.IdCiclo = item.IdCiclo;
+                    obj.Ciclo = item.Ciclo;
+                    obj.IdInstitucion = item.IdInstitucion;
+                    obj.Institucion = item.Institucion;
+                    obj.Proceso = item.Proceso;
+                    obj.CatAreaResponsableId = item.CatAreaResponsableId;
+                    obj.AreaResponsable = item.AreaResponsable;
+                    obj.CatNivelModalidadId = item.CatNivelModalidadId;
+                    obj.NivelModalidad = item.NivelModalidad;
+                    obj.CatComponenteId = item.CatComponenteId;
+                    obj.ClaveComponente = item.ClaveComponente;
+                    obj.Componente = item.Componente;
+                    obj.CatElementoEvaluacionId = item.CatElementoEvaluacionId;
+                    obj.ClaveElementoEvaluacion = item.ClaveElementoEvaluacion;
+                    obj.ElementoEvaluacion = item.ElementoEvaluacion;
+                    obj.CatAreaCorporativaId = item.CatAreaCorporativaId;
+                    obj.SiglasAreaCorporativa = item.SiglasAreaCorporativa;
+                    obj.AreaCorporativa = item.AreaCorporativa;
+                    obj.SubareasAreaCorporativa = item.SubareasAreaCorporativa;
+                    obj.CatNormativaId = item.CatNormativaId;
+                    obj.ClaveNormativa = item.ClaveNormativa;
+                    obj.NombreNormativa = item.NombreNormativa;
+                    obj.CatEvidenciaId = item.CatEvidenciaId;
+                    obj.Activo = item.Activo;
+                    obj.ClaveEvidencia = item.ClaveEvidencia;
+                    obj.NombreEvidencia = item.NombreEvidencia;
+                    obj.DescripcionEvidencia = item.DescripcionEvidencia;
+                    obj.CantidadEvidencia = item.CantidadEvidencia;
+                    obj.FechaCreacion = item.FechaCreacion;
+                    obj.UsuarioCreacion = item.UsuarioCreacion;
+                    obj.FechaModificacion = item.FechaModificacion;
+                    obj.UsuarioModificacion = item.UsuarioModificacion;
+
+                    obj.ListaArchivos = await ctx.VwConfIndicadorSiacFiles.FromSqlInterpolated($@"EXEC sp_ConfiguracionIndicadorSIAC_Select @TipoConsulta={"ConfiguracionIndicadorSIACFiles"}, @Id = {obj.Id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                    lista.Add(obj);
+                };
+
+                Respuesta = TipoAccion.Positiva(lista);
+                
             }
             catch (Exception ex)
             {
@@ -49,7 +108,63 @@ namespace Negocio
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
                 var resultados = await ctx.VwConfIndicadorSiacs.FromSqlInterpolated($@"EXEC sp_ConfiguracionIndicadorSIAC_Select @TipoConsulta={"ConfiguracionIndicadorSIACLista"}, @Id = {id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
-                Respuesta = TipoAccion.Positiva(resultados);
+
+                List<ConfiguracionIndicadorSiacResponseDTO> lista = new List<ConfiguracionIndicadorSiacResponseDTO>();
+
+                foreach (VwConfIndicadorSiac item in resultados)
+                {
+                    ConfiguracionIndicadorSiacResponseDTO obj = new ConfiguracionIndicadorSiacResponseDTO();
+                    obj.Id = item.Id;
+                    obj.ConfElementoEvaluacionId = item.ConfElementoEvaluacionId;
+                    obj.CatIndicadorSiacId = item.CatIndicadorSiacId;
+                    obj.ClaveIndicadorSiac = item.ClaveIndicadorSiac;
+                    obj.IndicadorSiac = item.IndicadorSiac;
+                    obj.ComponenteUvmId = item.ComponenteUvmId;
+                    obj.NombreComponenteUvm = item.NombreComponenteUvm;
+                    obj.DescripcionComponenteUvm = item.DescripcionComponenteUvm;
+                    obj.IndicadorUvmId = item.IndicadorUvmId;
+                    obj.NombreIndicadorUvm = item.NombreIndicadorUvm;
+                    obj.SubindicadorUvmId = item.SubindicadorUvmId;
+                    obj.NombreSubIndicadorUvm = item.NombreSubIndicadorUvm;
+                    obj.CatPeriodoEvaluacionId = item.CatPeriodoEvaluacionId;
+                    obj.Anio = item.Anio;
+                    obj.IdCiclo = item.IdCiclo;
+                    obj.Ciclo = item.Ciclo;
+                    obj.IdInstitucion = item.IdInstitucion;
+                    obj.Institucion = item.Institucion;
+                    obj.Proceso = item.Proceso;
+                    obj.CatAreaResponsableId = item.CatAreaResponsableId;
+                    obj.AreaResponsable = item.AreaResponsable;
+                    obj.CatNivelModalidadId = item.CatNivelModalidadId;
+                    obj.NivelModalidad = item.NivelModalidad;
+                    obj.CatComponenteId = item.CatComponenteId;
+                    obj.ClaveComponente = item.ClaveComponente;
+                    obj.Componente = item.Componente;
+                    obj.CatElementoEvaluacionId = item.CatElementoEvaluacionId;
+                    obj.ClaveElementoEvaluacion = item.ClaveElementoEvaluacion;
+                    obj.ElementoEvaluacion = item.ElementoEvaluacion;
+                    obj.CatAreaCorporativaId = item.CatAreaCorporativaId;
+                    obj.SiglasAreaCorporativa = item.SiglasAreaCorporativa;
+                    obj.AreaCorporativa = item.AreaCorporativa;
+                    obj.SubareasAreaCorporativa = item.SubareasAreaCorporativa;
+                    obj.CatNormativaId = item.CatNormativaId;
+                    obj.ClaveNormativa = item.ClaveNormativa;
+                    obj.NombreNormativa = item.NombreNormativa;
+                    obj.CatEvidenciaId = item.CatEvidenciaId;
+                    obj.Activo = item.Activo;
+                    obj.ClaveEvidencia = item.ClaveEvidencia;
+                    obj.NombreEvidencia = item.NombreEvidencia;
+                    obj.DescripcionEvidencia = item.DescripcionEvidencia;
+                    obj.CantidadEvidencia = item.CantidadEvidencia;
+                    obj.FechaCreacion = item.FechaCreacion;
+                    obj.UsuarioCreacion = item.UsuarioCreacion;
+                    obj.FechaModificacion = item.FechaModificacion;
+                    obj.UsuarioModificacion = item.UsuarioModificacion;
+                    obj.ListaArchivos = await ctx.VwConfIndicadorSiacFiles.FromSqlInterpolated($@"EXEC sp_ConfiguracionIndicadorSIAC_Select @TipoConsulta={"ConfiguracionIndicadorSIACFiles"}, @Id = {obj.Id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                    lista.Add(obj);
+                };
+
+                Respuesta = TipoAccion.Positiva(lista);
 
             }
             catch (Exception ex)

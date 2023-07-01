@@ -77,13 +77,19 @@ public partial class VwConfEscalaMedicionBase
 
     public string? ClaveNormativa { get; set; }
 
-    public string? Normativa { get; set; }
+    public string? NombreNormativa { get; set; }
 
-    public string? Evidencia { get; set; }
+    public int? CatEvidenciaId { get; set; }
 
-    public string? Descripcion { get; set; }
+    public bool? Activo { get; set; }
 
-    public int? Cantidad { get; set; }
+    public string? ClaveEvidencia { get; set; }
+
+    public string? NombreEvidencia { get; set; }
+
+    public string? DescripcionEvidencia { get; set; }
+
+    public int? CantidadEvidencia { get; set; }
 
     public DateTime FechaCreacion { get; set; }
 

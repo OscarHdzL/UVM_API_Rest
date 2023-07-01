@@ -18,7 +18,7 @@ namespace UVMApi.Controllers
 
 
         private readonly ILogger<CatEscalaMedicionController> _logger;
-        public CatEtapaNegocio negocio = new CatEtapaNegocio();
+        public CatEscalaMedicionNegocio negocio = new CatEscalaMedicionNegocio();
 
         public CatEscalaMedicionController(ILogger<CatEscalaMedicionController> logger)
         {

@@ -6,21 +6,17 @@ using System.Threading.Tasks;
 
 namespace Datos.ModelosDBSIAC.DTO
 {
-    public class ConfiguracionElementoEvaluacionDTO
+    public class EvidenciaDTO
     {
         public int Id { get; set; }
 
-        public int CatPeriodoEvaluacionId { get; set; }
+        public string Clave { get; set; } = null!;
 
-        public int CatAreaResponsableId { get; set; }
+        public string Nombre { get; set; } = null!;
 
-        public int CatNivelModalidadId { get; set; }
+        public string Descripcion { get; set; } = null!;
 
-        public int CatComponenteId { get; set; }
-
-        public int CatElementoEvaluacionId { get; set; }
-
-        public int CatAreaCorporativaId { get; set; }
+        public int Cantidad { get; set; }
 
         public bool Activo { get; set; }
 
@@ -32,8 +28,5 @@ namespace Datos.ModelosDBSIAC.DTO
 
         public string? UsuarioModificacion { get; set; }
 
-        public List<int> Archivos { get; set; } = new List<int>();
-
     }
-
 }

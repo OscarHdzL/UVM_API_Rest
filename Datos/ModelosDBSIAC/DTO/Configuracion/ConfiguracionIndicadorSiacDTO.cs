@@ -28,6 +28,14 @@ namespace Datos.ModelosDBSIAC.DTO
 
         public string? UsuarioModificacion { get; set; }
 
+        public int CatNormativaId { get; set; }
+
+        public int CatEvidenciaId { get; set; }
+
+        public bool? Activo { get; set; }
+
+        public List<int> Archivos { get; set; } = new List<int>();
+
     }
 
 }

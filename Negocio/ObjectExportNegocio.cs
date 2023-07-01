@@ -233,14 +233,15 @@ namespace Negocio
                 }
                 else if (SP == "sp_IndicadorSIAC_Select")
                 {
-                    List<CatIndicadorSiac> response = new List<CatIndicadorSiac>();
-                    response = ctx_siac.CatIndicadorSiacs.FromSqlInterpolated($@"EXEC  {SP}  @Id={null}, @PageSize = {0}, @PageNumber = {0}").ToList();
+                    List<VwCatIndicadorSiac> response = new List<VwCatIndicadorSiac>();
+                    response = ctx_siac.VwCatIndicadorSiacs.FromSqlInterpolated($@"EXEC  {SP}  @Id={null}, @PageSize = {0}, @PageNumber = {0}").ToList();
                     dt = ToDataTable(response);
 
                     dt.Columns.Remove("FechaCreacion");
                     dt.Columns.Remove("UsuarioCreacion");
                     dt.Columns.Remove("FechaModificacion");
                     dt.Columns.Remove("UsuarioModificacion");
+                    
                 }
                 else if (SP == "sp_InstitucionesAcreditadoras_Select")
                 {
@@ -285,6 +286,19 @@ namespace Negocio
                     dt.Columns.Remove("FechaModificacion");
                     dt.Columns.Remove("UsuarioModificacion");
                 }
+                else if (SP == "sp_Evidencia_Select")
+                {
+
+                    List<VwCatEvidencium> response = new List<VwCatEvidencium>();
+                    response = ctx_siac.VwCatEvidencia.FromSqlInterpolated($@"EXEC  {SP}  @TipoConsulta = {"EvidenciaLista"},  @Id={null}, @PageSize = {0}, @PageNumber = {0}").ToList();
+                    dt = ToDataTable(response);
+                    dt.Columns.Remove("FechaCreacion");
+                    dt.Columns.Remove("UsuarioCreacion");
+                    dt.Columns.Remove("FechaModificacion");
+                    dt.Columns.Remove("UsuarioModificacion");
+                }
+               
+
 
             }
             catch (Exception ex)

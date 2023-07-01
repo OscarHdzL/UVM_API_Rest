@@ -57,12 +57,7 @@ namespace Negocio
                     objeto.SiglasAreaCorporativa = item.SiglasAreaCorporativa;
                     objeto.AreaCorporativa = item.AreaCorporativa;
                     objeto.SubareasAreaCorporativa = item.SubareasAreaCorporativa;
-                    objeto.CatNormativaId = item.CatNormativaId;
-                    objeto.ClaveNormativa = item.ClaveNormativa;
-                    objeto.Normativa = item.Normativa;
-                    objeto.Evidencia = item.Evidencia;
-                    objeto.Descripcion = item.Descripcion;
-                    objeto.Cantidad = item.Cantidad;
+
                     objeto.Activo = item.Activo;
                     objeto.FechaCreacion = item.FechaCreacion;
                     objeto.UsuarioCreacion = item.UsuarioCreacion;
@@ -123,12 +118,12 @@ namespace Negocio
                     objeto.SiglasAreaCorporativa = item.SiglasAreaCorporativa;
                     objeto.AreaCorporativa = item.AreaCorporativa;
                     objeto.SubareasAreaCorporativa = item.SubareasAreaCorporativa;
-                    objeto.CatNormativaId = item.CatNormativaId;
-                    objeto.ClaveNormativa = item.ClaveNormativa;
-                    objeto.Normativa = item.Normativa;
-                    objeto.Evidencia = item.Evidencia;
-                    objeto.Descripcion = item.Descripcion;
-                    objeto.Cantidad = item.Cantidad;
+                    //objeto.CatNormativaId = item.CatNormativaId;
+                    //objeto.ClaveNormativa = item.ClaveNormativa;
+                    //objeto.Normativa = item.Normativa;
+                    //objeto.Evidencia = item.Evidencia;
+                    //objeto.Descripcion = item.Descripcion;
+                    //objeto.Cantidad = item.Cantidad;
                     objeto.Activo = item.Activo;
                     objeto.FechaCreacion = item.FechaCreacion;
                     objeto.UsuarioCreacion = item.UsuarioCreacion;

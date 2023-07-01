@@ -3,15 +3,19 @@ using System.Collections.Generic;
 
 namespace Datos.ModelosDBSIAC.Entities;
 
-public partial class CatNormativa
+public partial class CatEvidencium
 {
     public int Id { get; set; }
 
-    public string? Clave { get; set; }
+    public string Clave { get; set; } = null!;
 
-    public string? Nombre { get; set; }
+    public string Nombre { get; set; } = null!;
 
-    public bool? Activo { get; set; }
+    public string Descripcion { get; set; } = null!;
+
+    public int Cantidad { get; set; }
+
+    public bool Activo { get; set; }
 
     public DateTime FechaCreacion { get; set; }
 

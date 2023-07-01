@@ -19,14 +19,6 @@ public partial class ConfElementoEvaluacion
 
     public int CatAreaCorporativaId { get; set; }
 
-    public int CatNormativaId { get; set; }
-
-    public string Evidencia { get; set; } = null!;
-
-    public string Descripcion { get; set; } = null!;
-
-    public int Cantidad { get; set; }
-
     public bool Activo { get; set; }
 
     public DateTime FechaCreacion { get; set; }
@@ -46,8 +38,6 @@ public partial class ConfElementoEvaluacion
     public virtual CatElementoEvaluacion CatElementoEvaluacion { get; set; } = null!;
 
     public virtual CatNivelModalidad CatNivelModalidad { get; set; } = null!;
-
-    public virtual CatNormativa CatNormativa { get; set; } = null!;
 
     public virtual CatPeriodoEvaluacion CatPeriodoEvaluacion { get; set; } = null!;
 

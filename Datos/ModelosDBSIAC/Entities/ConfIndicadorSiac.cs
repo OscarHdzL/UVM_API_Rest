@@ -25,7 +25,17 @@ public partial class ConfIndicadorSiac
 
     public string? UsuarioModificacion { get; set; }
 
+    public int CatNormativaId { get; set; }
+
+    public int CatEvidenciaId { get; set; }
+
+    public bool? Activo { get; set; }
+
+    public virtual CatEvidencium CatEvidencia { get; set; } = null!;
+
     public virtual CatIndicadorSiac CatIndicadorSiac { get; set; } = null!;
+
+    public virtual CatNormativa CatNormativa { get; set; } = null!;
 
     public virtual ComponenteUvm? ComponenteUvm { get; set; }
 

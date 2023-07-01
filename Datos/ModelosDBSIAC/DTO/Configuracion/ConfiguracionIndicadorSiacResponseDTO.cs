@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 
 namespace Datos.ModelosDBSIAC.DTO
 {
-    public class ConfiguracionEscalaMedicionResponseDTO
+    public class ConfiguracionIndicadorSiacResponseDTO
     {
         public int Id { get; set; }
 
-        public int ConfIndicadorSiacId { get; set; }
+        public int ConfElementoEvaluacionId { get; set; }
 
-        public int? ConfElementoEvaluacionId { get; set; }
-
-        public int? CatIndicadorSiacId { get; set; }
+        public int CatIndicadorSiacId { get; set; }
 
         public string? ClaveIndicadorSiac { get; set; }
 
@@ -77,15 +75,15 @@ namespace Datos.ModelosDBSIAC.DTO
 
         public string? SubareasAreaCorporativa { get; set; }
 
-        public int? CatNormativaId { get; set; }
+        public int CatNormativaId { get; set; }
 
         public string? ClaveNormativa { get; set; }
 
         public string? NombreNormativa { get; set; }
 
-        public int? CatEvidenciaId { get; set; }
+        public int CatEvidenciaId { get; set; }
 
-        public bool? Activo { get; set; }
+        public bool Activo { get; set; }
 
         public string? ClaveEvidencia { get; set; }
 
@@ -103,11 +101,9 @@ namespace Datos.ModelosDBSIAC.DTO
 
         public string? UsuarioModificacion { get; set; }
 
-        public List<VwEscalaMedicionCondicion> Condiciones { get; set; } = new List<VwEscalaMedicionCondicion>();
+        public List<VwConfIndicadorSiacFile> ListaArchivos { get; set; } = new List<VwConfIndicadorSiacFile>();
 
 
     }
-
-
 
 }
