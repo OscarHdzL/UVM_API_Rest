@@ -243,6 +243,84 @@ namespace Negocio
                     dt.Columns.Remove("UsuarioModificacion");
                     
                 }
+                else if (SP == "sp_ConfiguracionElementoEvaluacion_Select")
+                {
+                    List<VwConfElementoEvaluacion> response = new List<VwConfElementoEvaluacion>();
+                    //response = ctx_siac.VwCatIndicadorSiacs.FromSqlInterpolated($@"EXEC  {SP}  @Id={null}, @PageSize = {0}, @PageNumber = {0}").ToList();
+                    response = ctx_siac.VwConfElementoEvaluacions.FromSqlInterpolated($@"EXEC {SP} @TipoConsulta={"ConfiguracionElementoEvaluacionLista"}, @Id = {null}, @PageSize = {null}, @PageNumber = {null}").ToList();
+                    dt = ToDataTable(response);
+
+                    dt.Columns.Remove("Id");
+                    dt.Columns.Remove("CatPeriodoEvaluacionId");
+                    dt.Columns.Remove("IdCiclo");
+                    dt.Columns.Remove("IdInstitucion");
+                    dt.Columns.Remove("CatAreaResponsableId");
+                    dt.Columns.Remove("CatNivelModalidadId");
+                    dt.Columns.Remove("CatComponenteId");
+                    dt.Columns.Remove("CatElementoEvaluacionId");
+                    dt.Columns.Remove("CatAreaCorporativaId");
+                    dt.Columns.Remove("FechaCreacion");
+                    dt.Columns.Remove("UsuarioCreacion");
+                    dt.Columns.Remove("FechaModificacion");
+                    dt.Columns.Remove("UsuarioModificacion");
+
+                }
+
+                else if (SP == "sp_ConfiguracionIndicadorSIAC_Select")
+                {
+
+                    
+                    List<VwConfIndicadorSiac> response = new List<VwConfIndicadorSiac>();
+                    //response = ctx_siac.VwCatIndicadorSiacs.FromSqlInterpolated($@"EXEC  {SP}  @Id={null}, @PageSize = {0}, @PageNumber = {0}").ToList();
+                    response = ctx_siac.VwConfIndicadorSiacs.FromSqlInterpolated($@"EXEC {SP} @TipoConsulta ={"ConfiguracionIndicadorSIACLista"}, @Id = {null}, @PageSize = {null}, @PageNumber = {null}").ToList();
+                    dt = ToDataTable(response);
+
+                    dt.Columns.Remove("Id");
+                    dt.Columns.Remove("ConfElementoEvaluacionId");
+                    dt.Columns.Remove("CatIndicadorSiacId");
+                    dt.Columns.Remove("ComponenteUvmId");
+                    dt.Columns.Remove("IndicadorUvmId");
+                    dt.Columns.Remove("SubindicadorUvmId");
+                    dt.Columns.Remove("CatPeriodoEvaluacionId");
+                    dt.Columns.Remove("Anio");
+                    dt.Columns.Remove("IdCiclo");
+                    dt.Columns.Remove("Ciclo");
+                    dt.Columns.Remove("IdInstitucion");
+                    dt.Columns.Remove("Institucion");
+                    dt.Columns.Remove("Proceso");
+                    dt.Columns.Remove("CatAreaResponsableId");
+                    dt.Columns.Remove("AreaResponsable");
+                    dt.Columns.Remove("CatNivelModalidadId");
+                    dt.Columns.Remove("NivelModalidad");
+                    dt.Columns.Remove("CatComponenteId");
+                    dt.Columns.Remove("ClaveComponente");
+                    dt.Columns.Remove("Componente");
+                    dt.Columns.Remove("CatElementoEvaluacionId");
+                    dt.Columns.Remove("ClaveElementoEvaluacion");
+                    dt.Columns.Remove("ElementoEvaluacion");
+                    dt.Columns.Remove("CatAreaCorporativaId");
+                    dt.Columns.Remove("SiglasAreaCorporativa");
+                    dt.Columns.Remove("AreaCorporativa");
+                    dt.Columns.Remove("SubareasAreaCorporativa");
+                    dt.Columns.Remove("CatNormativaId");
+                    dt.Columns.Remove("CatEvidenciaId");
+                    dt.Columns.Remove("FechaCreacion");
+                    dt.Columns.Remove("UsuarioCreacion");
+                    dt.Columns.Remove("FechaModificacion");
+                    dt.Columns.Remove("UsuarioModificacion");
+
+                }
+                else if (SP == "sp_ConfiguracionEscalaMedicion_Select")
+                {
+
+                    List<VwEscalaMedicionCondicionExcel> response = new List<VwEscalaMedicionCondicionExcel>();
+                    //response = ctx_siac.VwCatIndicadorSiacs.FromSqlInterpolated($@"EXEC  {SP}  @Id={null}, @PageSize = {0}, @PageNumber = {0}").ToList();
+                    response = ctx_siac.VwEscalaMedicionCondicionExcels.FromSqlInterpolated($@"EXEC {SP} @TipoConsulta ={"EscalaMedicionCondicionExcel"}, @Id = {null}, @PageSize = {null}, @PageNumber = {null}").ToList();
+                    dt = ToDataTable(response);
+
+                    
+
+                }
                 else if (SP == "sp_InstitucionesAcreditadoras_Select")
                 {
                     

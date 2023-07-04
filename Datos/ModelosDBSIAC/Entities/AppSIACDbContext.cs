@@ -85,6 +85,8 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<ConfIndicadorSiac> ConfIndicadorSiacs { get; set; }
 
+    public virtual DbSet<ConfiguracionBienvenidum> ConfiguracionBienvenida { get; set; }
+
     public virtual DbSet<IndicadorUvm> IndicadorUvms { get; set; }
 
     public virtual DbSet<RelAreacorporativasubarea> RelAreacorporativasubareas { get; set; }
@@ -153,6 +155,8 @@ public partial class AppSIACDbContext : DbContext
 
     public virtual DbSet<VwCatMatrizUvm> VwCatMatrizUvms { get; set; }
 
+    public virtual DbSet<VwCatNivelModalidad> VwCatNivelModalidads { get; set; }
+
     public virtual DbSet<VwCatPeriodoEvaluacion> VwCatPeriodoEvaluacions { get; set; }
 
     public virtual DbSet<VwCatPeriodoEvaluacionBase> VwCatPeriodoEvaluacionBases { get; set; }
@@ -178,6 +182,8 @@ public partial class AppSIACDbContext : DbContext
     public virtual DbSet<VwConfIndicadorSiacFile> VwConfIndicadorSiacFiles { get; set; }
 
     public virtual DbSet<VwEscalaMedicionCondicion> VwEscalaMedicionCondicions { get; set; }
+
+    public virtual DbSet<VwEscalaMedicionCondicionExcel> VwEscalaMedicionCondicionExcels { get; set; }
 
     public virtual DbSet<VwIndicadorUvm> VwIndicadorUvms { get; set; }
 
@@ -970,6 +976,15 @@ public partial class AppSIACDbContext : DbContext
                 .HasConstraintName("FK__conf_Indi__Subin__7CA47C3F");
         });
 
+        modelBuilder.Entity<ConfiguracionBienvenidum>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Configur__3214EC0768496D98");
+
+            entity.ToTable("Configuracion_Bienvenida");
+
+            entity.Property(e => e.HtmlBienvenida).HasColumnType("text");
+        });
+
         modelBuilder.Entity<IndicadorUvm>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Indicado__3214EC0787905E63");
@@ -1499,6 +1514,22 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<VwCatNivelModalidad>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_CatNivelModalidad");
+
+            entity.Property(e => e.Clave).HasMaxLength(5);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.Modalidad).HasMaxLength(100);
+            entity.Property(e => e.Nivel).HasMaxLength(100);
+            entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
+            entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<VwCatPeriodoEvaluacion>(entity =>
         {
             entity
@@ -1737,6 +1768,23 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.Nombre).HasMaxLength(500);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<VwEscalaMedicionCondicionExcel>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_EscalaMedicionCondicionExcel");
+
+            entity.Property(e => e.ClaveIndicadorSiac).HasMaxLength(50);
+            entity.Property(e => e.Condicion).HasMaxLength(2000);
+            entity.Property(e => e.DescripcionComponenteUvm).HasMaxLength(500);
+            entity.Property(e => e.Escala).HasMaxLength(100);
+            entity.Property(e => e.IndicadorSiac).HasMaxLength(500);
+            entity.Property(e => e.Nombre).HasMaxLength(500);
+            entity.Property(e => e.NombreComponenteUvm).HasMaxLength(200);
+            entity.Property(e => e.NombreIndicadorUvm).HasMaxLength(500);
+            entity.Property(e => e.NombreSubIndicadorUvm).HasMaxLength(500);
         });
 
         modelBuilder.Entity<VwIndicadorUvm>(entity =>

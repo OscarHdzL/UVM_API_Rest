@@ -29,7 +29,7 @@ namespace Negocio
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
-                var resultados = await ctx.CatNivelModalidads.FromSqlInterpolated($@"EXEC sp_NivelModalidad_Select @Id = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                var resultados = await ctx.VwCatNivelModalidads.FromSqlInterpolated($@"EXEC sp_NivelModalidad_Select @Id = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
                 Respuesta = TipoAccion.Positiva(resultados);
 
             }
@@ -51,7 +51,29 @@ namespace Negocio
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
-                var resultados = await ctx.CatNivelModalidads.FromSqlInterpolated($@"EXEC sp_NivelModalidad_Select @Id = {id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                var resultados = await ctx.VwCatNivelModalidads.FromSqlInterpolated($@"EXEC sp_NivelModalidad_Select @Id = {id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+                Respuesta = TipoAccion.Positiva(resultados);
+
+            }
+            catch (Exception ex)
+            {
+                Respuesta = TipoAccion.Negativa(ex.Message);
+            }
+
+            return Respuesta;
+        }
+
+        public async Task<TipoAccion> GetByAreaResponsable(int idAreaResponsable, int pageSize, int pageNumber)
+        {
+            try
+            {
+                List<CatNivelModalidad> lista = new List<CatNivelModalidad>();
+
+
+                if (pageSize == 0)
+                    throw new Exception("El parámetro pageSize debe ser mayor a cero");
+
+                var resultados = await ctx.VwCatNivelModalidads.FromSqlInterpolated($@"EXEC sp_NivelModalidad_AreaResponsable_Select @Id = {idAreaResponsable}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
                 Respuesta = TipoAccion.Positiva(resultados);
 
             }

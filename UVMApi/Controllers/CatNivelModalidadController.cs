@@ -40,6 +40,18 @@ namespace UVMApi.Controllers
             return negocio.GetById(id, 5, 1);
         }
 
+        
+
+
+        [HttpGet]
+        [Route("[action]")]
+        public Task<TipoAccion> GetByAreaResponsable(int idAreaResponsable)
+        {
+            //PAGINA 0, NO REGISTROS 1
+            return negocio.GetByAreaResponsable(idAreaResponsable, 5, 1);
+        }
+
+
         [HttpPost]
         [Route("[action]")]
         public Task<TipoAccion> Add(CatNivelModalidad entidad)

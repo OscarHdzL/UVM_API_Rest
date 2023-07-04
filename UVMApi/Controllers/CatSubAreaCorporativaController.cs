@@ -40,6 +40,15 @@ namespace UVMApi.Controllers
             return negocio.GetById(id, 5, 1);
         }
 
+        
+
+        [HttpGet]
+        [Route("[action]")]
+        public Task<TipoAccion> GetByAreaCorporativa(int id)
+        {
+            return negocio.GetByAreaCorporativa(id, 5, 1);
+        }
+
 
         [HttpPost]
         [Route("[action]")]
