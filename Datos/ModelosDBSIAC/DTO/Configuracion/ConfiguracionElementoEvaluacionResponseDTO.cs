@@ -41,17 +41,24 @@ namespace Datos.ModelosDBSIAC.DTO
 
         public int CatElementoEvaluacionId { get; set; }
 
-        public string? ClaveElementoEvaluacion { get; set; }
+        public string ClaveElementoEvaluacion { get; set; }
 
-        public string? ElementoEvaluacion { get; set; }
+        public string ElementoEvaluacion { get; set; }
 
         public int CatAreaCorporativaId { get; set; }
 
-        public string? SiglasAreaCorporativa { get; set; }
+        public string SiglasAreaCorporativa { get; set; }
 
-        public string? AreaCorporativa { get; set; }
+        public string AreaCorporativa { get; set; }
 
-        public string? SubareasAreaCorporativa { get; set; }
+        //public string SubareasAreaCorporativa { get; set; }
+
+
+        public int? CatSubAreaCorporativaId { get; set; }
+
+        public string? SubAreaCorporativa { get; set; }
+
+        public string? SiglasSubAreaCorporativa { get; set; }
 
         public bool Activo { get; set; }
 

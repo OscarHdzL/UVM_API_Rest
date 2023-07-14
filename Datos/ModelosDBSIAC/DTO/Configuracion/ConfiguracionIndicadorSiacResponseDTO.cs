@@ -72,8 +72,12 @@ namespace Datos.ModelosDBSIAC.DTO
         public string? SiglasAreaCorporativa { get; set; }
 
         public string? AreaCorporativa { get; set; }
+        public int? CatSubAreaCorporativaId { get; set; }
 
-        public string? SubareasAreaCorporativa { get; set; }
+        public string? SubAreaCorporativa { get; set; }
+
+        public string? SiglasSubAreaCorporativa { get; set; }
+
 
         public int CatNormativaId { get; set; }
 

@@ -21,5 +21,7 @@ public partial class CatSubAreaCorporativa
 
     public string? UsuarioModificacion { get; set; }
 
+    public virtual ICollection<ConfElementoEvaluacion> ConfElementoEvaluacions { get; set; } = new List<ConfElementoEvaluacion>();
+
     public virtual ICollection<RelAreacorporativasubarea> RelAreacorporativasubareas { get; set; } = new List<RelAreacorporativasubarea>();
 }

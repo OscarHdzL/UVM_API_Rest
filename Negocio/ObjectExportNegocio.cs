@@ -13,6 +13,7 @@ using Datos.ModelosDBSGAPI.Entities;
 using System.Reflection;
 using Spire.Xls;
 using System.Drawing.Printing;
+using Datos.Modelos;
 
 namespace Negocio
 {
@@ -57,7 +58,8 @@ namespace Negocio
                     dt.Columns.Remove("CatPonderacions");
                     dt.Columns.Remove("RelCampusnivelmodalidads");
                     dt.Columns.Remove("RelArearesponsablenivelmodalidads");
-                    
+                    dt.Columns.Remove("ConfElementoEvaluacions");
+
                 }
                 else if (SP == "sp_Usuario_Select")
                 {
@@ -219,6 +221,8 @@ namespace Negocio
                     dt.Columns.Remove("UsuarioCreacion");
                     dt.Columns.Remove("FechaModificacion");
                     dt.Columns.Remove("UsuarioModificacion");
+                    dt.Columns.Remove("ConfIndicadorSiacs");
+                    
                 }
                 else if (SP == "sp_ElementoEvaluacion_Select")
                 {
@@ -230,6 +234,9 @@ namespace Negocio
                     dt.Columns.Remove("UsuarioCreacion");
                     dt.Columns.Remove("FechaModificacion");
                     dt.Columns.Remove("UsuarioModificacion");
+                    dt.Columns.Remove("ConfElementoEvaluacions");
+
+                    
                 }
                 else if (SP == "sp_IndicadorSIAC_Select")
                 {
@@ -375,7 +382,138 @@ namespace Negocio
                     dt.Columns.Remove("FechaModificacion");
                     dt.Columns.Remove("UsuarioModificacion");
                 }
-               
+                else if (SP == "sp_Capitulo_Select")
+                {
+
+                    List<CapituloDTO> response = new List<CapituloDTO>();
+                    
+                    response = (from x in ctx_fimpes.Capitulos
+                                            select new CapituloDTO
+                                            {
+                                                AcreditadoraProcesoId = x.AcreditadoraProcesoId,
+                                                CapituloId = x.CapituloId,
+                                                Nombre = x.Nombre,
+                                                Descripcion = x.Descripcion,
+                                                FechaCreacion = x.FechaCreacion,
+                                                UsuarioCreacion = x.UsuarioCreacion,
+                                                FechaModificacion = x.FechaModificacion,
+                                                UsuarioModificacion = x.UsuarioModificacion
+
+                                            }).ToList();
+
+
+                    dt = ToDataTable(response);
+                    dt.Columns.Remove("FechaCreacion");
+                    dt.Columns.Remove("UsuarioCreacion");
+                    dt.Columns.Remove("FechaModificacion");
+                    dt.Columns.Remove("UsuarioModificacion");
+                }
+                else if (SP == "sp_Criterio_Select")
+                {
+
+                    List<CriterioDTO> response = new List<CriterioDTO>();
+
+                    response = (from x in ctx_fimpes.Criterios
+                    
+                    select new CriterioDTO
+                                            {
+                                                AcreditadoraProcesoId = x.AcreditadoraProcesoId,
+                                                CriterioId = x.CriterioId,
+                                                CarreraId = x.CarreraId,
+                                                CapituloId = x.CapituloId,
+                                                TipoEvidenciaId = x.TipoEvidenciaId,
+                                                Descripcion = x.Descripcion,
+                                                FechaCreacion = x.FechaCreacion,
+                                                UsuarioCreacion = x.UsuarioCreacion,
+                                                FechaModificacion = x.FechaModificacion,
+                                                UsuarioModificacion = x.UsuarioModificacion
+                                            }
+                                         ).ToList();
+
+
+                    dt = ToDataTable(response);
+                    dt.Columns.Remove("FechaCreacion");
+                    dt.Columns.Remove("UsuarioCreacion");
+                    dt.Columns.Remove("FechaModificacion");
+                    dt.Columns.Remove("UsuarioModificacion");
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+            }
+            return dt;
+        }
+
+
+        public DataTable Get(String SP, int? idAcreditadoraProceso, string? idCarrera)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                Object resultados = null;
+                SP = "sp_" + SP + "_Select";
+                if (SP == "sp_Capitulo_Select")
+                {
+
+                    List<CapituloDTO> response = new List<CapituloDTO>();
+
+                    response = (from x in ctx_fimpes.Capitulos
+                                where x.AcreditadoraProcesoId == idAcreditadoraProceso
+                                select new CapituloDTO
+                                {
+                                    AcreditadoraProcesoId = x.AcreditadoraProcesoId,
+                                    CapituloId = x.CapituloId,
+                                    Nombre = x.Nombre,
+                                    Descripcion = x.Descripcion,
+                                    FechaCreacion = x.FechaCreacion,
+                                    UsuarioCreacion = x.UsuarioCreacion,
+                                    FechaModificacion = x.FechaModificacion,
+                                    UsuarioModificacion = x.UsuarioModificacion
+
+                                }).ToList();
+
+
+                    dt = ToDataTable(response);
+                    dt.Columns.Remove("FechaCreacion");
+                    dt.Columns.Remove("UsuarioCreacion");
+                    dt.Columns.Remove("FechaModificacion");
+                    dt.Columns.Remove("UsuarioModificacion");
+                }
+                else if (SP == "sp_Criterio_Select")
+                {
+
+                    List<CriterioDTO> response = new List<CriterioDTO>();
+
+                    response = (from x in ctx_fimpes.Criterios
+                                where
+                                        x.AcreditadoraProcesoId == idAcreditadoraProceso && x.CarreraId == idCarrera
+                                select new CriterioDTO
+
+                                {
+                                    AcreditadoraProcesoId = x.AcreditadoraProcesoId,
+                                    CriterioId = x.CriterioId,
+                                    CarreraId = x.CarreraId,
+                                    CapituloId = x.CapituloId,
+                                    TipoEvidenciaId = x.TipoEvidenciaId,
+                                    Descripcion = x.Descripcion,
+                                    FechaCreacion = x.FechaCreacion,
+                                    UsuarioCreacion = x.UsuarioCreacion,
+                                    FechaModificacion = x.FechaModificacion,
+                                    UsuarioModificacion = x.UsuarioModificacion
+                                }
+                                         ).ToList();
+
+
+                    dt = ToDataTable(response);
+                    dt.Columns.Remove("FechaCreacion");
+                    dt.Columns.Remove("UsuarioCreacion");
+                    dt.Columns.Remove("FechaModificacion");
+                    dt.Columns.Remove("UsuarioModificacion");
+                }
 
 
             }

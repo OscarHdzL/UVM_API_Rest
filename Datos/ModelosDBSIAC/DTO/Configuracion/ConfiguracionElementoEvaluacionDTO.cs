@@ -32,6 +32,8 @@ namespace Datos.ModelosDBSIAC.DTO
 
         public string? UsuarioModificacion { get; set; }
 
+        public int CatSubAreaCorporativaId { get; set; }
+
         public List<int> Archivos { get; set; } = new List<int>();
 
     }

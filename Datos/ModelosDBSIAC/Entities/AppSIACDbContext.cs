@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Configuration;
 namespace Datos.ModelosDBSIAC.Entities;
 
 public partial class AppSIACDbContext : DbContext
@@ -212,9 +212,14 @@ public partial class AppSIACDbContext : DbContext
     public virtual DbSet<VwVistum> VwVista { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=tcp:dbsql-sgapi-qa-uvm.database.windows.net,1433;Initial Catalog=DBSIAC-Desa-UVM;Persist Security Info=False;User ID=appUser;Password=AdminM4n$pp5;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            IConfigurationRoot Configuration = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                                               .AddJsonFile("appsettings.json", optional: false).Build();
+            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("LibroFimpes"));
+        }
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AcreditadoraProceso>(entity =>
@@ -910,6 +915,11 @@ public partial class AppSIACDbContext : DbContext
                 .HasForeignKey(d => d.CatPeriodoEvaluacionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__conf_Elem__Usuar__703EA55A");
+
+            entity.HasOne(d => d.CatSubAreaCorporativa).WithMany(p => p.ConfElementoEvaluacions)
+                .HasForeignKey(d => d.CatSubAreaCorporativaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__conf_Elem__CatSu__7A8729A3");
         });
 
         modelBuilder.Entity<ConfEscalaMedicion>(entity =>
@@ -1662,7 +1672,8 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.NivelModalidad).HasMaxLength(201);
             entity.Property(e => e.Proceso).HasMaxLength(50);
             entity.Property(e => e.SiglasAreaCorporativa).HasMaxLength(5);
-            entity.Property(e => e.SubareasAreaCorporativa).HasMaxLength(4000);
+            entity.Property(e => e.SiglasSubAreaCorporativa).HasMaxLength(5);
+            entity.Property(e => e.SubAreaCorporativa).HasMaxLength(150);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });
@@ -1706,7 +1717,8 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.NombreSubIndicadorUvm).HasMaxLength(500);
             entity.Property(e => e.Proceso).HasMaxLength(50);
             entity.Property(e => e.SiglasAreaCorporativa).HasMaxLength(5);
-            entity.Property(e => e.SubareasAreaCorporativa).HasMaxLength(4000);
+            entity.Property(e => e.SiglasSubAreaCorporativa).HasMaxLength(5);
+            entity.Property(e => e.SubAreaCorporativa).HasMaxLength(150);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });
@@ -1741,7 +1753,8 @@ public partial class AppSIACDbContext : DbContext
             entity.Property(e => e.NombreSubIndicadorUvm).HasMaxLength(500);
             entity.Property(e => e.Proceso).HasMaxLength(50);
             entity.Property(e => e.SiglasAreaCorporativa).HasMaxLength(5);
-            entity.Property(e => e.SubareasAreaCorporativa).HasMaxLength(4000);
+            entity.Property(e => e.SiglasSubAreaCorporativa).HasMaxLength(5);
+            entity.Property(e => e.SubAreaCorporativa).HasMaxLength(150);
             entity.Property(e => e.UsuarioCreacion).HasMaxLength(50);
             entity.Property(e => e.UsuarioModificacion).HasMaxLength(50);
         });

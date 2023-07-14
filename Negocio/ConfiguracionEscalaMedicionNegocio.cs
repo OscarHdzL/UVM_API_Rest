@@ -69,7 +69,9 @@ namespace Negocio
                     escalaMedicion.CatAreaCorporativaId = escala.CatAreaCorporativaId;
                     escalaMedicion.SiglasAreaCorporativa = escala.SiglasAreaCorporativa;
                     escalaMedicion.AreaCorporativa = escala.AreaCorporativa;
-                    escalaMedicion.SubareasAreaCorporativa = escala.SubareasAreaCorporativa;
+                    escalaMedicion.CatSubAreaCorporativaId = escala.CatSubAreaCorporativaId;
+                    escalaMedicion.SubAreaCorporativa = escala.SubAreaCorporativa;
+                    escalaMedicion.SiglasSubAreaCorporativa = escala.SiglasSubAreaCorporativa;
                     escalaMedicion.CatNormativaId = escala.CatNormativaId;
                     escalaMedicion.ClaveNormativa = escala.ClaveNormativa;
                     escalaMedicion.NombreNormativa = escala.NombreNormativa;
@@ -149,7 +151,9 @@ namespace Negocio
                     escalaMedicion.CatAreaCorporativaId = escala.CatAreaCorporativaId;
                     escalaMedicion.SiglasAreaCorporativa = escala.SiglasAreaCorporativa;
                     escalaMedicion.AreaCorporativa = escala.AreaCorporativa;
-                    escalaMedicion.SubareasAreaCorporativa = escala.SubareasAreaCorporativa;
+                    escalaMedicion.CatSubAreaCorporativaId = escala.CatSubAreaCorporativaId;
+                    escalaMedicion.SubAreaCorporativa = escala.SubAreaCorporativa;
+                    escalaMedicion.SiglasSubAreaCorporativa = escala.SiglasSubAreaCorporativa;
                     escalaMedicion.CatNormativaId = escala.CatNormativaId;
                     escalaMedicion.ClaveNormativa = escala.ClaveNormativa;
                     escalaMedicion.NombreNormativa = escala.NombreNormativa;

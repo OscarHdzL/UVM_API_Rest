@@ -71,7 +71,11 @@ public partial class VwConfEscalaMedicionBase
 
     public string? AreaCorporativa { get; set; }
 
-    public string? SubareasAreaCorporativa { get; set; }
+    public int? CatSubAreaCorporativaId { get; set; }
+
+    public string? SubAreaCorporativa { get; set; }
+
+    public string? SiglasSubAreaCorporativa { get; set; }
 
     public int? CatNormativaId { get; set; }
 

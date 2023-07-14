@@ -29,6 +29,8 @@ public partial class ConfElementoEvaluacion
 
     public string? UsuarioModificacion { get; set; }
 
+    public int CatSubAreaCorporativaId { get; set; }
+
     public virtual CatAreaCorporativa CatAreaCorporativa { get; set; } = null!;
 
     public virtual CatAreaResponsable CatAreaResponsable { get; set; } = null!;
@@ -40,6 +42,8 @@ public partial class ConfElementoEvaluacion
     public virtual CatNivelModalidad CatNivelModalidad { get; set; } = null!;
 
     public virtual CatPeriodoEvaluacion CatPeriodoEvaluacion { get; set; } = null!;
+
+    public virtual CatSubAreaCorporativa CatSubAreaCorporativa { get; set; } = null!;
 
     public virtual ICollection<ConfIndicadorSiac> ConfIndicadorSiacs { get; set; } = new List<ConfIndicadorSiac>();
 

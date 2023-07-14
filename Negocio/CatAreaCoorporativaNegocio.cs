@@ -25,14 +25,34 @@ namespace Negocio
         {
             try
             {
-                List<CatRegion> lista = new List<CatRegion>();
 
 
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
                 var resultados = await ctx.VwCatAreaCorporativas.FromSqlInterpolated($@"EXEC sp_AreaCorporativa_Select @Id = {null}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
-                Respuesta = TipoAccion.Positiva(resultados);
+
+                List<AreaCorporativaResponseDTO> lista = new List<AreaCorporativaResponseDTO>();
+                
+
+                foreach (var item in resultados) {
+                    AreaCorporativaResponseDTO obj = new AreaCorporativaResponseDTO();
+                    obj.Id = item.Id;
+                    obj.Siglas = item.Siglas;
+                    obj.Nombre= item.Nombre;
+                    obj.Activo= item.Activo;
+                    obj.FechaCreacion= item.FechaCreacion;
+                    obj.UsuarioCreacion= item.UsuarioCreacion;
+                    obj.FechaModificacion= item.FechaModificacion;
+                    obj.UsuarioModificacion=item.UsuarioModificacion;
+                    obj.Subareas = item.Subareas;
+                    obj.SubareasIds= item.SubareasIds;
+                    obj.subCorporateAreas = await ctx.VwCatSubAreaCorporativas.FromSqlInterpolated($@"EXEC sp_SubAreaCorporativa_AreaCorporativa_Select @Id = {item.Id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+
+                    lista.Add(obj);
+                }
+
+                Respuesta = TipoAccion.Positiva(lista);
 
             }
             catch (Exception ex)
@@ -46,15 +66,35 @@ namespace Negocio
         public async Task<TipoAccion> GetById(int id, int pageSize, int pageNumber)
         {
             try
-            {
-                List<CatRegion> lista = new List<CatRegion>();
-
+            { 
 
                 if (pageSize == 0)
                     throw new Exception("El parámetro pageSize debe ser mayor a cero");
 
                 var resultados = await ctx.VwCatAreaCorporativas.FromSqlInterpolated($@"EXEC sp_AreaCorporativa_Select @Id = {id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
-                Respuesta = TipoAccion.Positiva(resultados);
+
+                List<AreaCorporativaResponseDTO> lista = new List<AreaCorporativaResponseDTO>();
+
+
+                foreach (var item in resultados)
+                {
+                    AreaCorporativaResponseDTO obj = new AreaCorporativaResponseDTO();
+                    obj.Id = item.Id;
+                    obj.Siglas = item.Siglas;
+                    obj.Nombre = item.Nombre;
+                    obj.Activo = item.Activo;
+                    obj.FechaCreacion = item.FechaCreacion;
+                    obj.UsuarioCreacion = item.UsuarioCreacion;
+                    obj.FechaModificacion = item.FechaModificacion;
+                    obj.UsuarioModificacion = item.UsuarioModificacion;
+                    obj.Subareas = item.Subareas;
+                    obj.SubareasIds = item.SubareasIds;
+                    obj.subCorporateAreas = await ctx.VwCatSubAreaCorporativas.FromSqlInterpolated($@"EXEC sp_SubAreaCorporativa_AreaCorporativa_Select @Id = {item.Id}, @PageSize = {pageSize}, @PageNumber = {pageNumber}").ToListAsync();
+
+                    lista.Add(obj);
+                }
+
+                Respuesta = TipoAccion.Positiva(lista);
 
             }
             catch (Exception ex)

@@ -31,9 +31,36 @@ namespace UVMApi.Controllers
 
         [HttpGet]
         [Route("[action]/{SP}")]
-        public  FileStreamResult  GetAll(String SP)
+        public  FileStreamResult  GetAll(String SP, int? idAcreditadoraProceso, string? idCarrera)
         {
-            DataTable dt_ =  negocio.Get(SP);
+            DataTable dt_ = new DataTable();
+
+            switch (SP)
+            {
+                case "Capitulo":
+
+                    if(idAcreditadoraProceso == null)
+                    {
+                        throw new Exception("Se requiere idAcreditadoraProceso");
+                    }
+                    negocio.Get(SP, idAcreditadoraProceso, null);
+                    break;
+
+                case "Criterio":
+                    //negocio.Get(SP);
+                    if (idAcreditadoraProceso == null || idCarrera == null)
+                    {
+                        throw new Exception("Se requiere idAcreditadoraProceso y idCarrera");
+                    }
+                    negocio.Get(SP, idAcreditadoraProceso, idCarrera);
+                    break;
+                default: 
+                    
+                    dt_ = negocio.Get(SP);
+                    break;
+            }
+
+                
             Workbook book = new Workbook();
             Worksheet sheet = book.Worksheets[0];
             sheet.InsertDataTable(dt_, true, 1, 1);

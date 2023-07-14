@@ -56,7 +56,9 @@ namespace Negocio
                     objeto.CatAreaCorporativaId = item.CatAreaCorporativaId;
                     objeto.SiglasAreaCorporativa = item.SiglasAreaCorporativa;
                     objeto.AreaCorporativa = item.AreaCorporativa;
-                    objeto.SubareasAreaCorporativa = item.SubareasAreaCorporativa;
+                    objeto.CatSubAreaCorporativaId = item.CatSubAreaCorporativaId;
+                    objeto.SubAreaCorporativa = item.SubAreaCorporativa;
+                    objeto.SiglasSubAreaCorporativa = item.SiglasSubAreaCorporativa;
 
                     objeto.Activo = item.Activo;
                     objeto.FechaCreacion = item.FechaCreacion;
@@ -117,7 +119,11 @@ namespace Negocio
                     objeto.CatAreaCorporativaId = item.CatAreaCorporativaId;
                     objeto.SiglasAreaCorporativa = item.SiglasAreaCorporativa;
                     objeto.AreaCorporativa = item.AreaCorporativa;
-                    objeto.SubareasAreaCorporativa = item.SubareasAreaCorporativa;
+                    objeto.CatSubAreaCorporativaId = item.CatSubAreaCorporativaId;
+                    objeto.SubAreaCorporativa = item.SubAreaCorporativa;
+                    objeto.SiglasSubAreaCorporativa = item.SiglasSubAreaCorporativa;
+                    
+
                     //objeto.CatNormativaId = item.CatNormativaId;
                     //objeto.ClaveNormativa = item.ClaveNormativa;
                     //objeto.Normativa = item.Normativa;

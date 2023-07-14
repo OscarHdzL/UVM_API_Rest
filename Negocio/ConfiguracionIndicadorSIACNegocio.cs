@@ -69,7 +69,9 @@ namespace Negocio
                     obj.CatAreaCorporativaId = item.CatAreaCorporativaId;
                     obj.SiglasAreaCorporativa = item.SiglasAreaCorporativa;
                     obj.AreaCorporativa = item.AreaCorporativa;
-                    obj.SubareasAreaCorporativa = item.SubareasAreaCorporativa;
+                    obj.CatSubAreaCorporativaId = item.CatSubAreaCorporativaId;
+                    obj.SubAreaCorporativa = item.SubAreaCorporativa;
+                    obj.SiglasSubAreaCorporativa = item.SiglasSubAreaCorporativa;
                     obj.CatNormativaId = item.CatNormativaId;
                     obj.ClaveNormativa = item.ClaveNormativa;
                     obj.NombreNormativa = item.NombreNormativa;
@@ -146,7 +148,9 @@ namespace Negocio
                     obj.CatAreaCorporativaId = item.CatAreaCorporativaId;
                     obj.SiglasAreaCorporativa = item.SiglasAreaCorporativa;
                     obj.AreaCorporativa = item.AreaCorporativa;
-                    obj.SubareasAreaCorporativa = item.SubareasAreaCorporativa;
+                    obj.CatSubAreaCorporativaId = item.CatSubAreaCorporativaId;
+                    obj.SubAreaCorporativa = item.SubAreaCorporativa;
+                    obj.SiglasSubAreaCorporativa = item.SiglasSubAreaCorporativa;
                     obj.CatNormativaId = item.CatNormativaId;
                     obj.ClaveNormativa = item.ClaveNormativa;
                     obj.NombreNormativa = item.NombreNormativa;
