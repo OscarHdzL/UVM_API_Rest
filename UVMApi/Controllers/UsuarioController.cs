@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 using Negocio;
+using Negocio.Modelos;
 using Negocio.Respuesta;
 
 namespace UVMApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
@@ -30,6 +31,13 @@ namespace UVMApi.Controllers
         public Task<TipoAccion> GetAll(int pageNumber = 1, int pageSize = 5)
         {
             return negocio.Get(null, pageSize, pageNumber);
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public Task<TipoAccion> ExisteCuenta(string correo)
+        {
+            return negocio.ExisteCuenta(correo);
         }
 
         [HttpGet]

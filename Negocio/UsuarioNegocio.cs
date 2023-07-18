@@ -1,4 +1,4 @@
-﻿
+﻿using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +14,11 @@ using System.Text.Json.Nodes;
 using System.Text.Json;
 using Datos.Modelos;
 using Microsoft.Identity.Client;
+using Azure.Identity;
+using Microsoft.Extensions.Configuration;
+using Negocio.Modelos;
+
+
 
 namespace Negocio
 {
@@ -23,6 +28,73 @@ namespace Negocio
 
         public TipoAccion Respuesta { get; set; }
 
+        //private readonly IConfiguration _configuration;
+
+        string tenantId { get; set; }
+        string clientId { get; set; }
+        string clientSecret { get; set; }
+
+
+        public UsuarioNegocio()
+        {
+
+            IConfigurationRoot Configuration = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                                               .AddJsonFile("appsettings.json", optional: false).Build();
+           tenantId = Configuration.GetSection("Graph")["TenantId"];
+           clientId = Configuration.GetSection("Graph")["ClientId"];
+           clientSecret = Configuration.GetSection("Graph")["Secret"];
+
+        }
+
+        public async Task<TipoAccion?> ExisteCuenta(string correo)
+        {
+            UserAzureDto? usuario = new UserAzureDto();
+
+            var scopes = new[] { "https://graph.microsoft.com/.default" };
+
+            // We use Azure.Identity
+            TokenCredentialOptions? options = new TokenCredentialOptions
+            {
+                AuthorityHost = AzureAuthorityHosts.AzurePublicCloud
+            };
+
+            ClientSecretCredential? clientSecretCredential = new ClientSecretCredential(
+                this.tenantId, this.clientId, this.clientSecret, options);
+
+            GraphServiceClient? graphClient = new GraphServiceClient(clientSecretCredential, scopes);
+
+            try
+            {
+                IGraphServiceUsersCollectionPage users = await graphClient.Users.Request().Filter(string.Format("userPrincipalName eq '{0}'", correo)).Select("id,givenName,surname,userPrincipalName").GetAsync();
+
+                User? datosUsuario = users.FirstOrDefault(x => x.UserPrincipalName == correo);
+
+                if (datosUsuario != null)
+                {
+                    usuario = new UserAzureDto
+                    {
+                        Correo = datosUsuario.UserPrincipalName,
+                        Nombre = string.Format("{0} ", datosUsuario.GivenName).Trim().Replace("  ", " "),
+                        Apellidos = string.Format("{0} ", datosUsuario.Surname).Trim().Replace("  ", " ")
+                        //Id = new Guid(datosUsuario.Id),
+                    };
+
+                    Respuesta = TipoAccion.Positiva(usuario);
+                } else
+                {
+                    Respuesta = TipoAccion.Negativa(string.Format("No se encontró el usuario {0}", correo));
+                }
+
+                
+            }
+            catch (Exception ex)
+            {
+                Respuesta = TipoAccion.Negativa(ex.Message);
+            };
+
+
+            return Respuesta;
+        }
 
         public async Task<TipoAccion> Get(int? id, int pageSize, int pageNumber)
         {
